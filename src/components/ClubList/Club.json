@@ -1,0 +1,14 @@
+[
+  {
+    "clubName": "컴퓨터 동아리",
+    "president": "홍길동"
+  },
+  {
+    "clubName": "음악 동아리",
+    "president": "김철수"
+  },
+  {
+    "clubName": "미술 동아리",
+    "president": "박영희"
+  }
+]
