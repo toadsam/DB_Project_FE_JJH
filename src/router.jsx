@@ -14,8 +14,6 @@ function AppRouter() {
       <Header />
       <Routes>
         <Route path="/" element={<ClubList />} />
-        {/* 동아리별 페이지, :id 파라미터 추가 */}
-
         <Route path="/profile" element={<Profile />} />
         <Route path="/club/:id" element={<ClubPage />} />
         <Route path="/member-info/:id" element={<MemberInfo />} />
