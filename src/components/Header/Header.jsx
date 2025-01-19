@@ -61,12 +61,17 @@ function Header() {
     }
   };
 
+   // LOGIN 버튼 클릭 이벤트 핸들러
+   const handleLoginClick = () => {
+    navigate("/login"); // 원하는 경로로 이동
+  };
+
   return (
     <S.Wrapper>
       {/* 상단 작은 헤더 */}
       <S.TopBar>
         <S.TopBarItem>HOME</S.TopBarItem>
-        <S.TopBarItem>LOGIN</S.TopBarItem>
+        <S.TopBarItem onClick={handleLoginClick}>LOGIN</S.TopBarItem> {/* LOGIN 클릭 */}
         <S.TopBarItem>PORTAL</S.TopBarItem>
         <S.TopBarItem>LANGUAGE ▼</S.TopBarItem>
       </S.TopBar>
