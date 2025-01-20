@@ -1,6 +1,8 @@
 // EditProfilePage.jsx
 import React from "react";
 import { Container, Header, Logo, Nav, Sidebar, SidebarLink, ProfileSection, Title, AvatarBadge, Form, Label, Input, ButtonGroup, Button } from "./EditProfilePage.styles";
+import { Link } from "react-router-dom"; // 추가
+
 
 function EditProfilePage() {
   return (
@@ -16,8 +18,8 @@ function EditProfilePage() {
       </Header>
       <div style={{ display: "flex", width: "100%" }}>
         <Sidebar>
-          <SidebarLink href="#">내 정보 수정 </SidebarLink>
-          <SidebarLink href="#">비밀번호 변경 </SidebarLink>
+        <SidebarLink as={Link} to="/">내 정보 수정 </SidebarLink>
+        <SidebarLink as={Link} to="/change-password">비밀번호 변경 </SidebarLink>
         </Sidebar>
         <ProfileSection>
           <Title>내 정보 수정</Title>
