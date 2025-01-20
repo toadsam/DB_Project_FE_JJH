@@ -13,6 +13,12 @@ import Category from "./components/Category/Category";
 import AcademicSchedule from "./components/AcademicSchedule/AcademicSchedule";
 import NoticePanel from "./components/NoticePanel/NoticePanel";
 import NoticePage from "./components/Notice/NoticePage";
+import LoginPage from "./components/LoginPage/LoginPage"; // LoginPage 컴포넌트
+import EditProfilePage from "./components/EditProfilePage/EditProfilePage"; // EditProfilePage 경로
+import ChangePasswordPage from "./components/ChangePasswordPage/ChangePasswordPage"; // ChangePasswordPage 경로
+import MyPage from "./components/MyPage/MyPage"; // 새로 추가할 컴포넌트
+import CentralClubPage from "./components/CentralClubPage/CentralClubPage";
+
 import * as S from "./router.styles";
 
 function AppRouter() {
@@ -46,6 +52,11 @@ function AppRouter() {
         <Route path="/event-info/:id" element={<EventInfo />} />
         <Route path="/club-apply/:id" element={<ClubApply />} />
         <Route path="/notice" element={<NoticePage />} />
+        <Route path="/login" element={<LoginPage />} /> {/* 로그인 페이지 */}
+        <Route path="/edit-profile" element={<EditProfilePage />} />
+        <Route path="/change-password" element={<ChangePasswordPage />} />
+        <Route path="/mypage" element={<MyPage />} /> {/* 내 정보 경로 추가 */}
+        <Route path="/central-club" element={<CentralClubPage />} />
       </Routes>
     </Router>
   );

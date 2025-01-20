@@ -11,6 +11,7 @@ function LoginPage() {
           내 정보 수정
         </Link>
         <Link to="/change-password">비밀번호 변경</Link>
+        <Link to="/central-club">   중앙 동아리</Link>
       </div>
     </div>
   );

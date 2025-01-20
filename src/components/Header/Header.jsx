@@ -47,7 +47,9 @@ const categories = [
       { name: "링크트리" },
     ],
   },
-  { title: "내정보", items: ["마이페이지"] },
+  { title: "내정보", items: [
+    { name: "마이페이지", navigateTo: "/mypage" }, // 이동 경로 추가
+  ] },
 ];
 
 function Header() {
@@ -79,7 +81,7 @@ function Header() {
       {/* 상단 작은 헤더 */}
       <S.TopBar>
         <S.TopBarItem>HOME</S.TopBarItem>
-        <S.TopBarItem>LOGIN</S.TopBarItem>
+        <S.TopBarItem onClick={() => navigate('/login')}>LOGIN</S.TopBarItem>
         <S.TopBarItem>PORTAL</S.TopBarItem>
         <S.TopBarItem>LANGUAGE ▼</S.TopBarItem>
       </S.TopBar>
