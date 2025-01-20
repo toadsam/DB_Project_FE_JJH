@@ -3,9 +3,9 @@ import styled from "styled-components";
 export const ScheduleContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%; /* 부모 요소의 높이를 채움 */
-  overflow-y: auto; /* 내용이 길어지면 스크롤 */
-  padding: 10px;
+  width: 100%;
+  padding: 15px;
+  background: white;
   box-sizing: border-box;
 `;
 
@@ -13,8 +13,7 @@ export const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
-  flex-shrink: 0; /* 높이 고정 */
+  margin-bottom: 10px;
 `;
 
 export const ArrowButton = styled.button`
@@ -30,7 +29,7 @@ export const ArrowButton = styled.button`
 `;
 
 export const CurrentMonth = styled.h2`
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
   color: #333;
 `;
@@ -44,22 +43,23 @@ export const ScheduleList = styled.ul`
 export const ScheduleItem = styled.li`
   display: flex;
   justify-content: space-between;
-  padding: 10px 15px;
-  background: #fff;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  align-items: center;
+  padding: 12px 10px;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
 `;
 
 export const Title = styled.span`
   font-size: 16px;
   color: #333;
   font-weight: 500;
+  flex: 1;
 `;
 
 export const Date = styled.span`
   font-size: 14px;
   color: #555;
+  text-align: right;
 `;
 
 export const NoSchedule = styled.div`
@@ -67,10 +67,4 @@ export const NoSchedule = styled.div`
   color: #999;
   font-size: 16px;
   padding: 20px;
-`;
-export const Content = styled.div`
-  flex-grow: 1; /* 남은 공간을 채움 */
-  overflow-y: auto; /* 내용이 많을 경우 스크롤 */
-  padding: 10px;
-  box-sizing: border-box;
 `;

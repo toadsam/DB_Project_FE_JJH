@@ -16,9 +16,8 @@ export const PanelWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 380px; /* 부모 RowContainer의 높이를 채움 */
+  height: 330px; /* 부모 RowContainer의 높이를 채움 */
   border-radius: 5px;
-  padding: 20px;
   box-sizing: border-box;
 
   box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.1);
