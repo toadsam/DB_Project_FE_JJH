@@ -207,7 +207,7 @@ export const CardContainer = styled.div`
 `;
 
 export const CardLogo = styled(ClubLogo)`
-  width: 300px;
+  width: 250px;
   height: 200px;
 `;
 export const CardContent = styled.div`
