@@ -10,7 +10,6 @@ import Profile from "./components/Profile/Profile";
 import ClubApply from "./components/ClubApply/ClubApply";
 import FestivalList from "./components/FestivalList/FestivalList";
 import MiniClub from "./components/Miniclub/MiniClub";
-import Manage from "./components/Manage/Manage";
 import Category from "./components/Category/Category";
 import ClubCategory from "./components/ClubCategory/ClubCategory";
 import AcademicSchedule from "./components/AcademicSchedule/AcademicSchedule";
@@ -45,12 +44,10 @@ function AppRouter() {
         <Route path="/eventinfo" element={<EventInfo />} />
         <Route path="/clublist" element={<ClubList />} />
         <Route path="/profile" element={<Profile />} />{" "}
-        <Route path="/manage/:id" element={<Manage />} />
         <Route path="/clubinfo/:id" element={<ClubInfo />} />
         <Route path="/member-info/:id" element={<MemberInfo />} />
         <Route path="/event-info/:id" element={<EventInfo />} />
         <Route path="/club-apply/:id" element={<ClubApply />} />
-        <Route path="/manage/:id" element={<Manage />} />
         <Route path="/notice" element={<NoticePage />} />
       </Routes>
     </Router>

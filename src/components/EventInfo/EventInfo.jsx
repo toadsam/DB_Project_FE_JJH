@@ -62,6 +62,7 @@ function MiniClub() {
       {/* 오른쪽 콘텐츠 */}
       <S.Content>
         <S.Title1>행사</S.Title1>
+        <S.TitleBar />
         <S.Container>
           {events.map((event) => (
             <S.EventBox key={event.id}>

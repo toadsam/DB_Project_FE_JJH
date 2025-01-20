@@ -5,8 +5,7 @@ export const Container = styled.div`
   flex-wrap: wrap;
   gap: 20px;
   padding: 0 40px;
-  justify-content: flex-start;'
-  
+  justify-content: flex-start;
 `;
 
 export const Title1 = styled.h1`
@@ -14,7 +13,7 @@ export const Title1 = styled.h1`
   font-size: 14px;
   font-weight: 700;
   color: #1d1d1f;
-  text-align: left;
+  text-align: center;
   margin-bottom: 20px;
   margin-left: 10px;
   margin-top: 30px;
@@ -23,16 +22,15 @@ export const Title1 = styled.h1`
 export const EventBox = styled.div`
   width: 180px;
   background-color: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
+  transition: transform 0.3s ease;
+  margin-bottom: 30px;
   &:hover {
     transform: translateY(-10px);
-    box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.2);
   }
 `;
 

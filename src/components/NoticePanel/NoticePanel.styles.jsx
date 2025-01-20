@@ -8,8 +8,9 @@ export const PanelContainer = styled.div`
   margin: 0 auto;
   padding: 20px;
   background: white;
-  border: 1px solid #ddd;
   box-sizing: border-box;
+  overflow-x: auto; /* 수평 스크롤 활성화 */
+  scroll-behavior: smooth; /* 부드러운 스크롤 */
 `;
 
 export const TabMenu = styled.div`

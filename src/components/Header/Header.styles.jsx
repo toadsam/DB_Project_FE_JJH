@@ -29,7 +29,7 @@ export const TopBarItem = styled.span`
 export const Container = styled.div`
   display: flex;
   align-items: center;
-  padding: 10px 20px;
+  padding: 15px 40px;
   border-bottom: 1px solid #ccc;
 `;
 
@@ -40,7 +40,7 @@ export const LogoLink = styled(Link)`
 `;
 
 export const Logo = styled.img`
-  width: 180px;
+  width: 130px;
   height: auto;
   padding-left: 50px;
 `;
@@ -64,8 +64,7 @@ export const MenuItem = styled.div`
 `;
 
 export const Text = styled.span`
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 14px;
   color: ${(props) => props.color || "#000"};
 `;
 
