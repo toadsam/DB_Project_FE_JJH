@@ -89,6 +89,7 @@ function ClubList() {
       {/* 오른쪽 콘텐츠 */}
       <S.Content>
         <S.Title1>중앙 동아리</S.Title1>
+        <S.TitleBar />
         <S.Container>
           {events.map((event) => (
             <S.EventBox

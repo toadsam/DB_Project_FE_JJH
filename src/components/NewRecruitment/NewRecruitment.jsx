@@ -46,7 +46,7 @@ function FestivalList() {
 
   return (
     <S.Container>
-      <S.Title1>새로운 모집공고가 올라왔어요{">"}</S.Title1>
+      <S.Title1>새로운 모집공고가 올라왔어요{" >"}</S.Title1>
       {events.map((event) => (
         <S.EventBox key={event.id}>
           <S.ImageWrapper>

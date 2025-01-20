@@ -3,29 +3,29 @@ import styled from "styled-components";
 export const PanelContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%; /* 부모 요소의 높이를 채움 */
-  overflow-y: auto; /* 내용이 길어지면 스크롤 */
-  padding: 10px;
+  height: 100%;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  background: white;
   box-sizing: border-box;
-`;
-export const Header = styled.div`
-  flex-shrink: 0; /* 높이 고정 */
+  overflow-x: auto; /* 수평 스크롤 활성화 */
+  scroll-behavior: smooth; /* 부드러운 스크롤 */
 `;
 
 export const TabMenu = styled.div`
   display: flex;
   border-bottom: 2px solid #ddd;
-  margin-bottom: 20px;
 `;
 
 export const TabItem = styled.button`
   flex: 1;
-  padding: 10px 15px;
+  padding: 10px;
   font-size: 16px;
-  background: ${({ active }) => (active ? "#007aff" : "transparent")};
+  background: ${({ active }) => (active ? "#046CC4" : "white")};
   color: ${({ active }) => (active ? "white" : "#333")};
   border: none;
-  border-radius: ${({ active }) => (active ? "8px 8px 0 0" : "0")};
+  border-bottom: ${({ active }) => (active ? "2px solid #007aff" : "none")};
   cursor: pointer;
   text-align: center;
   transition: background 0.3s ease, color 0.3s ease;
@@ -35,29 +35,21 @@ export const TabItem = styled.button`
   }
 `;
 
-export const NoticeList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
+export const NoticeList = styled.div`
+  margin-top: 20px;
 `;
 
-export const NoticeItem = styled.li`
+export const NoticeItem = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 10px 15px;
-  background: #fff;
-  border-radius: 8px;
-  margin-bottom: 10px;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
 `;
 
 export const Title = styled.span`
   font-size: 16px;
   color: #333;
   font-weight: 500;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 `;
 
 export const Date = styled.span`
@@ -68,21 +60,16 @@ export const Date = styled.span`
 export const MoreButton = styled.button`
   width: 100%;
   padding: 10px;
-  background: #f0f0f0;
+  background: #046cc4;
   border: none;
-  border-radius: 8px;
+  color: white;
   font-size: 14px;
-  color: #007aff;
+  font-weight: bold;
+  border-radius: 4px;
   cursor: pointer;
   text-align: center;
-
+  margin-top: 10px;
   &:hover {
-    background: #e0e0e0;
+    background: #005bb5;
   }
-`;
-export const Content = styled.div`
-  flex-grow: 1; /* 남은 공간을 채움 */
-  overflow-y: auto; /* 내용이 많을 경우 스크롤 */
-  padding: 10px;
-  box-sizing: border-box;
 `;
