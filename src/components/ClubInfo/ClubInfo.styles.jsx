@@ -194,12 +194,11 @@ export const ButtonWrapper = styled.div`
 export const CardContainer = styled.div`
   display: flex;
   padding: 30px;
-  width: 100%;
+  width: 90%;
   margin: 20px auto;
-  background-color: #ffffff; /* 카드 배경색 */
+  background-color: #f6f4f4; /* 카드 배경색 */
   border: 1px solid #ddd; /* 테두리 */
-  border-radius: 10px; /* 모서리 둥글게 */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 */
+  border-radius: 5px; /* 모서리 둥글게 */
 
   justify-content: space-between;
   margin-bottom: 30px;

@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import * as S from "./ClubInfo.styles";
-import defaultImage from "../../asset/mainLogo.png"; // 기본 로고 이미지
+import defaultImage from "../../asset/mainLogo.png";
+import ClubApply from "../ClubApply/ClubApply"; // ClubApply 컴포넌트 가져오기
+
 const sidebarItems = ["동아리 소개", "모집 공고", "행사 공고"];
 
 function ClubInfo() {
@@ -30,9 +32,9 @@ function ClubInfo() {
 
   if (loading) return <S.Loading>Loading...</S.Loading>;
   if (error) return <S.Error>{error}</S.Error>;
+
   return (
     <S.PageContainer>
-      {" "}
       <S.Sidebar>
         <S.SidebarTitle>카테고리</S.SidebarTitle>
         <S.SidebarList>
@@ -46,7 +48,8 @@ function ClubInfo() {
             </S.SidebarItem>
           ))}
         </S.SidebarList>
-      </S.Sidebar>{" "}
+      </S.Sidebar>
+
       <S.InfoContainer>
         <S.Header>
           <S.ClubTitle>{clubInfo?.club_name || "동아리 이름"}</S.ClubTitle>
@@ -102,24 +105,28 @@ function ClubInfo() {
             </S.CardHashTags>
           </S.CardContent>
         </S.CardContainer>
+        {/* 조건부 렌더링 */}
+        {selectedItem === "동아리 소개" && (
+          <>
+            <S.Section>
+              <S.SectionTitle>동아리 설명</S.SectionTitle>
+              <S.SectionContent>
+                {clubInfo?.description || "동아리 설명이 없습니다."}
+              </S.SectionContent>
+            </S.Section>
 
-        {/* 동아리 설명 */}
-        <S.Section>
-          <S.SectionTitle>동아리 설명</S.SectionTitle>
-          <S.SectionContent>
-            {clubInfo?.description || "동아리 설명이 없습니다."}
-          </S.SectionContent>
-        </S.Section>
-
-        {/* 주요 활동 */}
-        <S.Section>
-          <S.SectionTitle>주요 활동</S.SectionTitle>
-          <S.SectionContent>
-            {clubInfo?.activity || "주요 활동 정보가 없습니다."}
-          </S.SectionContent>
-        </S.Section>
+            <S.Section>
+              <S.SectionTitle>주요 활동</S.SectionTitle>
+              <S.SectionContent>
+                {clubInfo?.activity || "주요 활동 정보가 없습니다."}
+              </S.SectionContent>
+            </S.Section>
+          </>
+        )}
+        {selectedItem === "모집 공고" && <ClubApply />} {/* 모집 공고 표시 */}
       </S.InfoContainer>
     </S.PageContainer>
   );
 }
+
 export default ClubInfo;
