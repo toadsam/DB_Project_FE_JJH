@@ -29,7 +29,7 @@ export const TopBarItem = styled.span`
 export const Container = styled.div`
   display: flex;
   align-items: center;
-  padding: 10px 20px;
+  padding: 15px 40px;
   border-bottom: 1px solid #ccc;
 `;
 
@@ -40,7 +40,7 @@ export const LogoLink = styled(Link)`
 `;
 
 export const Logo = styled.img`
-  width: 180px;
+  width: 130px;
   height: auto;
   padding-left: 50px;
 `;
@@ -64,8 +64,7 @@ export const MenuItem = styled.div`
 `;
 
 export const Text = styled.span`
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 14px;
   color: ${(props) => props.color || "#000"};
 `;
 
@@ -96,5 +95,13 @@ export const DropdownItem = styled.div`
   &:hover {
     background-color: #f0f0f0;
     color: #007aff;
+  }
+`;
+export const Banner = styled.div`
+  img {
+    width: 100%;
+    height: 100%;
+    margin-top: 10px; /* 헤더와 배너 사이의 여백 */
+    border-radius: 5px; /* 이미지 모서리를 둥글게 */
   }
 `;

@@ -21,10 +21,12 @@ export const Title = styled.h1`
 
 export const ScrollWrapper = styled.div`
   display: flex;
-  overflow-x: auto; /* 수평 스크롤 활성화 */
-  gap: 20px;
-  scroll-behavior: smooth;
+  gap: 10px; /* 아이템 간 간격 */
+  width: 100%; /* 전체 너비 */
   padding: 10px 0;
+  justify-content: space-between; /* 아이템을 균등 분포 */
+  overflow-x: auto; /* 수평 스크롤 활성화 */
+  scroll-behavior: smooth;
 
   /* 스크롤바 숨기기 */
   &::-webkit-scrollbar {
@@ -40,17 +42,15 @@ export const CategoryBox = styled.div`
   height: 150px;
   border-radius: 16px;
   background-color: #ffffff;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease;
 
   &:hover {
     transform: scale(1.05);
-    box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.2);
   }
 
   img {

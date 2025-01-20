@@ -1,73 +1,105 @@
 import styled from "styled-components";
 
-// 전체 컨테이너 스타일
 export const ApplyContainer = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+  font-family: "Arial", sans-serif;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding: 20px;
-  background-color: #f4f4f4;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
-// 제목 스타일
 export const Title = styled.h1`
-  font-size: 2rem;
-  color: #333;
-  margin-bottom: 20px;
+  font-size: 17px;
+  font-weight: bold;
+  color: #046cc4; /* 강조 색상 */
+  margin-bottom: 10px;
 `;
 
-// 모집공고 설명 스타일
 export const Description = styled.p`
-  font-size: 1.2rem;
-  color: #666;
+  font-size: 16px;
+  color: #555;
   margin-bottom: 20px;
-  text-align: center;
+  line-height: 1.5;
 `;
 
-// 지원 완료 메시지 스타일
-export const Message = styled.p`
-  font-size: 1.1rem;
-  color: #28a745;
-  margin-bottom: 20px;
-  text-align: center;
+export const Section = styled.div`
+  margin-bottom: 10px;
 `;
 
-// 버튼 컨테이너 스타일 (문의하기, 지원하기 버튼을 가로로 배치)
+export const SectionTitle = styled.h2`
+  font-size: 17px;
+  color: #046cc4;
+  display: inline-block; /* 텍스트 크기에 맞게 배경색 크기 조정 */
+`;
+
+export const SectionContent = styled.p`
+  font-size: 16px;
+  color: #555;
+  line-height: 1.5;
+  text-align: left; /* 텍스트를 왼쪽 정렬 */
+`;
+
 export const ButtonContainer = styled.div`
   display: flex;
-  gap: 15px;
+  gap: 20px;
+  margin-top: 20px;
 `;
 
-// 문의하기 버튼 스타일
 export const ContactButton = styled.button`
   padding: 10px 20px;
-  font-size: 1rem;
-  color: #fff;
-  background-color: #007bff;
-  border: none;
-  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #046cc4;
+  background-color: #e6f7ff;
+  border: 2px solid #046cc4;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease, color 0.3s ease;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #046cc4;
+    color: #ffffff;
   }
 `;
 
-// 지원하기 버튼 스타일
 export const ApplyButton = styled.button`
   padding: 10px 20px;
-  font-size: 1rem;
-  color: #fff;
-  background-color: #28a745;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #046cc4;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: #218838;
+    background-color: #004a8c;
   }
+`;
+
+export const Loading = styled.div`
+  font-size: 18px;
+  color: #046cc4;
+  text-align: center;
+  padding: 50px 0;
+`;
+
+export const Error = styled.div`
+  font-size: 18px;
+  color: red;
+  text-align: center;
+  padding: 50px 0;
+  background-color: #ffe6e6;
+  border: 1px solid red;
+  border-radius: 8px;
+  margin: 20px auto;
+`;
+export const Message = styled.p`
+  font-size: 18px;
+  color: #28a745; /* 녹색 메시지 */
+  font-weight: bold;
+  margin-top: 20px;
+  text-align: center;
 `;

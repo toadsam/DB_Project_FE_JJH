@@ -57,11 +57,18 @@ export const Content = styled.div`
 
 export const Title1 = styled.h1`
   width: 100%;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
   color: #1d1d1f;
   text-align: left;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+`;
+export const TitleBar = styled.div`
+  width: 100%; /* 전체 너비 */
+  height: 1px;
+  background-color: black; /* 동아리 색상 */
+  margin-bottom: 15px; /* 제목과 간격 */
+  border-radius: 2px;
 `;
 
 export const Container = styled.div`
@@ -82,19 +89,17 @@ export const Container = styled.div`
 export const EventBox = styled.div`
   width: 180px;
   background-color: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+
+  border: 0.2px solid rgb(213, 213, 213);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s ease;
 
   &:hover {
-    transform: translateY(-10px);
-    box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.2);
+    transform: translateY(-8px);
   }
 `;
-
 export const ImageWrapper = styled.div`
   width: 100%;
   position: relative;

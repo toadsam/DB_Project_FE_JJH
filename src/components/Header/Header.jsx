@@ -39,7 +39,14 @@ const categories = [
     items: ["음악", "댄스", "전시", "봉사", "기타"],
     navigateTo: "/eventinfo",
   },
-  { title: "동아리연합회", items: ["소개글", "공지사항", "링크트리"] },
+  {
+    title: "동아리연합회",
+    items: [
+      { name: "소개글" },
+      { name: "공지사항", navigateTo: "/notice" }, // "공지사항" 클릭 시 이동 경로 추가
+      { name: "링크트리" },
+    ],
+  },
   { title: "내정보", items: ["마이페이지"] },
 ];
 
@@ -61,9 +68,10 @@ function Header() {
     }
   };
 
-   // LOGIN 버튼 클릭 이벤트 핸들러
-   const handleLoginClick = () => {
-    navigate("/login"); // 원하는 경로로 이동
+  const handleItemClick = (item) => {
+    if (item.navigateTo) {
+      navigate(item.navigateTo); // 해당 아이템의 경로로 이동
+    }
   };
 
   return (
@@ -71,7 +79,7 @@ function Header() {
       {/* 상단 작은 헤더 */}
       <S.TopBar>
         <S.TopBarItem>HOME</S.TopBarItem>
-        <S.TopBarItem onClick={handleLoginClick}>LOGIN</S.TopBarItem> {/* LOGIN 클릭 */}
+        <S.TopBarItem>LOGIN</S.TopBarItem>
         <S.TopBarItem>PORTAL</S.TopBarItem>
         <S.TopBarItem>LANGUAGE ▼</S.TopBarItem>
       </S.TopBar>
@@ -93,7 +101,12 @@ function Header() {
               {activeCategory === index && (
                 <S.Dropdown>
                   {category.items.map((item, idx) => (
-                    <S.DropdownItem key={idx}>{item}</S.DropdownItem>
+                    <S.DropdownItem
+                      key={idx}
+                      onClick={() => handleItemClick(item)} // 아이템 클릭 시 이동
+                    >
+                      {item.name || item} {/* 객체 또는 문자열 처리 */}
+                    </S.DropdownItem>
                   ))}
                 </S.Dropdown>
               )}
