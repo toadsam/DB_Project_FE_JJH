@@ -93,13 +93,6 @@ function ClubInfo() {
           )) || "주요 활동 정보가 없습니다."}
         </S.SectionContent>
       </S.Section>
-
-      {/* 지원 버튼 */}
-      <S.ButtonWrapper>
-        <S.JoinButton onClick={() => alert("지원이 완료되었습니다!")}>
-          가입 신청
-        </S.JoinButton>
-      </S.ButtonWrapper>
     </S.InfoContainer>
   );
 }

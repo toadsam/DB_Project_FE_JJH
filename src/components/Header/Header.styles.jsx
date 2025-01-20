@@ -98,3 +98,11 @@ export const DropdownItem = styled.div`
     color: #007aff;
   }
 `;
+export const Banner = styled.div`
+  img {
+    width: 100%;
+    height: 100%;
+    margin-top: 10px; /* 헤더와 배너 사이의 여백 */
+    border-radius: 5px; /* 이미지 모서리를 둥글게 */
+  }
+`;
