@@ -12,6 +12,10 @@ function LoginPage() {
         </Link>
         <Link to="/change-password">비밀번호 변경</Link>
         <Link to="/central-club">   중앙 동아리</Link>
+        <Link to ="/small-club">    소확회</Link>
+        <Link to ="/recruitment">   모집공고</Link>
+        <Link to ="/member-management"> 부원관리</Link>
+        <Link to ="/application-list"> 신청목록</Link>
       </div>
     </div>
   );

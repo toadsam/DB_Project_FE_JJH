@@ -18,6 +18,13 @@ import EditProfilePage from "./components/EditProfilePage/EditProfilePage"; // E
 import ChangePasswordPage from "./components/ChangePasswordPage/ChangePasswordPage"; // ChangePasswordPage 경로
 import MyPage from "./components/MyPage/MyPage"; // 새로 추가할 컴포넌트
 import CentralClubPage from "./components/CentralClubPage/CentralClubPage";
+import SmallClubPage from "./components/SmallClubPage/SmallClubPage";
+import RecruitmentPage from "./components/RecruitmentPage/RecruitmentPage";
+import MemberManagementPage from "./components/MemberManagementPage/MemberManagementPage";
+import ApplicationListPage from "./components/ApplicationListPage/ApplicationListPage";
+
+
+
 
 import * as S from "./router.styles";
 
@@ -57,6 +64,10 @@ function AppRouter() {
         <Route path="/change-password" element={<ChangePasswordPage />} />
         <Route path="/mypage" element={<MyPage />} /> {/* 내 정보 경로 추가 */}
         <Route path="/central-club" element={<CentralClubPage />} />
+        <Route path="/small-club" element={<SmallClubPage />} />
+        <Route path="/recruitment" element={<RecruitmentPage />} />
+        <Route path="/member-management" element={<MemberManagementPage />} />
+        <Route path="/application-list" element={<ApplicationListPage />} />
       </Routes>
     </Router>
   );
