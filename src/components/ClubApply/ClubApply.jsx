@@ -8,7 +8,6 @@ function ClubApply() {
   const [recruitmentInfo, setRecruitmentInfo] = useState(null); // 모집 공고 정보 상태
   const [loading, setLoading] = useState(true); // 로딩 상태
   const [error, setError] = useState(null); // 에러 상태
-  const [hasApplied, setHasApplied] = useState(false); // 지원 상태
 
   // 모집 공고 데이터 가져오기
   useEffect(() => {
@@ -27,14 +26,6 @@ function ClubApply() {
 
     fetchRecruitment();
   }, [id]);
-
-  const handleApply = () => {
-    setHasApplied(true); // 지원 완료 상태로 변경
-  };
-
-  const handleContact = () => {
-    alert("회장/부회장 연락처 정보");
-  };
 
   if (loading) return <S.Loading>Loading...</S.Loading>;
   if (error) return <S.Error>{error}</S.Error>;

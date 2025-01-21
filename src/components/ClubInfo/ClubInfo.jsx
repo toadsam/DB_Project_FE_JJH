@@ -15,20 +15,22 @@ function ClubInfo() {
 
   const [selectedItem, setSelectedItem] = useState("동아리 소개");
 
-  const fetchClubData = async () => {
-    try {
-      const response = await axios.get(`http://localhost:5001/api/clubs/${id}`);
-      setClubInfo(response.data);
-    } catch (err) {
-      setError("데이터를 불러오는 중 오류가 발생했습니다.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchClubData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:5001/api/clubs/${id}`
+        );
+        setClubInfo(response.data);
+      } catch (err) {
+        setError("데이터를 불러오는 중 오류가 발생했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchClubData();
-  }, [id]);
+  }, [id]); // 이제 id만 의존성 배열에 포함
 
   if (loading) return <S.Loading>Loading...</S.Loading>;
   if (error) return <S.Error>{error}</S.Error>;
