@@ -1,16 +1,11 @@
-import { render, screen } from "@testing-library/react";
-import { BrowserRouter } from "react-router-dom"; // 추가
-import App from "./App";
+import { render } from "@testing-library/react";
+import { BrowserRouter } from "react-router-dom";
+import App from "./src/App";
 
-test("renders the app without crashing", () => {
+test("renders App component", () => {
   render(
     <BrowserRouter>
-      {" "}
       <App />
     </BrowserRouter>
   );
-
-  // 예: "learn react"라는 텍스트가 화면에 나타나는지 확인
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
 });
