@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import * as S from "./NewRecruitment.styles"; // 스타일 정의
 import axios from "axios";
 import defaultImage from "../../asset/mainLogo.png"; // 기본 이미지 불러오기
+const API_URL = process.env.REACT_APP_API_URL;
 
 function FestivalList() {
   const [events, setEvents] = useState([]); // API 데이터 상태 관리
@@ -13,7 +14,7 @@ function FestivalList() {
       setLoading(true); // 로딩 시작
       try {
         const response = await axios.get(
-          "http://localhost:5001/api/recruitments",
+          `${API_URL}/api/home/updatedrecruitment`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -21,12 +22,22 @@ function FestivalList() {
             },
           }
         );
+
         console.log("API Response:", response.data); // 디버깅
         setEvents(
           Array.isArray(response.data)
             ? response.data.map((event) => ({
-                ...event,
-                image: event.image || defaultImage, // 기본 이미지 설정
+                id: event.recruitment_id,
+                title: event.recruitment_title || "제목 없음",
+                description:
+                  event.recruitment_description ||
+                  "설명이 제공되지 않았습니다.",
+                image: defaultImage, // 기본 이미지 설정
+                endDate:
+                  event.recruitment_end_date === "0000-00-00" ||
+                  event.recruitment_end_date === null
+                    ? "마감일 미정"
+                    : new Date(event.recruitment_end_date).toLocaleDateString(),
               }))
             : []
         );
@@ -62,9 +73,7 @@ function FestivalList() {
               ? `${event.description.slice(0, 30)}...`
               : event.description}
           </S.Description> */}
-          <S.Date>
-            마감일자 : {new Date(event.deadline).toLocaleDateString()}
-          </S.Date>
+          <S.Date>마감일자: {event.endDate}</S.Date>
         </S.EventBox>
       ))}
     </S.Container>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import * as S from "./EventInfo.styles";
 import axios from "axios";
 import defaultImage from "../../asset/mainLogo.png";
+const API_URL = process.env.REACT_APP_API_URL;
 
 const categories = [
   {
@@ -19,7 +20,7 @@ function MiniClub() {
     const fetchEvents = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("http://localhost:5001/api/events", {
+        const response = await axios.get(`${API_URL}/api/events`, {
           headers: {
             "Content-Type": "application/json",
             "ngrok-skip-browser-warning": "69420",

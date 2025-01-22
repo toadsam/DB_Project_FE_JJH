@@ -4,6 +4,8 @@ import axios from "axios";
 import defaultImage from "../../asset/mainLogo.png";
 import { useNavigate } from "react-router-dom";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 const categories = [
   {
     title: "소학회",
@@ -31,21 +33,25 @@ function MiniClub() {
     const fetchEvents = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("http://localhost:5001/api/clubs", {
+        const response = await axios.get(`${API_URL}/api/clubs/academic`, {
           headers: {
             "Content-Type": "application/json",
             "ngrok-skip-browser-warning": "69420",
           },
         });
-        // "중앙동아리"인 데이터만 필터링
+
+        // "소학회" 데이터를 필터링
         const filteredEvents = Array.isArray(response.data)
           ? response.data
-              .filter((event) => event.category === "소학회")
+              .filter((event) => event.club_type === "소학회")
               .map((event) => ({
                 ...event,
-                image: event.image || defaultImage,
+                image: defaultImage, // 기본 이미지 설정
+                description:
+                  event.club_description || "설명이 제공되지 않았습니다.", // 설명 없을 경우 기본 텍스트
               }))
           : [];
+
         setEvents(filteredEvents);
       } catch (err) {
         setError(err.response?.data?.message || err.message);
@@ -60,9 +66,11 @@ function MiniClub() {
 
   if (loading) return <S.PageContainer>Loading...</S.PageContainer>;
   if (error) return <S.PageContainer>Error: {error}</S.PageContainer>;
+
   const handleEventClick = (id) => {
     navigate(`/clubinfo/${id}`); // 클릭한 이벤트의 ID를 URL로 전달
   };
+
   return (
     <S.PageContainer>
       {/* 왼쪽 사이드바 */}
@@ -82,7 +90,7 @@ function MiniClub() {
         <S.Container>
           {events.map((event) => (
             <S.EventBox
-              key={event.id}
+              key={event.club_id} // club_id를 키로 사용
               onClick={() => handleEventClick(event.club_id)}
             >
               <S.ImageWrapper>
