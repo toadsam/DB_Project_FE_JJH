@@ -4,11 +4,13 @@ import axios from "axios";
 import * as S from "./ClubInfo.styles";
 import defaultImage from "../../asset/mainLogo.png";
 import ClubApply from "../ClubApply/ClubApply"; // ClubApply 컴포넌트 가져오기
+import ClubEvent from "../ClubEvent/ClubEvent";
+const API_URL = process.env.REACT_APP_API_URL;
 
 const sidebarItems = ["동아리 소개", "모집 공고", "행사 공고"];
 
 function ClubInfo() {
-  const { id } = useParams();
+  const { club_id } = useParams();
   const [clubInfo, setClubInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -17,12 +19,17 @@ function ClubInfo() {
 
   useEffect(() => {
     const fetchClubData = async () => {
+      setLoading(true);
       try {
-        const response = await axios.get(
-          `http://localhost:5001/api/clubs/${id}`
-        );
+        const response = await axios.get(`${API_URL}/api/clubs/${club_id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            "ngrok-skip-browser-warning": "69420",
+          },
+        });
         setClubInfo(response.data);
       } catch (err) {
+        console.error("API Error:", err.response || err.message);
         setError("데이터를 불러오는 중 오류가 발생했습니다.");
       } finally {
         setLoading(false);
@@ -30,7 +37,7 @@ function ClubInfo() {
     };
 
     fetchClubData();
-  }, [id]); // 이제 id만 의존성 배열에 포함
+  }, [club_id]);
 
   if (loading) return <S.Loading>Loading...</S.Loading>;
   if (error) return <S.Error>{error}</S.Error>;
@@ -43,7 +50,7 @@ function ClubInfo() {
           {sidebarItems.map((item, index) => (
             <S.SidebarItem
               key={index}
-              isSelected={selectedItem === item}
+              $isSelected={selectedItem === item} // $isSelected 사용
               onClick={() => setSelectedItem(item)}
             >
               {item}
@@ -59,7 +66,7 @@ function ClubInfo() {
         </S.Header>
         <S.CardContainer>
           <S.CardLogo
-            src={clubInfo?.image || defaultImage}
+            src={clubInfo?.image || defaultImage} // 기본 이미지 처리
             alt={clubInfo?.club_name || "Club Logo"}
           />
           <S.CardContent>
@@ -68,22 +75,21 @@ function ClubInfo() {
               <S.CardInfoItem>
                 <S.ContactLabel>위치</S.ContactLabel>
                 <S.ContactValue>
-                  {clubInfo?.location || "위치 정보가 없습니다."}
+                  {clubInfo?.club_location || "위치 정보가 없습니다."}
                 </S.ContactValue>
               </S.CardInfoItem>
               <S.CardInfoItem>
                 <S.ContactLabel>연락처</S.ContactLabel>
                 <S.ContactValue>
-                  {clubInfo?.contact_phone || "연락처 정보가 없습니다."}
+                  {clubInfo?.club_contact_phone_number ||
+                    "연락처 정보가 없습니다."}
                 </S.ContactValue>
               </S.CardInfoItem>
               <S.CardInfoItem>
                 <S.ContactLabel>SNS</S.ContactLabel>
                 <S.ContactValue>
                   <a
-                    href={`https://www.instagram.com/${
-                      clubInfo?.club_sns || ""
-                    }`}
+                    href={clubInfo?.club_sns || "#"}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
@@ -92,19 +98,6 @@ function ClubInfo() {
                 </S.ContactValue>
               </S.CardInfoItem>
             </S.CardInfoBox>
-            <S.CardHashTags>
-              {clubInfo?.hashtags?.map((tag, index) => (
-                <S.CardHashTagItem key={index}>
-                  <S.ContactLabel>#</S.ContactLabel>
-                  <S.ContactValue>{tag}</S.ContactValue>
-                </S.CardHashTagItem>
-              )) || (
-                <S.CardHashTagItem>
-                  <S.ContactLabel>#</S.ContactLabel>
-                  <S.ContactValue>해시태그 정보가 없습니다.</S.ContactValue>
-                </S.CardHashTagItem>
-              )}
-            </S.CardHashTags>
           </S.CardContent>
         </S.CardContainer>
         {/* 조건부 렌더링 */}
@@ -113,19 +106,35 @@ function ClubInfo() {
             <S.Section>
               <S.SectionTitle>동아리 설명</S.SectionTitle>
               <S.SectionContent>
-                {clubInfo?.description || "동아리 설명이 없습니다."}
+                {clubInfo?.club_description || "동아리 설명이 없습니다."}
               </S.SectionContent>
             </S.Section>
 
             <S.Section>
-              <S.SectionTitle>주요 활동</S.SectionTitle>
+              <S.SectionTitle>분류</S.SectionTitle>
               <S.SectionContent>
-                {clubInfo?.activity || "주요 활동 정보가 없습니다."}
+                {clubInfo?.club_category || "분류 정보가 없습니다."}
+              </S.SectionContent>
+            </S.Section>
+
+            <S.Section>
+              <S.SectionTitle>상세 분류</S.SectionTitle>
+              <S.SectionContent>
+                {clubInfo?.detail_category_1 || "상세 분류 정보가 없습니다."}
+              </S.SectionContent>
+            </S.Section>
+
+            <S.Section>
+              <S.SectionTitle>대학 및 학과</S.SectionTitle>
+              <S.SectionContent>
+                {clubInfo?.college_name || "대학 정보가 없습니다."} /{" "}
+                {clubInfo?.department_name || "학과 정보가 없습니다."}
               </S.SectionContent>
             </S.Section>
           </>
         )}
         {selectedItem === "모집 공고" && <ClubApply />} {/* 모집 공고 표시 */}
+        {selectedItem === "행사 공고" && <ClubEvent />}
       </S.InfoContainer>
     </S.PageContainer>
   );

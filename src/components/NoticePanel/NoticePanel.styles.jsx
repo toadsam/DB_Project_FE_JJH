@@ -73,3 +73,14 @@ export const MoreButton = styled.button`
     background: #005bb5;
   }
 `;
+export const LoadingMessage = styled.div`
+  text-align: center;
+  font-size: 18px;
+  color: gray;
+`;
+
+export const ErrorMessage = styled.div`
+  text-align: center;
+  font-size: 18px;
+  color: red;
+`;

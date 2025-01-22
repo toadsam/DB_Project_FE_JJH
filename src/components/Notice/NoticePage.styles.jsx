@@ -79,4 +79,26 @@ export const ListColumn = styled.div`
     flex: 0.4; /* 날짜 컬럼 너비 */
     text-align: center;
   }
+
+  a {
+    color: inherit; /* 부모 요소의 색상을 상속 */
+    text-decoration: none; /* 밑줄 제거 */
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: none; /* 호버 시에도 밑줄 제거 */
+    }
+  }
+`;
+
+export const Loading = styled.div`
+  text-align: center;
+  font-size: 18px;
+  color: gray;
+`;
+
+export const Error = styled.div`
+  text-align: center;
+  font-size: 18px;
+  color: red;
 `;

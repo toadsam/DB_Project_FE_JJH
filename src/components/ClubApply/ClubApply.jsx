@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import * as S from "./ClubApply.styles"; // 스타일 파일 임포트
-
+const API_URL = process.env.REACT_APP_API_URL;
 function ClubApply() {
   const { id } = useParams(); // URL에서 recruitment_id 파라미터를 받아옴
   const [recruitmentInfo, setRecruitmentInfo] = useState(null); // 모집 공고 정보 상태
@@ -14,8 +14,15 @@ function ClubApply() {
     const fetchRecruitment = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:5001/api/recruitments/${id}`
+          `${API_URL}/api/clubs/${id}/recruitment`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "ngrok-skip-browser-warning": "69420",
+            },
+          }
         );
+
         setRecruitmentInfo(response.data); // API 응답 데이터를 상태에 저장
       } catch (err) {
         setError("데이터를 불러오는 중 오류가 발생했습니다.");

@@ -1,29 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // react-router-dom import
+import axios from "axios";
 import * as S from "./NoticePanel.styles";
 
-// 공지사항 데이터
-const noticeData = {
-  공지사항: [
-    {
-      id: 12,
-      title: "※D-DAY※ [양현재] 2025 로스쿨 입학설명회",
-      date: "2025.01.12",
-    },
-    {
-      id: 11,
-      title: "[국제대학원] 누비아주 35기를 모집합니다",
-      date: "2025.01.11",
-    },
-    { id: 10, title: "유익한 방학생활 에세이 공모전", date: "2025.01.10" },
-    {
-      id: 9,
-      title: "[재공지][품질경영분야] 6시그마 Black Belt 자격과정",
-      date: "2025.01.10",
-    },
-    { id: 8, title: "학생회 주최 겨울 방학 문화 프로그램", date: "2025.01.09" },
-    { id: 7, title: "장학금 신청 마감일 안내", date: "2025.01.08" },
-  ],
+const API_URL = process.env.REACT_APP_API_URL;
+
+// 초기 하드코딩 데이터
+const hardcodedNoticeData = {
+  공지사항: [], // 공지사항 초기값 추가
   "제휴 업체": [
     { id: 6, title: "2025 신입생 OT 안내", date: "2025.01.05" },
     { id: 5, title: "겨울방학 중 도서관 운영시간 변경", date: "2025.01.04" },
@@ -35,7 +19,36 @@ const noticeData = {
 
 function NoticePanel() {
   const [activeTab, setActiveTab] = useState("공지사항"); // 현재 활성화된 탭
+  const [noticeData, setNoticeData] = useState(hardcodedNoticeData); // 초기 데이터
+  const [loading, setLoading] = useState(false); // 로딩 상태
+  const [error, setError] = useState(null); // 에러 상태
   const navigate = useNavigate(); // useNavigate 훅 사용
+
+  useEffect(() => {
+    const fetchNotices = async () => {
+      if (activeTab === "공지사항") {
+        setLoading(true);
+        try {
+          const response = await axios.get(`${API_URL}/api/home/notice`, {
+            headers: {
+              "Content-Type": "application/json",
+              "ngrok-skip-browser-warning": "69420",
+            },
+          });
+          setNoticeData((prevData) => ({
+            ...prevData,
+            공지사항: response.data, // API 데이터 업데이트
+          }));
+        } catch (err) {
+          setError("공지사항 데이터를 불러오는 중 오류가 발생했습니다.");
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchNotices();
+  }, [activeTab]); // activeTab 변경 시 호출
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
@@ -46,15 +59,18 @@ function NoticePanel() {
   };
 
   // 현재 탭의 데이터를 정렬 후 상위 4개만 가져오기
-  const limitedData = [...noticeData[activeTab]]
-    .sort((a, b) => b.id - a.id) // id가 큰 순서대로 정렬
+  const limitedData = [...(noticeData[activeTab] || [])]
+    .sort((a, b) => b.id - a.id) // id 기준 내림차순 정렬
     .slice(0, 4); // 상위 4개만 가져오기
+
+  if (loading) return <S.PanelContainer>Loading...</S.PanelContainer>;
+  if (error) return <S.PanelContainer>{error}</S.PanelContainer>;
 
   return (
     <S.PanelContainer>
       {/* 탭 메뉴 */}
       <S.TabMenu>
-        {Object.keys(noticeData).map((tab) => (
+        {Object.keys(hardcodedNoticeData).map((tab) => (
           <S.TabItem
             key={tab}
             active={activeTab === tab}
@@ -69,7 +85,11 @@ function NoticePanel() {
       <S.NoticeList>
         {limitedData.map((notice) => (
           <S.NoticeItem key={notice.id}>
-            <S.Title>{notice.title}</S.Title>
+            <S.Title>
+              {notice.title.length > 30
+                ? `${notice.title.substring(0, 30)}...`
+                : notice.title}
+            </S.Title>
             <S.Date>{notice.date}</S.Date>
           </S.NoticeItem>
         ))}

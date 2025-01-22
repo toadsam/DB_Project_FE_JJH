@@ -22,10 +22,7 @@ import SmallClubPage from "./components/SmallClubPage/SmallClubPage";
 import RecruitmentPage from "./components/RecruitmentPage/RecruitmentPage";
 import MemberManagementPage from "./components/MemberManagementPage/MemberManagementPage";
 import ApplicationListPage from "./components/ApplicationListPage/ApplicationListPage";
-
-
-
-
+import ClubEvent from "./components/ClubEvent/ClubEvent";
 import * as S from "./router.styles";
 
 function AppRouter() {
@@ -54,7 +51,7 @@ function AppRouter() {
         <Route path="/miniclublist" element={<MiniClub />} />
         <Route path="/eventinfo" element={<EventInfo />} />
         <Route path="/clublist" element={<ClubList />} />
-        <Route path="/clubinfo/:id" element={<ClubInfo />} />
+        <Route path="/clubinfo/:club_id" element={<ClubInfo />} />
         <Route path="/member-info/:id" element={<MemberInfo />} />
         <Route path="/event-info/:id" element={<EventInfo />} />
         <Route path="/club-apply/:id" element={<ClubApply />} />
@@ -68,6 +65,7 @@ function AppRouter() {
         <Route path="/recruitment" element={<RecruitmentPage />} />
         <Route path="/member-management" element={<MemberManagementPage />} />
         <Route path="/application-list" element={<ApplicationListPage />} />
+        <Route path="/club-event/:id" element={<ClubEvent />} />
       </Routes>
     </Router>
   );
