@@ -43,8 +43,15 @@ const categories = [
     title: "동아리연합회",
     items: [
       { name: "소개글" },
-      { name: "공지사항", navigateTo: "/notice" }, // "공지사항" 클릭 시 이동 경로 추가
+      { name: "공지사항", navigateTo: "/notice" }, // 기존 공지사항 페이지 이동
       { name: "링크트리" },
+      { name: "동아리 상세", navigateTo: "/club-detail" },
+      { name: "모집공고 작성", navigateTo: "/recruitment" },
+      { name: "부원 관리", navigateTo: "/member-management" },
+      { name: "신청 목록", navigateTo: "/application-list" },
+      { name: "가입 신청서", navigateTo: "/application-form" },
+      { name: "중앙동아리 등록", navigateTo: "/central-club-register" },
+      { name: "소확회 등록", navigateTo: "/small-club-register" },
     ],
   },
   { title: "내정보", items: [
