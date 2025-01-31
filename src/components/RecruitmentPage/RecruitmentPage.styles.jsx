@@ -34,7 +34,7 @@ export const NavItem = styled.div`
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  padding: 0.5rem 1rem; /* 여백 추가 */
+  padding: 0.5rem 1rem; /* 클릭 영역 확대 및 일정한 크기 */
   transition: color 0.3s ease-in-out;
 
   &:hover {
@@ -110,6 +110,17 @@ export const TextArea = styled.textarea`
   background-color: #f9f9f9;
   resize: none;
   height: 150px;
+`;
+
+// ✅ Select 스타일 추가
+export const Select = styled.select`
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  cursor: pointer;
 `;
 
 export const SubmitButton = styled.button`
