@@ -24,6 +24,8 @@ jobs:
       - name: Create .env File
         run: |
           echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" > .env
+          echo "✅ .env 파일이 생성되었습니다!"
+          cat .env  # ✅ 생성된 .env 파일을 출력하여 확인
 
       - name: Install dependencies
         run: npm install
@@ -33,9 +35,8 @@ jobs:
 
       - name: Build application
         run: |
-          echo "빌드 시작! 현재 적용된 환경 변수:"
-          echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}"
-          REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }} npm run build
+          export $(grep -v '^#' .env | xargs) # ✅ 환경 변수를 로드
+          npm run build
           echo "✅ 빌드 완료!"
           grep -r "http" build/static/js/ || echo "❌ 환경 변수가 빌드되지 않음!"
 
