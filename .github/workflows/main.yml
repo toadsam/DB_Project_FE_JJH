@@ -23,10 +23,9 @@ jobs:
 
       - name: Create .env File
         run: |
-          echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" > .env
-          echo "✅ .env 파일이 생성되었습니다!"
-          cat .env  # ✅ 생성된 .env 파일을 출력하여 확인
-
+          echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" > .env.production
+          echo "✅ .env.production 파일이 생성되었습니다!"
+          cat .env.production  # ✅ 생성된 .env.production 파일을 출력하여 확인
       - name: Install dependencies
         run: npm install
 
