@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // useNavigate 가져오기
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode"; // JWT 해석
 import * as S from "./Header.styles";
 import logo from "../../asset/img.jpg";
 
@@ -17,7 +18,7 @@ const categories = [
       "체육분과",
       "학술언론분과",
     ],
-    navigateTo: "/clublist", // 이동할 경로 추가
+    navigateTo: "/clublist",
   },
   {
     title: "소학회",
@@ -43,25 +44,41 @@ const categories = [
     title: "동아리연합회",
     items: [
       { name: "소개글" },
-      { name: "공지사항", navigateTo: "/notice" }, // 기존 공지사항 페이지 이동
+      { name: "공지사항", navigateTo: "/notice" },
       { name: "링크트리" },
-      { name: "동아리 상세", navigateTo: "/club-detail" },
-      { name: "모집공고 작성", navigateTo: "/recruitment" },
-      { name: "부원 관리", navigateTo: "/member-management" },
-      { name: "신청 목록", navigateTo: "/application-list" },
-      { name: "가입 신청서", navigateTo: "/application-form" },
-      { name: "중앙동아리 등록", navigateTo: "/central-club-register" },
-      { name: "소확회 등록", navigateTo: "/small-club-register" },
     ],
   },
-  { title: "내정보", items: [
-    { name: "마이페이지", navigateTo: "/mypage" }, // 이동 경로 추가
-  ] },
+  { title: "내정보", items: [{ name: "마이페이지", navigateTo: "/mypage" }] },
+];
+
+// ✅ 관리자만 볼 수 있는 메뉴
+const adminItems = [
+  { name: "모집공고 작성", navigateTo: "/recruitment" },
+  { name: "부원 관리", navigateTo: "/member-management" },
+  { name: "신청 목록", navigateTo: "/application-list" },
+  { name: "가입 신청서", navigateTo: "/application-form" },
+  { name: "중앙동아리 등록", navigateTo: "/central-club" },
+  { name: "소확회 등록", navigateTo: "/small-club" },
 ];
 
 function Header() {
   const [activeCategory, setActiveCategory] = useState(null);
-  const navigate = useNavigate(); // useNavigate 훅 생성
+  const [isAdmin, setIsAdmin] = useState(false); // 관리자 여부 저장
+  const navigate = useNavigate();
+
+  // ✅ 로그인한 사용자 역할 확인 (토큰 디코딩)
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        setIsAdmin(decoded.role === "admin"); // 역할이 'admin'이면 관리자 메뉴 보이기
+      } catch (error) {
+        console.error("JWT 해석 오류:", error);
+        setIsAdmin(false);
+      }
+    }
+  }, []);
 
   const handleMouseEnter = (index) => {
     setActiveCategory(index);
@@ -73,13 +90,13 @@ function Header() {
 
   const handleCategoryClick = (category) => {
     if (category.navigateTo) {
-      navigate(category.navigateTo); // 해당 경로로 이동
+      navigate(category.navigateTo);
     }
   };
 
   const handleItemClick = (item) => {
     if (item.navigateTo) {
-      navigate(item.navigateTo); // 해당 아이템의 경로로 이동
+      navigate(item.navigateTo);
     }
   };
 
@@ -87,8 +104,8 @@ function Header() {
     <S.Wrapper>
       {/* 상단 작은 헤더 */}
       <S.TopBar>
-        <S.TopBarItem>HOME</S.TopBarItem>
-        <S.TopBarItem onClick={() => navigate('/login')}>LOGIN</S.TopBarItem>
+        <S.TopBarItem onClick={() => navigate("/")}>HOME</S.TopBarItem>
+        <S.TopBarItem onClick={() => navigate("/login")}>LOGIN</S.TopBarItem>
         <S.TopBarItem>PORTAL</S.TopBarItem>
         <S.TopBarItem>LANGUAGE ▼</S.TopBarItem>
       </S.TopBar>
@@ -104,19 +121,23 @@ function Header() {
               key={index}
               onMouseEnter={() => handleMouseEnter(index)}
               onMouseLeave={handleMouseLeave}
-              onClick={() => handleCategoryClick(category)} // 클릭 이벤트 추가
+              onClick={() => handleCategoryClick(category)}
             >
               <S.Text color={category.color}>{category.title}</S.Text>
               {activeCategory === index && (
                 <S.Dropdown>
                   {category.items.map((item, idx) => (
-                    <S.DropdownItem
-                      key={idx}
-                      onClick={() => handleItemClick(item)} // 아이템 클릭 시 이동
-                    >
-                      {item.name || item} {/* 객체 또는 문자열 처리 */}
+                    <S.DropdownItem key={idx} onClick={() => handleItemClick(item)}>
+                      {item.name || item}
                     </S.DropdownItem>
                   ))}
+                  {/* ✅ 관리자 메뉴 추가 (관리자만 보이도록 설정) */}
+                  {category.title === "동아리연합회" && isAdmin &&
+                    adminItems.map((item, idx) => (
+                      <S.DropdownItem key={idx} onClick={() => handleItemClick(item)}>
+                        {item.name}
+                      </S.DropdownItem>
+                    ))}
                 </S.Dropdown>
               )}
             </S.MenuItem>
