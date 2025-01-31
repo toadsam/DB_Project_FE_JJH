@@ -35,13 +35,15 @@ jobs:
 
       - name: Build application
         run: |
-          export $(grep -v '^#' .env | xargs) # ✅ 환경 변수를 로드
-          npm run build
+          echo "빌드 시작! 현재 적용된 환경 변수:"
+          echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}"
+          npm install -g cross-env  # ✅ cross-env 설치
+          cross-env REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }} npm run build
           echo "✅ 빌드 완료!"
           grep -r "http" build/static/js/ || echo "❌ 환경 변수가 빌드되지 않음!"
 
       - name: Check Environment Variables
-        run: echo "$REACT_APP_API_URL"
+        run: echo "${{secrets.REACT_APP_API_URL}}"
 
       - name: Deploy to production (optional)
         if: github.ref == 'refs/heads/main'
