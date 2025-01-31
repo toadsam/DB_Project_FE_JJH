@@ -85,3 +85,17 @@ export const SubmitButton = styled.button`
     background-color: #003f7f;
   }
 `;
+
+// ✅ 에러 메시지 스타일 추가
+export const ErrorMessage = styled.p`
+  color: red;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+`;
+
+// ✅ 성공 메시지 스타일 추가
+export const SuccessMessage = styled.p`
+  color: green;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+`;

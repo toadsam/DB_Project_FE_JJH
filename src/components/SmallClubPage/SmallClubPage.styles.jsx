@@ -25,20 +25,20 @@ export const Logo = styled.div`
 // ✅ 네비게이션 스타일 수정
 export const Nav = styled.nav`
   display: flex;
-  gap: 2rem; /* 일정한 간격 유지 */
+  gap: 2rem;
   align-items: center;
 `;
 
 export const NavItem = styled.div`
-  color: #000; /* 검은색으로 변경 */
+  color: #000;
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  padding: 0.5rem 1rem; /* 클릭 영역 확대 및 일정한 크기 */
+  padding: 0.5rem 1rem;
   transition: color 0.3s ease-in-out;
 
   &:hover {
-    color: #0056b3; /* 마우스 오버 시 색상 변경 */
+    color: #0056b3;
   }
 `;
 
@@ -100,4 +100,17 @@ export const SubmitButton = styled.button`
   &:hover {
     background-color: #003f7f;
   }
+`;
+
+// ✅ 오류 및 성공 메시지 스타일 추가
+export const ErrorMessage = styled.p`
+  color: red;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+`;
+
+export const SuccessMessage = styled.p`
+  color: green;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
 `;
