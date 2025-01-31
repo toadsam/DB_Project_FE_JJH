@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import * as S from "./FestivalList.styles"; // 스타일 정의
 import axios from "axios";
 import defaultImage from "../../asset/mainLogo.png"; // 기본 이미지 불러오기
+
 const API_URL = process.env.REACT_APP_API_URL;
 
 function FestivalList() {

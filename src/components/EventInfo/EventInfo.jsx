@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import * as S from "./EventInfo.styles";
 import axios from "axios";
 import defaultImage from "../../asset/mainLogo.png";
+
 const API_URL = process.env.REACT_APP_API_URL;
 
 const categories = [
