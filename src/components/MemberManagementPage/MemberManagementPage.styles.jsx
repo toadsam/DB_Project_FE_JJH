@@ -22,14 +22,24 @@ export const Logo = styled.div`
   color: #0056b3;
 `;
 
+// ✅ 네비게이션 스타일 수정
 export const Nav = styled.nav`
   display: flex;
-  gap: 1rem;
+  gap: 2rem; /* 일정한 간격 유지 */
+  align-items: center;
 `;
 
 export const NavItem = styled.div`
-  color: #ff6600;
+  color: #000; /* 검은색으로 변경 */
+  font-size: 1rem;
+  font-weight: bold;
   cursor: pointer;
+  padding: 0.5rem 1rem; /* 클릭 영역 확대 및 일정한 크기 */
+  transition: color 0.3s ease-in-out;
+
+  &:hover {
+    color: #0056b3; /* 마우스 오버 시 색상 변경 */
+  }
 `;
 
 export const Content = styled.div`
