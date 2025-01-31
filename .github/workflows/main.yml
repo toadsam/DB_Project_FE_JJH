@@ -32,9 +32,12 @@ jobs:
         run: npm test
 
       - name: Build application
-        run: npm run build
+        run: REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }} npm run build
           echo "✅ 빌드 완료!"
           grep -r "REACT_APP_API_URL" build/static/js/ || echo "❌ 환경 변수가 빌드되지 않음!"
+
+      - name: Check Environment Variables
+        run: echo "$REACT_APP_API_URL"
 
       - name: Deploy to production (optional)
         if: github.ref == 'refs/heads/main'
