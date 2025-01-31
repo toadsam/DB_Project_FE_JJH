@@ -129,3 +129,18 @@ export const Button = styled.button`
     color: white;
   }
 `;
+
+// ✅ 추가된 스타일
+export const LoadingText = styled.p`
+  font-size: 1.2rem;
+  color: #666;
+  text-align: center;
+  margin: 2rem 0;
+`;
+
+export const ErrorMessage = styled.p`
+  font-size: 1rem;
+  color: red;
+  text-align: center;
+  margin: 1rem 0;
+`;
