@@ -1,11 +1,6 @@
 import React from "react";
 import {
   Container,
-  Header,
-  Logo,
-  Nav,
-  Sidebar,
-  SidebarLink,
   PasswordSection,
   Title,
   Form,
