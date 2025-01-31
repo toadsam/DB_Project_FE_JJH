@@ -41,6 +41,7 @@ jobs:
           cross-env REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }} npm run build
           echo "✅ 빌드 완료!"
           grep -r "http" build/static/js/ || echo "❌ 환경 변수가 빌드되지 않음!"
+          cat build/static/js/main.*.js | grep -i "http" || echo "❌ 빌드된 파일에서 환경 변수가 보이지 않음!"
 
       - name: Check Environment Variables
         run: echo "${{secrets.REACT_APP_API_URL}}"
