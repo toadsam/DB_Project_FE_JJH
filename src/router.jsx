@@ -28,7 +28,7 @@ import * as S from "./router.styles";
 
 function AppRouter() {
   return (
-    <Router>
+    <Router basename="/DB_Project_FE">
       <Header />
       <Routes>
         <Route
