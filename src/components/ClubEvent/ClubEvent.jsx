@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import * as S from "./ClubEvent.styles"; // 스타일 파일 임포트
+
 const API_URL = process.env.REACT_APP_API_URL;
 
 function ClubApply() {

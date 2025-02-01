@@ -42,14 +42,16 @@ const categories = [
   {
     title: "동아리연합회",
     items: [
-      { name: "소개글" },
+      { name: "소개글", navigateTo: "/introduce" },
       { name: "공지사항", navigateTo: "/notice" }, // "공지사항" 클릭 시 이동 경로 추가
-      { name: "링크트리" },
     ],
   },
-  { title: "내정보", items: [
-    { name: "마이페이지", navigateTo: "/mypage" }, // 이동 경로 추가
-  ] },
+  {
+    title: "내정보",
+    items: [
+      { name: "마이페이지", navigateTo: "/mypage" }, // 이동 경로 추가
+    ],
+  },
 ];
 
 function Header() {
@@ -81,7 +83,7 @@ function Header() {
       {/* 상단 작은 헤더 */}
       <S.TopBar>
         <S.TopBarItem>HOME</S.TopBarItem>
-        <S.TopBarItem onClick={() => navigate('/login')}>LOGIN</S.TopBarItem>
+        <S.TopBarItem onClick={() => navigate("/login")}>LOGIN</S.TopBarItem>
         <S.TopBarItem>PORTAL</S.TopBarItem>
         <S.TopBarItem>LANGUAGE ▼</S.TopBarItem>
       </S.TopBar>

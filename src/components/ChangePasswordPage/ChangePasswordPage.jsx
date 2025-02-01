@@ -1,11 +1,6 @@
 import React from "react";
 import {
   Container,
-  Header,
-  Logo,
-  Nav,
-  Sidebar,
-  SidebarLink,
   PasswordSection,
   Title,
   Form,
@@ -18,20 +13,11 @@ import {
 function ChangePasswordPage() {
   return (
     <Container>
-      <Header>
-        <Logo>ACM</Logo>
-        <Nav>
-          <a href="#">Home</a>
-          <a href="#">ACM소개</a>
-          <a href="#">내정보</a>
-          <a href="#">로그인</a>
-        </Nav>
-      </Header>
       <div style={{ display: "flex", width: "100%" }}>
-        <Sidebar>
+        {/* <Sidebar>
           <SidebarLink href="#">내 정보 수정 </SidebarLink>
           <SidebarLink href="#">비밀번호 변경 </SidebarLink>
-        </Sidebar>
+        </Sidebar> */}
         <PasswordSection>
           <Title>비밀번호 변경</Title>
           <Form>

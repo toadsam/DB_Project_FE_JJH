@@ -21,6 +21,11 @@ jobs:
         with:
           node-version: "16"
 
+      - name: Create .env File
+        run: |
+          echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}" > .env.production
+          echo "✅ .env.production 파일이 생성되었습니다!"
+          cat .env.production  # ✅ 생성된 .env.production 파일을 출력하여 확인
       - name: Install dependencies
         run: npm install
 
@@ -28,7 +33,17 @@ jobs:
         run: npm test
 
       - name: Build application
-        run: npm run build
+        run: |
+          echo "빌드 시작! 현재 적용된 환경 변수:"
+          echo "REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }}"
+          npm install -g cross-env  # ✅ cross-env 설치
+          cross-env REACT_APP_API_URL=${{ secrets.REACT_APP_API_URL }} npm run build
+          echo "✅ 빌드 완료!"
+          grep -r "http" build/static/js/ || echo "❌ 환경 변수가 빌드되지 않음!"
+          cat build/static/js/main.*.js | grep -i "http" || echo "❌ 빌드된 파일에서 환경 변수가 보이지 않음!"
+
+      - name: Check Environment Variables
+        run: echo "${{secrets.REACT_APP_API_URL}}"
 
       - name: Deploy to production (optional)
         if: github.ref == 'refs/heads/main'

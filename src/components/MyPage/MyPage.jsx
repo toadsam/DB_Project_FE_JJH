@@ -15,8 +15,8 @@ function MyPage() {
       </S.Header>
       <S.Content>
         <S.Sidebar>
-          <S.SidebarItem>내 정보 수정 ></S.SidebarItem>
-          <S.SidebarItem>비밀번호 변경 ></S.SidebarItem>
+          <S.SidebarItem>내 정보 수정 </S.SidebarItem>
+          <S.SidebarItem>비밀번호 변경 </S.SidebarItem>
         </S.Sidebar>
         <S.Main>
           <S.Title>내 정보</S.Title>
