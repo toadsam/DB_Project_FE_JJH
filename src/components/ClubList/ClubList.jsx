@@ -3,7 +3,9 @@ import * as S from "./ClubList.styles";
 import axios from "axios";
 import defaultImage from "../../asset/mainLogo.png";
 import { useNavigate } from "react-router-dom";
+
 const API_URL = process.env.REACT_APP_API_URL;
+
 const categories = [
   {
     title: "중앙동아리",

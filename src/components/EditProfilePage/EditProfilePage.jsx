@@ -1,23 +1,31 @@
+// EditProfilePage.jsx
 import React from "react";
-import { Container, Header, Logo, Nav, NavItem, Sidebar, SidebarLink, ProfileSection, Title, AvatarBadge, Form, Label, Input, ButtonGroup, Button } from "./EditProfilePage.styles";
+import {
+  Container,
+  Sidebar,
+  SidebarLink,
+  ProfileSection,
+  Title,
+  AvatarBadge,
+  Form,
+  Label,
+  Input,
+  ButtonGroup,
+  Button,
+} from "./EditProfilePage.styles";
 import { Link } from "react-router-dom"; // 추가
 
 function EditProfilePage() {
   return (
     <Container>
-      <Header>
-        <Logo>ACM</Logo>
-        <Nav>
-          <NavItem>Home</NavItem>
-          <NavItem>ACM소개</NavItem>
-          <NavItem>내정보</NavItem>
-          <NavItem>로그인</NavItem>
-        </Nav>
-      </Header>
       <div style={{ display: "flex", width: "100%" }}>
         <Sidebar>
-          <SidebarLink as={Link} to="/">내 정보 수정</SidebarLink>
-          <SidebarLink as={Link} to="/change-password">비밀번호 변경</SidebarLink>
+          <SidebarLink as={Link} to="/">
+            내 정보 수정{" "}
+          </SidebarLink>
+          <SidebarLink as={Link} to="/change-password">
+            비밀번호 변경{" "}
+          </SidebarLink>
         </Sidebar>
         <ProfileSection>
           <Title>내 정보 수정</Title>

@@ -1,12 +1,6 @@
 import React from "react";
 import {
   Container,
-  Header,
-  Logo,
-  Nav,
-  NavItem,
-  Sidebar,
-  SidebarLink,
   PasswordSection,
   Title,
   Form,
@@ -15,25 +9,15 @@ import {
   ButtonGroup,
   Button,
 } from "./ChangePasswordPage.styles";
-import { Link } from "react-router-dom"; // 추가
 
 function ChangePasswordPage() {
   return (
     <Container>
-      <Header>
-        <Logo>ACM</Logo>
-        <Nav>
-          <NavItem>Home</NavItem>
-          <NavItem>ACM소개</NavItem>
-          <NavItem>내정보</NavItem>
-          <NavItem>로그인</NavItem>
-        </Nav>
-      </Header>
       <div style={{ display: "flex", width: "100%" }}>
-        <Sidebar>
-          <SidebarLink as={Link} to="/">내 정보 수정</SidebarLink>
-          <SidebarLink as={Link} to="/change-password">비밀번호 변경</SidebarLink>
-        </Sidebar>
+        {/* <Sidebar>
+          <SidebarLink href="#">내 정보 수정 </SidebarLink>
+          <SidebarLink href="#">비밀번호 변경 </SidebarLink>
+        </Sidebar> */}
         <PasswordSection>
           <Title>비밀번호 변경</Title>
           <Form>

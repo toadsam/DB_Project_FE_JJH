@@ -23,11 +23,12 @@ import RecruitmentPage from "./components/RecruitmentPage/RecruitmentPage";
 import MemberManagementPage from "./components/MemberManagementPage/MemberManagementPage";
 import ApplicationListPage from "./components/ApplicationListPage/ApplicationListPage";
 import ClubEvent from "./components/ClubEvent/ClubEvent";
+import Introduction from "./components/Introduction/Introduction";
 import * as S from "./router.styles";
 
 function AppRouter() {
   return (
-    <Router>
+    <Router basename="/DB_Project_FE">
       <Header />
       <Routes>
         <Route
@@ -66,6 +67,7 @@ function AppRouter() {
         <Route path="/member-management" element={<MemberManagementPage />} />
         <Route path="/application-list" element={<ApplicationListPage />} />
         <Route path="/club-event/:id" element={<ClubEvent />} />
+        <Route path="/introduce" element={<Introduction />} />
       </Routes>
     </Router>
   );

@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import axios from "axios";
-import * as S from "./ClubApply.styles"; // 스타일 파일 임포트
-const API_URL = process.env.REACT_APP_API_URL;
-function ClubApply() {
-  const { id } = useParams(); // URL에서 recruitment_id 파라미터를 받아옴
-  const [recruitmentInfo, setRecruitmentInfo] = useState(null); // 모집 공고 정보 상태
-  const [loading, setLoading] = useState(true); // 로딩 상태
-  const [error, setError] = useState(null); // 에러 상태
+import * as S from "./ClubApply.styles";
 
-  // 모집 공고 데이터 가져오기
+const API_URL = process.env.REACT_APP_API_URL;
+
+function ClubApply({ club_id }) {
+  // props로 club_id 받기
+  const [recruitmentInfo, setRecruitmentInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
     const fetchRecruitment = async () => {
       try {
+        console.log("Fetching recruitment info for club_id:", club_id);
         const response = await axios.get(
-          `${API_URL}/api/clubs/${id}/recruitment`,
+          `${API_URL}/api/clubs/${club_id}/recruitment`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -23,16 +24,18 @@ function ClubApply() {
           }
         );
 
-        setRecruitmentInfo(response.data); // API 응답 데이터를 상태에 저장
+        setRecruitmentInfo(response.data);
       } catch (err) {
         setError("데이터를 불러오는 중 오류가 발생했습니다.");
       } finally {
-        setLoading(false); // 로딩 종료
+        setLoading(false);
       }
     };
 
-    fetchRecruitment();
-  }, [id]);
+    if (club_id) {
+      fetchRecruitment();
+    }
+  }, [club_id]);
 
   if (loading) return <S.Loading>Loading...</S.Loading>;
   if (error) return <S.Error>{error}</S.Error>;

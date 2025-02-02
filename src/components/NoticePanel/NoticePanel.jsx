@@ -3,9 +3,7 @@ import { useNavigate } from "react-router-dom"; // react-router-dom import
 import axios from "axios";
 import * as S from "./NoticePanel.styles";
 
-const API_URL = process.env.REACT_APP_API_URL;
-
-// 초기 하드코딩 데이터
+const API_URL = process.env.REACT_APP_API_URL; // 초기 하드코딩 데이터
 const hardcodedNoticeData = {
   공지사항: [], // 공지사항 초기값 추가
   "제휴 업체": [

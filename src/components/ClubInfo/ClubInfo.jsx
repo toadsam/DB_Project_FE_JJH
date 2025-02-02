@@ -5,6 +5,7 @@ import * as S from "./ClubInfo.styles";
 import defaultImage from "../../asset/mainLogo.png";
 import ClubApply from "../ClubApply/ClubApply"; // ClubApply 컴포넌트 가져오기
 import ClubEvent from "../ClubEvent/ClubEvent";
+
 const API_URL = process.env.REACT_APP_API_URL;
 
 const sidebarItems = ["동아리 소개", "모집 공고", "행사 공고"];
@@ -133,7 +134,8 @@ function ClubInfo() {
             </S.Section>
           </>
         )}
-        {selectedItem === "모집 공고" && <ClubApply />} {/* 모집 공고 표시 */}
+        {selectedItem === "모집 공고" && <ClubApply club_id={club_id} />}{" "}
+        {/* 모집 공고 표시 */}
         {selectedItem === "행사 공고" && <ClubEvent />}
       </S.InfoContainer>
     </S.PageContainer>
