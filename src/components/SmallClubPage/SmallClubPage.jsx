@@ -85,12 +85,6 @@ function SmallClubPage() {
     <S.Container>
       <S.Header>
         <S.Logo>ACM</S.Logo>
-        <S.Nav>
-          <S.NavItem>Home</S.NavItem>
-          <S.NavItem>ACM 소개</S.NavItem>
-          <S.NavItem>내 정보</S.NavItem>
-          <S.NavItem>로그인</S.NavItem>
-        </S.Nav>
       </S.Header>
       <S.Content>
         <S.Title>동아리 등록</S.Title>
