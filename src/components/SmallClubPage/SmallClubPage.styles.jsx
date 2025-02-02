@@ -1,5 +1,15 @@
 import styled from "styled-components";
 
+export const TextArea = styled.textarea`
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  resize: none;
+  height: 150px;
+`;
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
