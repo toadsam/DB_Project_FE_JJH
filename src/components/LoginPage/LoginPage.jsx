@@ -43,15 +43,6 @@ function LoginPage() {
 
   return (
     <S.Container>
-      <S.Header>
-        <S.Logo>ACM</S.Logo>
-        <S.Nav>
-          <S.NavItem as={Link} to="/">Home</S.NavItem>
-          <S.NavItem as={Link} to="/about">ACM소개</S.NavItem>
-          <S.NavItem as={Link} to="/profile">내정보</S.NavItem>
-          <S.NavItem as={Link} to="/login">로그인</S.NavItem>
-        </S.Nav>
-      </S.Header>
 
       <S.Main>
         <S.Title>로그인 페이지</S.Title>

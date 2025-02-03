@@ -24,15 +24,6 @@ function MemberManagementPage() {
 
   return (
     <S.Container>
-      <S.Header>
-        <S.Logo>ACM</S.Logo>
-        <S.Nav>
-          <S.NavItem>Home</S.NavItem>
-          <S.NavItem>ACM소개</S.NavItem>
-          <S.NavItem>내정보</S.NavItem>
-          <S.NavItem>로그인</S.NavItem>
-        </S.Nav>
-      </S.Header>
       <S.Content>
         <S.Sidebar>
           <S.SidebarItem>모집글 설정</S.SidebarItem>

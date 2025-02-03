@@ -65,9 +65,6 @@ function CentralClubPage() {
 
   return (
     <S.Container>
-      <S.Header>
-        <S.Logo>ACM</S.Logo>
-      </S.Header>
       <S.Content>
         <S.Title>동아리 등록</S.Title>
         <S.Form onSubmit={handleSubmit}>
