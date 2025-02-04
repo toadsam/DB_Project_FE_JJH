@@ -12,7 +12,16 @@ function MemberManagementPage() {
     const fetchMembers = async () => {
       try {
         const response = await axios.get(API_URL);
-        setMembers(response.data); // 가져온 데이터로 상태 업데이트
+        console.log("API 응답 데이터:", response.data);  // ✅ API 응답 데이터 확인
+
+        // 응답 데이터가 배열인지 확인 후 상태 업데이트
+        if (Array.isArray(response.data)) {
+          setMembers(response.data);
+        } else if (Array.isArray(response.data.members)) {
+          setMembers(response.data.members);
+        } else {
+          throw new Error("부원 데이터를 불러올 수 없습니다.");
+        }
       } catch (err) {
         console.error("API 요청 실패:", err);
         setError("부원 목록을 불러오는 데 실패했습니다.");
@@ -38,7 +47,8 @@ function MemberManagementPage() {
             <S.Highlight>SWeat</S.Highlight> - 부원 관리
           </S.Title>
 
-          {error && <S.ErrorMessage>{error}</S.ErrorMessage>} {/* 에러 메시지 표시 */}
+          {/* 에러 메시지 표시 */}
+          {error && <S.ErrorMessage>{error}</S.ErrorMessage>} 
           
           <S.Table>
             <thead>

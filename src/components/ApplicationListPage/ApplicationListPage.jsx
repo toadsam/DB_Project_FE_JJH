@@ -15,7 +15,16 @@ function ApplicationListPage() {
     const fetchApplications = async () => {
       try {
         const response = await axios.get(API_URL);
-        setApplications(response.data); // ✅ 백엔드에서 받은 데이터 저장
+        console.log("API 응답 데이터:", response.data);  // ✅ API 응답 데이터 확인
+
+        // 응답 데이터가 배열인지 확인 후 상태 업데이트
+        if (Array.isArray(response.data)) {
+          setApplications(response.data);
+        } else if (Array.isArray(response.data.applications)) {
+          setApplications(response.data.applications);
+        } else {
+          throw new Error("신청 데이터를 불러올 수 없습니다.");
+        }
       } catch (err) {
         console.error("API 요청 실패:", err);
         setError("데이터를 불러오는 중 오류가 발생했습니다.");
@@ -31,12 +40,12 @@ function ApplicationListPage() {
     <S.Container>
       <S.Content>
         <S.Sidebar>
-          <S.SidebarItem>모집글 설정 </S.SidebarItem>
-          <S.SidebarItem>모집 공고 </S.SidebarItem>
-          <S.SidebarItem>행사 관리 </S.SidebarItem>
-          <S.SidebarItem>회원 관리 </S.SidebarItem>
-          <S.SidebarItem>가입신청서 처리 </S.SidebarItem>
-          <S.SidebarItem>기타 </S.SidebarItem>
+          <S.SidebarItem>모집글 설정</S.SidebarItem>
+          <S.SidebarItem>모집 공고</S.SidebarItem>
+          <S.SidebarItem>행사 관리</S.SidebarItem>
+          <S.SidebarItem>회원 관리</S.SidebarItem>
+          <S.SidebarItem>가입신청서 처리</S.SidebarItem>
+          <S.SidebarItem>기타</S.SidebarItem>
         </S.Sidebar>
         <S.Main>
           <S.Title>
@@ -62,17 +71,23 @@ function ApplicationListPage() {
                 </tr>
               </thead>
               <tbody>
-                {applications.map((application, index) => (
-                  <S.TableRow key={index}>
-                    <S.TableCell>{application.name || "-"}</S.TableCell>
-                    <S.TableCell>{application.gender || "-"}</S.TableCell>
-                    <S.TableCell>{application.major || "-"}</S.TableCell>
-                    <S.TableCell>{application.studentId || "-"}</S.TableCell>
-                    <S.TableCell>{application.contact || "N/A"}</S.TableCell>
-                    <S.TableCell>{application.status || "대기"}</S.TableCell>
-                    <S.TableCell>{application.note || "미정"}</S.TableCell>
-                  </S.TableRow>
-                ))}
+                {applications.length > 0 ? (
+                  applications.map((application, index) => (
+                    <S.TableRow key={index}>
+                      <S.TableCell>{application.name || "-"}</S.TableCell>
+                      <S.TableCell>{application.gender || "-"}</S.TableCell>
+                      <S.TableCell>{application.major || "-"}</S.TableCell>
+                      <S.TableCell>{application.studentId || "-"}</S.TableCell>
+                      <S.TableCell>{application.contact || "N/A"}</S.TableCell>
+                      <S.TableCell>{application.status || "대기"}</S.TableCell>
+                      <S.TableCell>{application.note || "미정"}</S.TableCell>
+                    </S.TableRow>
+                  ))
+                ) : (
+                  <tr>
+                    <S.TableCell colSpan="7">신청 목록이 없습니다.</S.TableCell>
+                  </tr>
+                )}
               </tbody>
             </S.Table>
           )}
