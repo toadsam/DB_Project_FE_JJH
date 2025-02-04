@@ -14,7 +14,7 @@ function RecruitmentPage() {
   const [success, setSuccess] = useState(""); // 성공 메시지 상태
 
   // ✅ 클럽 ID를 설정 (이 값을 실제 환경에 맞게 변경해야 함)
-  const clubId = "123"; // 👉 여기에 실제 club_id를 넣어야 함!
+  //const clubId = "123"; // 👉 여기에 실제 club_id를 넣어야 함!
 
   // ✅ API URL 변경 (club_id 추가)
   const API_URL = `http://43.203.79.210:5001/api/recruitments/19`;
