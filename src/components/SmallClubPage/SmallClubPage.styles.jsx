@@ -1,5 +1,15 @@
 import styled from "styled-components";
 
+export const TextArea = styled.textarea`
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  resize: none;
+  height: 150px;
+`;
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -22,14 +32,24 @@ export const Logo = styled.div`
   color: #0056b3;
 `;
 
+// ✅ 네비게이션 스타일 수정
 export const Nav = styled.nav`
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
+  align-items: center;
 `;
 
 export const NavItem = styled.div`
-  color: #ff6600;
+  color: #000;
+  font-size: 1rem;
+  font-weight: bold;
   cursor: pointer;
+  padding: 0.5rem 1rem;
+  transition: color 0.3s ease-in-out;
+
+  &:hover {
+    color: #0056b3;
+  }
 `;
 
 export const Content = styled.div`
@@ -90,4 +110,17 @@ export const SubmitButton = styled.button`
   &:hover {
     background-color: #003f7f;
   }
+`;
+
+// ✅ 오류 및 성공 메시지 스타일 추가
+export const ErrorMessage = styled.p`
+  color: red;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+`;
+
+export const SuccessMessage = styled.p`
+  color: green;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
 `;

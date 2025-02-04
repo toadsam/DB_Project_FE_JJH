@@ -1,22 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import * as S from "./ClubInfo.styles";
 import defaultImage from "../../asset/mainLogo.png";
-import ClubApply from "../ClubApply/ClubApply"; // ClubApply 컴포넌트 가져오기
+import ClubApply from "../ClubApply/ClubApply";
 import ClubEvent from "../ClubEvent/ClubEvent";
+import { jwtDecode } from "jwt-decode";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-const sidebarItems = ["동아리 소개", "모집 공고", "행사 공고"];
+const userRole = () => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+  try {
+    const decoded = jwtDecode(token);
+    return decoded.role;
+  } catch (error) {
+    console.error("Invalid token:", error);
+    return null;
+  }
+};
 
 function ClubInfo() {
   const { club_id } = useParams();
+  const navigate = useNavigate();
   const [clubInfo, setClubInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
   const [selectedItem, setSelectedItem] = useState("동아리 소개");
+  const role = userRole();
 
   useEffect(() => {
     const fetchClubData = async () => {
@@ -43,6 +55,40 @@ function ClubInfo() {
   if (loading) return <S.Loading>Loading...</S.Loading>;
   if (error) return <S.Error>{error}</S.Error>;
 
+  const sidebarItems = [
+    "동아리 소개",
+    "모집 공고",
+    "행사 공고",
+    ...(role === "admin"
+      ? ["중앙동아리", "소확회", "모집공고", "부원관리", "신청목록"]
+      : []),
+  ];
+
+  const handleSidebarClick = (item) => {
+    setSelectedItem(item);
+    if (role === "admin") {
+      switch (item) {
+        case "중앙동아리":
+          navigate("/central-club");
+          break;
+        case "소확회":
+          navigate("/small-club");
+          break;
+        case "모집공고":
+          navigate("/recruitment");
+          break;
+        case "부원관리":
+          navigate("/member-management");
+          break;
+        case "신청목록":
+          navigate("/application-list");
+          break;
+        default:
+          break;
+      }
+    }
+  };
+
   return (
     <S.PageContainer>
       <S.Sidebar>
@@ -51,8 +97,8 @@ function ClubInfo() {
           {sidebarItems.map((item, index) => (
             <S.SidebarItem
               key={index}
-              $isSelected={selectedItem === item} // $isSelected 사용
-              onClick={() => setSelectedItem(item)}
+              $isSelected={selectedItem === item}
+              onClick={() => handleSidebarClick(item)}
             >
               {item}
             </S.SidebarItem>
@@ -67,7 +113,7 @@ function ClubInfo() {
         </S.Header>
         <S.CardContainer>
           <S.CardLogo
-            src={clubInfo?.image || defaultImage} // 기본 이미지 처리
+            src={clubInfo?.image || defaultImage}
             alt={clubInfo?.club_name || "Club Logo"}
           />
           <S.CardContent>
@@ -82,8 +128,7 @@ function ClubInfo() {
               <S.CardInfoItem>
                 <S.ContactLabel>연락처</S.ContactLabel>
                 <S.ContactValue>
-                  {clubInfo?.club_contact_phone_number ||
-                    "연락처 정보가 없습니다."}
+                  {clubInfo?.club_contact_phone_number || "연락처 정보가 없습니다."}
                 </S.ContactValue>
               </S.CardInfoItem>
               <S.CardInfoItem>
@@ -101,7 +146,6 @@ function ClubInfo() {
             </S.CardInfoBox>
           </S.CardContent>
         </S.CardContainer>
-        {/* 조건부 렌더링 */}
         {selectedItem === "동아리 소개" && (
           <>
             <S.Section>
@@ -128,14 +172,12 @@ function ClubInfo() {
             <S.Section>
               <S.SectionTitle>대학 및 학과</S.SectionTitle>
               <S.SectionContent>
-                {clubInfo?.college_name || "대학 정보가 없습니다."} /{" "}
-                {clubInfo?.department_name || "학과 정보가 없습니다."}
+                {clubInfo?.college_name || "대학 정보가 없습니다."} / {clubInfo?.department_name || "학과 정보가 없습니다."}
               </S.SectionContent>
             </S.Section>
           </>
         )}
-        {selectedItem === "모집 공고" && <ClubApply club_id={club_id} />}{" "}
-        {/* 모집 공고 표시 */}
+        {selectedItem === "모집 공고" && <ClubApply club_id={club_id} />}
         {selectedItem === "행사 공고" && <ClubEvent />}
       </S.InfoContainer>
     </S.PageContainer>
