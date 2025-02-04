@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import * as S from "./ClubInfo.styles";
 import defaultImage from "../../asset/mainLogo.png";
@@ -12,11 +12,15 @@ const sidebarItems = ["동아리 소개", "모집 공고", "행사 공고"];
 
 function ClubInfo() {
   const { club_id } = useParams();
+  const location = useLocation(); // 페이지 이동 시 전달된 state 값 가져오기
   const [clubInfo, setClubInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [selectedItem, setSelectedItem] = useState("동아리 소개");
+  // defaultTab이 있을 경우 이를 selectedItem의 초기값으로 사용
+  const [selectedItem, setSelectedItem] = useState(
+    location.state?.defaultTab || "동아리 소개"
+  );
 
   useEffect(() => {
     const fetchClubData = async () => {
@@ -51,7 +55,7 @@ function ClubInfo() {
           {sidebarItems.map((item, index) => (
             <S.SidebarItem
               key={index}
-              $isSelected={selectedItem === item} // $isSelected 사용
+              $isSelected={selectedItem === item}
               onClick={() => setSelectedItem(item)}
             >
               {item}
@@ -67,7 +71,7 @@ function ClubInfo() {
         </S.Header>
         <S.CardContainer>
           <S.CardLogo
-            src={clubInfo?.image || defaultImage} // 기본 이미지 처리
+            src={clubInfo?.image || defaultImage}
             alt={clubInfo?.club_name || "Club Logo"}
           />
           <S.CardContent>
@@ -101,41 +105,16 @@ function ClubInfo() {
             </S.CardInfoBox>
           </S.CardContent>
         </S.CardContainer>
-        {/* 조건부 렌더링 */}
+
         {selectedItem === "동아리 소개" && (
-          <>
-            <S.Section>
-              <S.SectionTitle>동아리 설명</S.SectionTitle>
-              <S.SectionContent>
-                {clubInfo?.club_description || "동아리 설명이 없습니다."}
-              </S.SectionContent>
-            </S.Section>
-
-            <S.Section>
-              <S.SectionTitle>분류</S.SectionTitle>
-              <S.SectionContent>
-                {clubInfo?.club_category || "분류 정보가 없습니다."}
-              </S.SectionContent>
-            </S.Section>
-
-            <S.Section>
-              <S.SectionTitle>상세 분류</S.SectionTitle>
-              <S.SectionContent>
-                {clubInfo?.detail_category_1 || "상세 분류 정보가 없습니다."}
-              </S.SectionContent>
-            </S.Section>
-
-            <S.Section>
-              <S.SectionTitle>대학 및 학과</S.SectionTitle>
-              <S.SectionContent>
-                {clubInfo?.college_name || "대학 정보가 없습니다."} /{" "}
-                {clubInfo?.department_name || "학과 정보가 없습니다."}
-              </S.SectionContent>
-            </S.Section>
-          </>
+          <S.Section>
+            <S.SectionTitle>동아리 설명</S.SectionTitle>
+            <S.SectionContent>
+              {clubInfo?.club_description || "동아리 설명이 없습니다."}
+            </S.SectionContent>
+          </S.Section>
         )}
-        {selectedItem === "모집 공고" && <ClubApply club_id={club_id} />}{" "}
-        {/* 모집 공고 표시 */}
+        {selectedItem === "모집 공고" && <ClubApply club_id={club_id} />}
         {selectedItem === "행사 공고" && <ClubEvent />}
       </S.InfoContainer>
     </S.PageContainer>
