@@ -29,7 +29,7 @@ function MemberManagementPage() {
     };
 
     fetchMembers();
-  }, []);
+  }, [API_URL]);
 
   return (
     <S.Container>

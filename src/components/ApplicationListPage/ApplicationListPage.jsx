@@ -34,7 +34,7 @@ function ApplicationListPage() {
     };
 
     fetchApplications();
-  }, []);
+  }, [API_URL]);
 
   return (
     <S.Container>
