@@ -4,55 +4,51 @@ import axios from "axios";
 import defaultImage from "../../asset/mainLogo.png";
 import { useNavigate } from "react-router-dom";
 
+import collegesData from "../../colleges.json";
+
 const API_URL = process.env.REACT_APP_API_URL;
 
-const categories = [
-  {
-    title: "소학회",
-    items: [
-      "소프트웨어융합대학",
-      "공과대학",
-      "사회과학대학",
-      "경영대학",
-      "인문대학",
-      "자연과학대학",
-      "첨단ICT융합대학",
-      "약학대학",
-      "간호대학",
-    ],
-  },
-];
-
 function MiniClub() {
+  const [colleges, setColleges] = useState([]); // 단과대학 및 학과 목록
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [selectedCollege, setSelectedCollege] = useState(""); // 선택한 단과대학
+  const [selectedDepartment, setSelectedDepartment] = useState(""); // 선택한 학과
   const navigate = useNavigate();
 
+  // ✅ JSON 데이터를 바로 설정 (fetch 필요 없음)
+  useEffect(() => {
+    setColleges(collegesData);
+  }, []);
+
+  // 🔹 선택한 단과대/학과에 따라 소학회 데이터 불러오기
   useEffect(() => {
     const fetchEvents = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`${API_URL}/api/clubs/academic`, {
-          headers: {
-            "Content-Type": "application/json",
-            "ngrok-skip-browser-warning": "69420",
-          },
-        });
+        let url = `${API_URL}/api/clubs/academic`;
+        let params = {};
 
-        // "소학회" 데이터를 필터링
-        const filteredEvents = Array.isArray(response.data)
-          ? response.data
-              .filter((event) => event.club_type === "소학회")
-              .map((event) => ({
+        if (selectedCollege) {
+          params.college = selectedCollege;
+        }
+        if (selectedDepartment) {
+          params.department = selectedDepartment;
+        }
+
+        const response = await axios.get(url, { params });
+
+        setEvents(
+          Array.isArray(response.data)
+            ? response.data.map((event) => ({
                 ...event,
-                image: defaultImage, // 기본 이미지 설정
+                image: defaultImage,
                 description:
-                  event.club_description || "설명이 제공되지 않았습니다.", // 설명 없을 경우 기본 텍스트
+                  event.club_description || "설명이 제공되지 않았습니다.",
               }))
-          : [];
-
-        setEvents(filteredEvents);
+            : []
+        );
       } catch (err) {
         setError(err.response?.data?.message || err.message);
         setEvents([]);
@@ -62,23 +58,40 @@ function MiniClub() {
     };
 
     fetchEvents();
-  }, []);
+  }, [selectedCollege, selectedDepartment]);
 
   if (loading) return <S.PageContainer>Loading...</S.PageContainer>;
   if (error) return <S.PageContainer>Error: {error}</S.PageContainer>;
-
-  const handleEventClick = (id) => {
-    navigate(`/clubinfo/${id}`); // 클릭한 이벤트의 ID를 URL로 전달
-  };
 
   return (
     <S.PageContainer>
       {/* 왼쪽 사이드바 */}
       <S.Sidebar>
-        <S.SidebarTitle>{categories[0].title}</S.SidebarTitle>
+        <S.SidebarTitle>소학회</S.SidebarTitle>
         <S.SidebarList>
-          {categories[0].items.map((item, index) => (
-            <S.SidebarItem key={index}>{item}</S.SidebarItem>
+          {colleges.map((college, index) => (
+            <div key={index}>
+              <S.SidebarItem
+                onClick={() =>
+                  setSelectedCollege(
+                    selectedCollege === college.name ? "" : college.name
+                  )
+                }
+                isselected={selectedCollege === college.name}
+              >
+                {college.name}
+              </S.SidebarItem>
+              {selectedCollege === college.name &&
+                college.departments.map((dept, idx) => (
+                  <S.SidebarSubItem
+                    key={idx}
+                    onClick={() => setSelectedDepartment(dept)}
+                    isselected={selectedDepartment === dept}
+                  >
+                    {dept}
+                  </S.SidebarSubItem>
+                ))}
+            </div>
           ))}
         </S.SidebarList>
       </S.Sidebar>
@@ -90,8 +103,8 @@ function MiniClub() {
         <S.Container>
           {events.map((event) => (
             <S.EventBox
-              key={event.club_id} // club_id를 키로 사용
-              onClick={() => handleEventClick(event.club_id)}
+              key={event.club_id}
+              onClick={() => navigate(`/clubinfo/${event.club_id}`)}
             >
               <S.ImageWrapper>
                 <img src={event.image} alt={event.club_name} />
