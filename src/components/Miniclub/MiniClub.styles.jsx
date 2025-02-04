@@ -34,15 +34,17 @@ export const SidebarList = styled.ul`
 
 export const SidebarItem = styled.li`
   font-size: 14px;
-  font-weight: ${(props) => (props.isSelected ? "700" : "400")};
-  color: ${(props) => (props.isSelected ? "#007aff" : "#333")};
+  font-weight: ${({ isselected }) =>
+    isselected ? "700" : "400"}; /* ✅ props에서 직접 스타일 지정 */
+  color: ${({ isselected }) => (isselected ? "rgb(56, 56, 57)" : "#333")};
   margin-bottom: 10px;
   cursor: pointer;
   padding: 5px 10px;
   border-radius: 5px;
-  background-color: ${(props) =>
-    props.isSelected ? "#e6f7ff" : "transparent"};
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  background-color: ${({ isselected }) =>
+    isselected ? "#f0f0f0" : "transparent"}; /* ✅ 선택 시 배경색 고정 */
 
   &:hover {
     background-color: #f0f0f0;
@@ -138,4 +140,19 @@ export const Description = styled.p`
   color: #6e6e73;
   text-align: center;
   margin: 0 10px 10px 10px;
+`;
+export const SidebarSubItem = styled.li`
+  padding: 8px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  color: ${({ isselected }) => (isselected ? "rgb(18, 103, 188)" : "#6c757d")};
+  transition: color 0.3s ease;
+
+  margin-left: 20px; /* ✅ 왼쪽 여백 추가 */
+  border-left: 2px solid #e0e0e0; /* ✅ 왼쪽 구분선 추가 */
+  padding-left: 10px; /* ✅ 선과 텍스트 사이 여백 */
+
+  &:hover {
+    color: rgb(18, 103, 188);
+  }
 `;

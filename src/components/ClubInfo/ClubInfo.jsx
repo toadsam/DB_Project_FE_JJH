@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+
 import { useParams, useNavigate } from "react-router-dom";
+
 import axios from "axios";
 import * as S from "./ClubInfo.styles";
 import defaultImage from "../../asset/mainLogo.png";
@@ -23,6 +25,7 @@ const userRole = () => {
 
 function ClubInfo() {
   const { club_id } = useParams();
+
   const navigate = useNavigate();
   const [clubInfo, setClubInfo] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -98,6 +101,7 @@ function ClubInfo() {
             <S.SidebarItem
               key={index}
               $isSelected={selectedItem === item}
+
               onClick={() => handleSidebarClick(item)}
             >
               {item}
@@ -146,6 +150,7 @@ function ClubInfo() {
             </S.CardInfoBox>
           </S.CardContent>
         </S.CardContainer>
+
         {selectedItem === "동아리 소개" && (
           <>
             <S.Section>
@@ -176,6 +181,7 @@ function ClubInfo() {
               </S.SectionContent>
             </S.Section>
           </>
+
         )}
         {selectedItem === "모집 공고" && <ClubApply club_id={club_id} />}
         {selectedItem === "행사 공고" && <ClubEvent />}

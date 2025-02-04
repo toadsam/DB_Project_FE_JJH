@@ -6,37 +6,14 @@ import logo from "../../asset/img.jpg";
 const categories = [
   {
     title: "중앙동아리",
-    items: [
-      "과학기술분과",
-      "레저스포츠분과",
-      "사회활동분과",
-      "연행예술분과",
-      "준동아리",
-      "종교분과",
-      "창작전시분과",
-      "체육분과",
-      "학술언론분과",
-    ],
     navigateTo: "/clublist", // 이동할 경로 추가
   },
   {
     title: "소학회",
-    items: [
-      "소프트웨어융합대학",
-      "공과대학",
-      "사회과학대학",
-      "경영대학",
-      "인문대학",
-      "자연과학대학",
-      "첨단ICT융합대학",
-      "약학대학",
-      "간호대학",
-    ],
     navigateTo: "/miniclublist",
   },
   {
     title: "행사",
-    items: ["음악", "댄스", "전시", "봉사", "기타"],
     navigateTo: "/eventinfo",
   },
   {
@@ -74,7 +51,7 @@ function Header() {
 
   const handleItemClick = (item) => {
     if (item.navigateTo) {
-      navigate(item.navigateTo); // 해당 아이템의 경로로 이동
+      navigate(item.navigateTo);
     }
   };
 
@@ -101,15 +78,15 @@ function Header() {
               onMouseLeave={handleMouseLeave}
               onClick={() => handleCategoryClick(category)} // 클릭 이벤트 추가
             >
-              <S.Text color={category.color}>{category.title}</S.Text>
-              {activeCategory === index && (
+              <S.Text>{category.title}</S.Text>
+              {activeCategory === index && category.items && (
                 <S.Dropdown>
                   {category.items.map((item, idx) => (
                     <S.DropdownItem
                       key={idx}
                       onClick={() => handleItemClick(item)} // 아이템 클릭 시 이동
                     >
-                      {item.name || item} {/* 객체 또는 문자열 처리 */}
+                      {item.name}
                     </S.DropdownItem>
                   ))}
                 </S.Dropdown>

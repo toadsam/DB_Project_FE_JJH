@@ -6,7 +6,6 @@ import NewRecruitment from "./components/NewRecruitment/NewRecruitment";
 import ClubInfo from "./components/ClubInfo/ClubInfo";
 import MemberInfo from "./components/MemberInfo/MemberInfo";
 import EventInfo from "./components/EventInfo/EventInfo";
-import ClubApply from "./components/ClubApply/ClubApply";
 import FestivalList from "./components/FestivalList/FestivalList";
 import MiniClub from "./components/Miniclub/MiniClub";
 import Category from "./components/Category/Category";
@@ -55,7 +54,6 @@ function AppRouter() {
         <Route path="/clubinfo/:club_id" element={<ClubInfo />} />
         <Route path="/member-info/:id" element={<MemberInfo />} />
         <Route path="/event-info/:id" element={<EventInfo />} />
-        <Route path="/club-apply/:id" element={<ClubApply />} />
         <Route path="/notice" element={<NoticePage />} />
         <Route path="/login" element={<LoginPage />} /> {/* 로그인 페이지 */}
         <Route path="/edit-profile" element={<EditProfilePage />} />

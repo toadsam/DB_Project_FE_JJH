@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import * as S from "./NewRecruitment.styles"; // 스타일 정의
 import axios from "axios";
 import defaultImage from "../../asset/mainLogo.png"; // 기본 이미지 불러오기
@@ -9,6 +10,7 @@ function FestivalList() {
   const [events, setEvents] = useState([]); // API 데이터 상태 관리
   const [loading, setLoading] = useState(false); // 로딩 상태 관리
   const [error, setError] = useState(null); // 에러 상태 관리
+  const navigate = useNavigate(); // 페이지 이동을 위한 useNavigate
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -24,16 +26,12 @@ function FestivalList() {
           }
         );
 
-        console.log("API Response:", response.data); // 디버깅
         setEvents(
           Array.isArray(response.data)
             ? response.data.map((event) => ({
                 id: event.recruitment_id,
+                club_id: event.club_id, // club_id 추가
                 title: event.recruitment_title || "제목 없음",
-                description:
-                  event.recruitment_description ||
-                  "설명이 제공되지 않았습니다.",
-                image: defaultImage, // 기본 이미지 설정
                 endDate:
                   event.recruitment_end_date === "0000-00-00" ||
                   event.recruitment_end_date === null
@@ -60,20 +58,22 @@ function FestivalList() {
     <S.Container>
       <S.Title1>새로운 모집공고가 올라왔어요{" >"}</S.Title1>
       {events.map((event) => (
-        <S.EventBox key={event.id}>
+        <S.EventBox
+          key={event.id}
+          onClick={() =>
+            navigate(`/clubinfo/${event.club_id}`, {
+              state: { defaultTab: "모집 공고" }, // 모집 공고 탭을 기본으로 설정
+            })
+          }
+        >
           <S.ImageWrapper>
             <img
-              src={event.image} // 이미지 URL 또는 기본 이미지
+              src={defaultImage} // 이미지 URL 또는 기본 이미지
               alt={event.title}
               style={{ width: "100%", height: "auto", borderRadius: "10px" }}
             />
           </S.ImageWrapper>
           <S.Title>{event.title}</S.Title>
-          {/* <S.Description>
-            {event.description.length > 30
-              ? `${event.description.slice(0, 30)}...`
-              : event.description}
-          </S.Description> */}
           <S.Date>마감일자: {event.endDate}</S.Date>
         </S.EventBox>
       ))}
