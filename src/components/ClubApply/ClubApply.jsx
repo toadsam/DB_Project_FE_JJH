@@ -5,7 +5,6 @@ import * as S from "./ClubApply.styles";
 const API_URL = process.env.REACT_APP_API_URL;
 
 function ClubApply({ club_id }) {
-  // props로 club_id 받기
   const [recruitmentInfo, setRecruitmentInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -24,7 +23,8 @@ function ClubApply({ club_id }) {
           }
         );
 
-        setRecruitmentInfo(response.data);
+        setRecruitmentInfo(response.data.length > 0 ? response.data[0] : null);
+        console.log(response.data[0]);
       } catch (err) {
         setError("데이터를 불러오는 중 오류가 발생했습니다.");
       } finally {
@@ -37,6 +37,14 @@ function ClubApply({ club_id }) {
     }
   }, [club_id]);
 
+  const calculateDaysLeft = (endDate) => {
+    const today = new Date();
+    const end = new Date(endDate);
+    const diffTime = end - today; // 시간 차이 계산 (밀리초)
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // 밀리초를 일수로 변환
+    return diffDays > 0 ? `D-${diffDays}` : "마감";
+  };
+
   if (loading) return <S.Loading>Loading...</S.Loading>;
   if (error) return <S.Error>{error}</S.Error>;
 
@@ -44,10 +52,28 @@ function ClubApply({ club_id }) {
     <S.ApplyContainer>
       {recruitmentInfo ? (
         <>
-          <S.Title>{recruitmentInfo.title || "모집 공고 제목"}</S.Title>
+          <S.TitleContainer>
+            <S.Title>
+              {recruitmentInfo.recruitment_title || "모집 공고 제목"}
+            </S.Title>
+            {recruitmentInfo.recruitment_end_date && (
+              <S.DaysLeftBadge>
+                {calculateDaysLeft(recruitmentInfo.recruitment_end_date)}
+              </S.DaysLeftBadge>
+            )}
+          </S.TitleContainer>
+
           <S.Description>
-            {recruitmentInfo.description || "모집 공고 내용이 없습니다."}
+            {recruitmentInfo.recruitment_description ||
+              "모집 공고 내용이 없습니다."}
           </S.Description>
+
+          <S.Section>
+            <S.SectionTitle>📅 모집 마감</S.SectionTitle>
+            <S.SectionContent>
+              {recruitmentInfo.recruitment_end_date || "마감일 정보 없음"}
+            </S.SectionContent>
+          </S.Section>
         </>
       ) : (
         <S.Error>모집 공고 정보를 찾을 수 없습니다.</S.Error>
