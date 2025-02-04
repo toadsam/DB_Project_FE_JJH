@@ -1,4 +1,3 @@
-// EditProfilePage.styles.jsx
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -26,20 +25,25 @@ export const Logo = styled.div`
   margin-left: 20px;
 `;
 
+// ✅ 네비게이션 스타일 수정
 export const Nav = styled.nav`
   display: flex;
-  gap: 1rem;
-  font-size: 1rem;
-  margin-left: 10px; /* 왼쪽으로 이동 */
-  
-  a {
-    text-decoration: none;
-    color: #ff6600;
-    padding: 0.5rem 1rem; /* 클릭 영역 확대 및 일정한 크기 */
-    display: block; /* 패딩 적용을 위한 블록 요소 */
-  }
+  gap: 2rem; /* 일정한 간격 유지 */
+  align-items: center;
 `;
 
+export const NavItem = styled.div`
+  color: #000; /* 검은색으로 변경 */
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0.5rem 1rem; /* 클릭 영역 확대 및 일정한 크기 */
+  transition: color 0.3s ease-in-out;
+
+  &:hover {
+    color: #0056b3; /* 마우스 오버 시 색상 변경 */
+  }
+`;
 
 export const Sidebar = styled.div`
   width: 200px;
