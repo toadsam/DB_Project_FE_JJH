@@ -31,12 +31,14 @@ function FestivalList() {
             ? response.data.map((event) => ({
                 id: event.recruitment_id,
                 club_id: event.club_id, // club_id 추가
+
                 title: event.recruitment_title || "제목 없음",
                 endDate:
                   event.recruitment_end_date === "0000-00-00" ||
                   event.recruitment_end_date === null
                     ? "마감일 미정"
                     : new Date(event.recruitment_end_date).toLocaleDateString(),
+                main_image: event.main_image || defaultImage,
               }))
             : []
         );
@@ -68,7 +70,7 @@ function FestivalList() {
         >
           <S.ImageWrapper>
             <img
-              src={defaultImage} // 이미지 URL 또는 기본 이미지
+              src={event.main_image} // 이미지 URL 또는 기본 이미지
               alt={event.title}
               style={{ width: "100%", height: "auto", borderRadius: "10px" }}
             />

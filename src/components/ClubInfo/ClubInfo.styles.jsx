@@ -239,3 +239,17 @@ export const CardHashTagItem = styled(CardInfoItem)`
   font-weight: normal; /* 기존 스타일과 통일 */
   color: #555;
 `;
+
+export const ActivityImagesGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+`;
+
+export const ActivityImageItem = styled.img`
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+`;
