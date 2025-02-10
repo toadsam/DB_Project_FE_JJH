@@ -49,4 +49,4 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           echo "Deploying to production..."
-          # 여기에 배포 명령어 추가 (예: AWS CLI, Docker Push, SSH 등)
+          npm run deploy
