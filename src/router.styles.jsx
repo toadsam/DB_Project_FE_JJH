@@ -11,7 +11,6 @@ export const RowContainer = styled.div`
   justify-content: flex-start; /* 요소를 왼쪽부터 정렬 */
   align-items: flex-start;
   gap: 20px;
-  padding: 0 40px;
   width: 100%;
   box-sizing: border-box;
   margin-bottom: 20px;
