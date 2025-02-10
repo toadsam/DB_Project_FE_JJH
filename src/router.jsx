@@ -23,6 +23,7 @@ import MemberManagementPage from "./components/MemberManagementPage/MemberManage
 import ApplicationListPage from "./components/ApplicationListPage/ApplicationListPage";
 import ClubEvent from "./components/ClubEvent/ClubEvent";
 import Introduction from "./components/Introduction/Introduction";
+import ClubCategory from "./components/ClubCategory/ClubCategory";
 import * as S from "./router.styles";
 
 function AppRouter() {
@@ -68,6 +69,7 @@ function AppRouter() {
         <Route path="/application-list" element={<ApplicationListPage />} />
         <Route path="/club-event/:id" element={<ClubEvent />} />
         <Route path="/introduce" element={<Introduction />} />
+        <Route path="/category/:categoryName" element={<ClubCategory />} />
       </Routes>
     </Router>
   );

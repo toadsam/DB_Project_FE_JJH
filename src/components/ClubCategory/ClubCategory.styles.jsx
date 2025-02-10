@@ -1,49 +1,145 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+export const PageContainer = styled.div`
   display: flex;
-  justify-content: space-between; /* 섹션 간 간격 */
-  padding: 10px 150px;
-  gap: 10px;
-  margin-bottom: 15px;
-  margin-top: 10px;
+  flex-direction: row; /* 사이드바와 콘텐츠를 가로로 배치 */
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px; /* 디자인 기준 폭 */
+  margin: 0 auto; /* 중앙 정렬 */
+  padding: 20px;
 `;
 
-export const CategoryGroup = styled.div`
+export const Sidebar = styled.div`
+  width: 180px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  margin-right: 30px;
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 20px; /* 상단에서 20px 떨어지도록 고정 */
+  height: fit-content; /* 내용에 맞게 높이 조정 */
+`;
+
+export const SidebarTitle = styled.h2`
+  font-size: 18px;
+  font-weight: 700;
+  color: #1d1d1f;
+  margin-bottom: 10px;
+`;
+
+export const SidebarList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+`;
+
+export const SidebarItem = styled.li`
+  font-size: 14px;
+  font-weight: ${(props) => (props.isSelected ? "700" : "400")};
+  color: ${(props) => (props.isSelected ? "#007aff" : "#333")};
+  margin-bottom: 10px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: ${(props) =>
+    props.isSelected ? "#e6f7ff" : "transparent"};
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #f0f0f0;
+  }
+`;
+
+export const Content = styled.div`
+  flex-grow: 1; /* 남은 공간 모두 사용 */
   display: flex;
-  flex-direction: column; /* 제목과 리스트를 세로로 배치 */
-  align-items: flex-start; /* 왼쪽 정렬 */
+  flex-direction: column;
+`;
+
+export const Title1 = styled.h1`
+  width: 100%;
+  font-size: 20px;
+  font-weight: 700;
+  color: #1d1d1f;
+  text-align: left;
+  margin-bottom: 10px;
+`;
+
+export const TitleBar = styled.div`
+  width: 100%;
+  height: 1px;
+  background-color: black;
+  margin-bottom: 15px;
+  border-radius: 2px;
+`;
+
+export const Container = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 기본 4열 */
+  gap: 20px;
+  width: 100%;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr); /* 화면이 작으면 2열 */
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr; /* 모바일에서는 1열 */
+  }
+`;
+
+export const EventBox = styled.div`
+  width: 180px;
+  background-color: #ffffff;
+  border: 0.2px solid rgb(213, 213, 213);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-8px);
+  }
+`;
+
+export const ImageWrapper = styled.div`
+  width: 100%;
+  position: relative;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* 카드 상단에 라벨을 표시 (예: 동아리 카테고리) */
+  &::before {
+    content: attr(data-label);
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #ff4d4f;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
 `;
 
 export const Title = styled.h2`
-  font-size: 18px;
-  font-weight: 1000;
-  color: ${(props) => props.color || "#000"}; /* 동적으로 색상 변경 */
-  margin-bottom: 5px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1d1d1f;
+  text-align: center;
+  margin: 10px 0;
 `;
 
-export const ItemList = styled.div`
-  display: flex;
-  flex-wrap: ${(props) =>
-    props.noWrap ? "nowrap" : "wrap"}; /* 조건부 줄바꿈 */
-  flex-direction: ${(props) =>
-    props.noWrap ? "column" : "row"}; /* 세로 정렬 */
-  gap: 3px; /* 아이템 간 간격 */
-  margin-top: 10px;
-  padding-left: 5px;
-  border-left: 1px solid #ccc; /* 왼쪽 선 추가 */
-`;
-
-export const Item = styled.div`
-  flex: ${(props) =>
-    props.noWrap ? "0 0 100%" : "0 0 calc(50% - 10px)"}; /* 조건부 크기 */
+export const Description = styled.p`
   font-size: 14px;
-  font-weight: 600;
-  color: #000;
-  margin-bottom: 8px;
-  cursor: pointer;
-
-  &:hover {
-    color: #007aff; /* 아이템에 마우스 오버 시 색상 변경 */
-  }
+  color: #6e6e73;
+  text-align: center;
+  margin: 0 10px 10px;
 `;
