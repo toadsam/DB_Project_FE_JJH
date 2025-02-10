@@ -1,5 +1,10 @@
 import styled from "styled-components";
-
+export const MainContainer = styled.div`
+  width: 100%;
+  max-width: 1200px; /* 디자인 기준 폭 (예: 1200px) */
+  margin: 0 auto; /* 좌우 자동 여백 -> 중앙 정렬 */
+  padding: 0 20px; /* 작은 화면일 때 내부 여백 추가 */
+`;
 export const RowContainer = styled.div`
   display: flex;
   flex-direction: row;

@@ -4,7 +4,10 @@ export const PageContainer = styled.div`
   display: flex;
   flex-direction: row; /* 사이드바와 콘텐츠를 가로로 배치 */
   gap: 20px;
-  padding: 20px 80px;
+  padding: 20px;
+
+  max-width: 1200px; /* 디자인 기준 폭 (예: 1200px) */
+  margin: 0 auto; /* 좌우 자동 여백 -> 중앙 정렬 */
 `;
 
 export const Sidebar = styled.div`

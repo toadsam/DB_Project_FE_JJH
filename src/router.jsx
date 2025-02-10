@@ -34,17 +34,19 @@ function AppRouter() {
           path="/"
           element={
             <>
-              <Category />{" "}
-              <S.RowContainer>
-                <S.PanelWrapper>
-                  <AcademicSchedule />
-                </S.PanelWrapper>
-                <S.PanelWrapper>
-                  <NoticePanel />
-                </S.PanelWrapper>
-              </S.RowContainer>
-              <FestivalList />
-              <NewRecruitment />
+              <S.MainContainer>
+                <Category />{" "}
+                <S.RowContainer>
+                  <S.PanelWrapper>
+                    <AcademicSchedule />
+                  </S.PanelWrapper>
+                  <S.PanelWrapper>
+                    <NoticePanel />
+                  </S.PanelWrapper>
+                </S.RowContainer>
+                <FestivalList />
+                <NewRecruitment />
+              </S.MainContainer>
             </>
           }
         />
