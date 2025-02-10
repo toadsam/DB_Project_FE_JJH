@@ -21,7 +21,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "gh-pages -d build -r https://x-access-token:$GITHUB_TOKEN@github.com/rryunn/DB_Project_FE.git",
     "test": "react-scripts test --passWithNoTests",
     "eject": "react-scripts eject"
   },
