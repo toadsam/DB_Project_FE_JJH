@@ -52,7 +52,7 @@ function ClubList() {
           Array.isArray(response.data)
             ? response.data.map((event) => ({
                 ...event,
-                image: defaultImage,
+                image: event.logo_url || defaultImage,
                 description:
                   event.club_description || "설명이 제공되지 않았습니다.",
               }))
