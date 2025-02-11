@@ -4,19 +4,20 @@ export const PageContainer = styled.div`
   display: flex;
   flex-direction: row; /* 사이드바와 콘텐츠를 가로로 배치 */
   gap: 20px;
-
+  width: 100%;
   max-width: 1200px; /* 디자인 기준 폭 (예: 1200px) */
   margin: 0 auto; /* 좌우 자동 여백 -> 중앙 정렬 */
-  padding: 20px; /* 작은 화면일 때 내부 여백 추가 */
+  padding: 20px;
 `;
 
 export const Sidebar = styled.div`
-  width: 140px;
+  width: 180px;
   background-color: #f9f9f9;
   padding: 20px;
   border-radius: 10px;
   margin-right: 30px;
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
   position: sticky; /* 추가 */
   top: 20px; /* 고정될 위치 (상단에서 20px 떨어짐) */
   height: fit-content; /* 내용에 맞게 높이 조정 */
@@ -57,6 +58,7 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column; /* 콘텐츠를 수직 정렬 */
 `;
+
 export const Title1 = styled.h1`
   width: 100%;
   font-size: 20px;
@@ -128,20 +130,18 @@ export const ImageWrapper = styled.div`
 `;
 
 export const Title = styled.h2`
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: #1d1d1f;
-  text-align: left;
-  margin: 10px 10px 5px 10px;
-  line-height: 1.4;
+  text-align: center;
+  margin: 10px 0;
 `;
 
 export const Description = styled.p`
-  font-size: 13px;
+  font-size: 14px;
   color: #6e6e73;
-  text-align: left;
+  text-align: center;
   margin: 0 10px 10px 10px;
-  line-height: 1.6;
 `;
 
 export const Location = styled.p`
