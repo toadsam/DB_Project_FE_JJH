@@ -3,7 +3,6 @@ import * as S from "./MiniClub.styles";
 import axios from "axios";
 import defaultImage from "../../asset/mainLogo.png";
 import { useNavigate } from "react-router-dom";
-
 import collegesData from "../../colleges.json";
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -17,28 +16,25 @@ function MiniClub() {
   const [selectedDepartment, setSelectedDepartment] = useState(""); // 선택한 학과
   const navigate = useNavigate();
 
-  // ✅ JSON 데이터를 바로 설정 (fetch 필요 없음)
+  // JSON 데이터를 바로 설정
   useEffect(() => {
     setColleges(collegesData);
   }, []);
 
-  // 🔹 선택한 단과대/학과에 따라 소학회 데이터 불러오기
+  // 선택한 단과대/학과에 따라 소학회 데이터 불러오기
   useEffect(() => {
     const fetchEvents = async () => {
       setLoading(true);
       try {
         let url = `${API_URL}/api/clubs/academic`;
         let params = {};
-
         if (selectedCollege) {
           params.college = selectedCollege;
         }
         if (selectedDepartment) {
           params.department = selectedDepartment;
         }
-
         const response = await axios.get(url, { params });
-
         setEvents(
           Array.isArray(response.data)
             ? response.data.map((event) => ({
@@ -105,6 +101,7 @@ function MiniClub() {
             <S.EventBox
               key={event.club_id}
               onClick={() => navigate(`/clubinfo/${event.club_id}`)}
+              bg={event.image} // 모바일에서 배경 이미지로 사용
             >
               <S.ImageWrapper>
                 <img src={event.image} alt={event.club_name} />

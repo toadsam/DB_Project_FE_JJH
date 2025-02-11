@@ -1,15 +1,23 @@
 import styled from "styled-components";
 
+/* PageContainer: 데스크탑에서는 사이드바와 콘텐츠를 가로로 배치, 모바일에서는 세로 배치 */
 export const PageContainer = styled.div`
   display: flex;
-  flex-direction: row; /* 사이드바와 콘텐츠를 가로로 배치 */
+  flex-direction: row; /* 기본: 사이드바와 콘텐츠가 좌우로 */
   gap: 20px;
   width: 100%;
-  max-width: 1200px; /* 디자인 기준 폭 */
-  margin: 0 auto; /* 중앙 정렬 */
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 20px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
+  }
 `;
 
+/* Sidebar: 데스크탑에서는 왼쪽 고정, 모바일에서는 상단 전체 너비 */
 export const Sidebar = styled.div`
   width: 180px;
   background-color: #f9f9f9;
@@ -18,8 +26,15 @@ export const Sidebar = styled.div`
   margin-right: 30px;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
   position: sticky;
-  top: 20px; /* 상단에서 20px 떨어지도록 고정 */
-  height: fit-content; /* 내용에 맞게 높이 조정 */
+  top: 20px;
+  height: fit-content;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
+    position: static;
+  }
 `;
 
 export const SidebarTitle = styled.h2`
@@ -53,7 +68,7 @@ export const SidebarItem = styled.li`
 `;
 
 export const Content = styled.div`
-  flex-grow: 1; /* 남은 공간 모두 사용 */
+  flex-grow: 1; /* 남은 공간을 모두 사용 */
   display: flex;
   flex-direction: column;
 `;
@@ -75,21 +90,23 @@ export const TitleBar = styled.div`
   border-radius: 2px;
 `;
 
+/* Container: 기본 4열 그리드, 화면이 작아지면 2열 또는 1열 */
 export const Container = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 기본 4열 */
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   width: 100%;
 
   @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr); /* 화면이 작으면 2열 */
+    grid-template-columns: repeat(2, 1fr);
   }
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr; /* 모바일에서는 1열 */
+    grid-template-columns: 1fr;
   }
 `;
 
+/* EventBox: 데스크탑에서는 카드 형태, 모바일에서는 가로로 긴 직사각형으로 변경 */
 export const EventBox = styled.div`
   width: 180px;
   background-color: #ffffff;
@@ -98,12 +115,31 @@ export const EventBox = styled.div`
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease;
+  cursor: pointer;
 
   &:hover {
     transform: translateY(-8px);
   }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 100px; /* 모바일 시 카드 높이 조정 (원하는 값으로 수정 가능) */
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+    border: none;
+    /* club logo를 배경 이미지로, 살짝 반투명 오버레이 효과 적용 */
+    background-image: linear-gradient(
+        rgba(255, 255, 255, 0.6),
+        rgba(255, 255, 255, 0.6)
+      ),
+      url(${(props) => props.bg});
+    background-size: cover;
+    background-position: center;
+  }
 `;
 
+/* ImageWrapper: 데스크탑에서는 동아리 로고 이미지 표시, 모바일에서는 숨김 */
 export const ImageWrapper = styled.div`
   width: 100%;
   position: relative;
@@ -114,7 +150,6 @@ export const ImageWrapper = styled.div`
     object-fit: cover;
   }
 
-  /* 카드 상단에 라벨을 표시 (예: 동아리 카테고리) */
   &::before {
     content: attr(data-label);
     position: absolute;
@@ -127,6 +162,10 @@ export const ImageWrapper = styled.div`
     padding: 4px 8px;
     border-radius: 4px;
   }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 export const Title = styled.h2`
@@ -135,6 +174,13 @@ export const Title = styled.h2`
   color: #1d1d1f;
   text-align: center;
   margin: 10px 0;
+
+  @media (max-width: 768px) {
+    flex: 1;
+    text-align: left;
+    margin: 0 10px;
+    color: #000;
+  }
 `;
 
 export const Description = styled.p`
@@ -142,4 +188,8 @@ export const Description = styled.p`
   color: #6e6e73;
   text-align: center;
   margin: 0 10px 10px;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;

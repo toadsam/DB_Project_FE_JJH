@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import * as S from "./ClubCategory.styles"; // 기존 ClubList 스타일을 재사용
+import * as S from "./ClubCategory.styles"; // 수정된 스타일 적용
 import defaultImage from "../../asset/mainLogo.png";
+
 const API_URL = process.env.REACT_APP_API_URL;
 
-// 왼쪽 사이드바에 표시할 카테고리 목록 (화면에 표시될 값은 그대로)
+// 왼쪽 사이드바에 표시할 카테고리 목록 (화면에 그대로 표시)
 const categories = [
   { name: "스포츠" },
   { name: "학술" },
@@ -17,14 +18,13 @@ const categories = [
 ];
 
 function CategoryClubList() {
-  // URL 파라미터에서 선택된 카테고리명을 가져옵니다.
   const { categoryName } = useParams();
   const navigate = useNavigate();
   const [clubs, setClubs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // 선택된 카테고리에 해당하는 동아리 목록을 API로부터 불러옵니다.
+  // 선택된 카테고리에 해당하는 동아리 목록을 API로부터 불러옴
   useEffect(() => {
     const fetchClubs = async () => {
       setLoading(true);
@@ -59,13 +59,12 @@ function CategoryClubList() {
     fetchClubs();
   }, [categoryName]);
 
-  // 동아리 카드를 클릭하면 상세 정보 페이지로 이동합니다.
+  // 동아리 카드 클릭 시 상세 정보 페이지로 이동
   const handleClubClick = (clubId) => {
     navigate(`/clubinfo/${clubId}`);
   };
 
-  // 사이드바에서 카테고리 항목을 클릭하면 해당 카테고리 페이지로 이동합니다.
-  // 이때, encodeURIComponent를 사용하여 URL에 안전하게 인코딩합니다.
+  // 사이드바에서 카테고리 클릭 시 해당 카테고리 페이지로 이동
   const handleCategoryClick = (cat) => {
     navigate(`/category/${encodeURIComponent(cat)}`);
   };
@@ -83,7 +82,7 @@ function CategoryClubList() {
               isSelected={cat.name === categoryName}
               style={{ cursor: "pointer" }}
             >
-              {cat.name} {/* 화면에 그대로 "문화/예술"로 표시 */}
+              {cat.name}
             </S.SidebarItem>
           ))}
         </S.SidebarList>
@@ -100,6 +99,7 @@ function CategoryClubList() {
             <S.EventBox
               key={club.club_id}
               onClick={() => handleClubClick(club.club_id)}
+              bg={club.image} // 모바일에서 배경 이미지로 사용
             >
               <S.ImageWrapper data-label={club.club_type}>
                 <img src={club.image} alt={club.club_name} />
