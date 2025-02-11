@@ -29,6 +29,8 @@ export const EventBox = styled.div`
   flex-direction: column;
   transition: transform 0.3s ease;
   margin-bottom: 30px;
+  cursor: pointer;
+
   &:hover {
     transform: translateY(-10px);
   }
@@ -45,7 +47,7 @@ export const ImageWrapper = styled.div`
     object-fit: cover;
   }
 
-  /* 상단 라벨 스타일 */
+  /* 상단 라벨 스타일 (필요 시 사용) */
   &::before {
     content: attr(data-label);
     position: absolute;

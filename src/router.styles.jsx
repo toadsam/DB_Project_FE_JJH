@@ -15,6 +15,11 @@ export const RowContainer = styled.div`
   box-sizing: border-box;
   margin-bottom: 20px;
   margin-top: 20px;
+
+  /* 화면이 모바일 사이즈일 때 컬럼으로 변경 */
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 export const PanelWrapper = styled.div`
@@ -23,8 +28,10 @@ export const PanelWrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   height: 330px; /* 부모 RowContainer의 높이를 채움 */
-
   box-sizing: border-box;
-
   border: 0.5px solid #ccc;
+
+  @media (max-width: 768px) {
+    height: auto;
+  }
 `;
