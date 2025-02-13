@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // useNavigate 가져오기
 import * as S from "./Header.styles";
 import logo from "../../asset/img.jpg";
@@ -6,7 +6,7 @@ import logo from "../../asset/img.jpg";
 const categories = [
   {
     title: "중앙동아리",
-    navigateTo: "/clublist", // 이동할 경로 추가
+    navigateTo: "/clublist",
   },
   {
     title: "소학회",
@@ -20,20 +20,41 @@ const categories = [
     title: "동아리연합회",
     items: [
       { name: "소개글", navigateTo: "/introduce" },
-      { name: "공지사항", navigateTo: "/notice" }, // "공지사항" 클릭 시 이동 경로 추가
+      { name: "공지사항", navigateTo: "/notice" },
     ],
   },
   {
     title: "내정보",
     items: [
-      { name: "마이페이지", navigateTo: "/mypage" }, // 이동 경로 추가
+      { name: "마이페이지", navigateTo: "/mypage" },
     ],
   },
 ];
 
 function Header() {
   const [activeCategory, setActiveCategory] = useState(null);
-  const navigate = useNavigate(); // useNavigate 훅 생성
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // ✅ 로그인 상태 관리
+  const navigate = useNavigate();
+
+  // ✅ 로그인 여부 확인 (localStorage의 토큰 확인)
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+    setIsLoggedIn(!!token); // 토큰이 있으면 true, 없으면 false
+  }, []);
+
+  // ✅ 로그인 후 헤더 상태를 즉시 반영
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const token = localStorage.getItem("accessToken");
+      setIsLoggedIn(!!token);
+    };
+
+    window.addEventListener("storage", checkLoginStatus); // 로그인 상태 변경 감지
+
+    return () => {
+      window.removeEventListener("storage", checkLoginStatus);
+    };
+  }, []);
 
   const handleMouseEnter = (index) => {
     setActiveCategory(index);
@@ -45,7 +66,7 @@ function Header() {
 
   const handleCategoryClick = (category) => {
     if (category.navigateTo) {
-      navigate(category.navigateTo); // 해당 경로로 이동
+      navigate(category.navigateTo);
     }
   };
 
@@ -55,12 +76,24 @@ function Header() {
     }
   };
 
+  // ✅ 로그아웃 처리 함수
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("userInfo");
+    setIsLoggedIn(false); // 로그인 상태 업데이트
+    navigate("/login");
+  };
+
   return (
     <S.Wrapper>
       {/* 상단 작은 헤더 */}
       <S.TopBar>
-        <S.TopBarItem>HOME</S.TopBarItem>
-        <S.TopBarItem onClick={() => navigate("/login")}>LOGIN</S.TopBarItem>
+        <S.TopBarItem onClick={() => navigate("/")}>HOME</S.TopBarItem>
+        {isLoggedIn ? (
+          <S.TopBarItem onClick={handleLogout}>LOGOUT</S.TopBarItem>
+        ) : (
+          <S.TopBarItem onClick={() => navigate("/login")}>LOGIN</S.TopBarItem>
+        )}
         <S.TopBarItem>PORTAL</S.TopBarItem>
         <S.TopBarItem>LANGUAGE ▼</S.TopBarItem>
       </S.TopBar>
@@ -76,7 +109,7 @@ function Header() {
               key={index}
               onMouseEnter={() => handleMouseEnter(index)}
               onMouseLeave={handleMouseLeave}
-              onClick={() => handleCategoryClick(category)} // 클릭 이벤트 추가
+              onClick={() => handleCategoryClick(category)}
             >
               <S.Text>{category.title}</S.Text>
               {activeCategory === index && category.items && (
@@ -84,7 +117,7 @@ function Header() {
                   {category.items.map((item, idx) => (
                     <S.DropdownItem
                       key={idx}
-                      onClick={() => handleItemClick(item)} // 아이템 클릭 시 이동
+                      onClick={() => handleItemClick(item)}
                     >
                       {item.name}
                     </S.DropdownItem>
