@@ -8,6 +8,10 @@ on:
     branches:
       - main
 
+# 이 설정을 추가하면 github-actions[bot]에게 리포지토리 콘텐츠를 수정할 권한을 부여합니다.
+permissions:
+  contents: write
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
