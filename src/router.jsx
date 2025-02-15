@@ -45,8 +45,8 @@ function AppRouter() {
                     <NoticePanel />
                   </S.PanelWrapper>
                 </S.RowContainer>
-                <FestivalList />
                 <NewRecruitment />
+                <FestivalList />
               </S.MainContainer>
             </>
           }
