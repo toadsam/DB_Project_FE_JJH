@@ -103,8 +103,12 @@ function MiniClub() {
               onClick={() => navigate(`/clubinfo/${event.club_id}`)}
               bg={event.image} // 모바일에서 배경 이미지로 사용
             >
-              <S.ImageWrapper>
-                <img src={event.image} alt={event.club_name} />
+              <S.ImageWrapper style={{ height: "180px", overflow: "hidden" }}>
+                <img
+                  src={event.image}
+                  alt={event.title}
+                  style={{ width: "100%", height: "100%", objectFit: "cover"}}
+                />
               </S.ImageWrapper>
               <S.Title>{event.club_name}</S.Title>
               <S.Description>

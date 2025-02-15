@@ -101,8 +101,13 @@ function CategoryClubList() {
               onClick={() => handleClubClick(club.club_id)}
               bg={club.image} // 모바일에서 배경 이미지로 사용
             >
-              <S.ImageWrapper data-label={club.club_type}>
-                <img src={club.image} alt={club.club_name} />
+
+              <S.ImageWrapper data-label={club.club_type} style={{ height: "180px", overflow: "hidden" }}>
+                <img
+                  src={club.image}
+                  alt={club.title}
+                  style={{ width: "100%", height: "100%", objectFit: "cover"}}
+                />
               </S.ImageWrapper>
               <S.Title>{club.club_name}</S.Title>
               <S.Description>
