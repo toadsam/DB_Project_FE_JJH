@@ -7,6 +7,11 @@ export const ScheduleContainer = styled.div`
   padding: 15px;
   background: white;
   box-sizing: border-box;
+
+  @media (max-width: 768px) {
+  width:  100vw;
+  min-width: 300px;
+  }
 `;
 
 export const Header = styled.div`
@@ -62,9 +67,15 @@ export const Date = styled.span`
   text-align: right;
 `;
 
+
 export const NoSchedule = styled.div`
   text-align: center;
   color: #999;
   font-size: 16px;
-  padding: 20px;
+  padding: 20px; 
+  width: 100%;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;

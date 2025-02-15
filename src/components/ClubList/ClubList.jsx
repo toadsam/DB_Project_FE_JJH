@@ -27,7 +27,7 @@ function ClubList() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(""); // 선택한 카테고리 상태 추가
+  const [selectedCategory, setSelectedCategory] = useState(""); // 선택한 카테고리 상태
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,7 +52,7 @@ function ClubList() {
           Array.isArray(response.data)
             ? response.data.map((event) => ({
                 ...event,
-                image: defaultImage,
+                image: event.logo_url || defaultImage,
                 description:
                   event.club_description || "설명이 제공되지 않았습니다.",
               }))
@@ -67,29 +67,26 @@ function ClubList() {
     };
 
     fetchEvents();
-  }, [selectedCategory]); // selectedCategory가 변경될 때 API 다시 호출
+  }, [selectedCategory]); // 카테고리 변경 시 재호출
 
   if (loading) return <S.PageContainer>Loading...</S.PageContainer>;
   if (error) return <S.PageContainer>Error: {error}</S.PageContainer>;
 
   const handleEventClick = (id) => {
-    navigate(`/clubinfo/${id}`); // 클릭한 이벤트의 ID를 URL로 전달
+    navigate(`/clubinfo/${id}`);
   };
 
   return (
     <S.PageContainer>
-      {/* 왼쪽 사이드바 */}
+      {/* 데스크탑: 왼쪽 사이드바, 모바일: 상단에 표시 */}
       <S.Sidebar>
         <S.SidebarTitle>{categories[0].title}</S.SidebarTitle>
         <S.SidebarList>
           {categories[0].items.map((item, index) => (
             <S.SidebarItem
               key={index}
-              onClick={() => setSelectedCategory(item)} // 선택한 값 업데이트
-              style={{
-                cursor: "pointer",
-                fontWeight: selectedCategory === item ? "bold" : "normal", // 선택한 값 강조
-              }}
+              onClick={() => setSelectedCategory(item)}
+              isSelected={selectedCategory === item}
             >
               {item}
             </S.SidebarItem>
@@ -97,18 +94,25 @@ function ClubList() {
         </S.SidebarList>
       </S.Sidebar>
 
-      {/* 오른쪽 콘텐츠 */}
+      {/* 오른쪽 콘텐츠 영역 */}
       <S.Content>
         <S.Title1>중앙 동아리</S.Title1>
         <S.TitleBar />
         <S.Container>
           {events.map((event) => (
+            // 데스크탑 모드에서는 내부에 이미지 영역이 보이고,
+            // 모바일 모드에서는 bg prop을 이용해 배경으로 club logo를 표시합니다.
             <S.EventBox
               key={event.club_id}
               onClick={() => handleEventClick(event.club_id)}
+              bg={event.image}
             >
-              <S.ImageWrapper>
-                <img src={event.image} alt={event.club_name} />
+              <S.ImageWrapper style={{ height: "180px", overflow: "hidden" }}>
+                <img
+                  src={event.image}
+                  alt={event.title}
+                  style={{ width: "100%", height: "100%", objectFit: "cover"}}
+                />
               </S.ImageWrapper>
               <S.Title>{event.club_name}</S.Title>
               <S.Description>

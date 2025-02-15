@@ -4,7 +4,6 @@ export const CategoryContainer = styled.div`
   display: flex;
   flex-direction: column; /* 제목과 카테고리를 세로로 배치 */
   gap: 10px;
-  padding: 0 40px;
   justify-content: center;
   margin-top: 30px;
 `;

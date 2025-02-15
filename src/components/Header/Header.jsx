@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // useNavigate 가져오기
 import * as S from "./Header.styles";
 import logo from "../../asset/img.jpg";
@@ -20,20 +20,27 @@ const categories = [
     title: "동아리연합회",
     items: [
       { name: "소개글", navigateTo: "/introduce" },
-      { name: "공지사항", navigateTo: "/notice" }, // "공지사항" 클릭 시 이동 경로 추가
+      { name: "공지사항", navigateTo: "/notice" },
     ],
   },
   {
     title: "내정보",
-    items: [
-      { name: "마이페이지", navigateTo: "/mypage" }, // 이동 경로 추가
-    ],
+    items: [{ name: "마이페이지", navigateTo: "/mypage" }],
   },
 ];
 
 function Header() {
   const [activeCategory, setActiveCategory] = useState(null);
-  const navigate = useNavigate(); // useNavigate 훅 생성
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
+
+  // 화면 크기에 따라 모바일 여부 업데이트
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const handleMouseEnter = (index) => {
     setActiveCategory(index);
@@ -45,16 +52,65 @@ function Header() {
 
   const handleCategoryClick = (category) => {
     if (category.navigateTo) {
-      navigate(category.navigateTo); // 해당 경로로 이동
+      if (isMobile) setMobileMenuOpen(false);
+      navigate(category.navigateTo);
     }
   };
 
   const handleItemClick = (item) => {
     if (item.navigateTo) {
+      if (isMobile) setMobileMenuOpen(false);
       navigate(item.navigateTo);
     }
   };
 
+  // 모바일: 햄버거 아이콘 클릭 시 토글
+  const handleMenuIconClick = () => setMobileMenuOpen((prev) => !prev);
+
+  // 모바일 헤더: 로고와 햄버거 아이콘만 보임 (햄버거 아이콘은 항상 보임)
+  if (isMobile) {
+    return (
+      <S.MobileWrapper>
+        <S.MobileHeader>
+          <S.LogoLinkMobile to="/">
+            <S.LogoMobile src={logo} alt="Ajou Logo" />
+          </S.LogoLinkMobile>
+          <S.MenuIcon onClick={handleMenuIconClick}>
+            <S.Bar />
+            <S.Bar />
+            <S.Bar />
+          </S.MenuIcon>
+        </S.MobileHeader>
+        {mobileMenuOpen && (
+          <S.MobileSidebar>
+            {categories.map((category, index) => (
+              <S.MobileMenuItem key={index}>
+                <S.MobileMenuTitle
+                  onClick={() => handleCategoryClick(category)}
+                >
+                  {category.title}
+                </S.MobileMenuTitle>
+                {category.items && (
+                  <S.MobileDropdown>
+                    {category.items.map((item, idx) => (
+                      <S.MobileDropdownItem
+                        key={idx}
+                        onClick={() => handleItemClick(item)}
+                      >
+                        {item.name}
+                      </S.MobileDropdownItem>
+                    ))}
+                  </S.MobileDropdown>
+                )}
+              </S.MobileMenuItem>
+            ))}
+          </S.MobileSidebar>
+        )}
+      </S.MobileWrapper>
+    );
+  }
+
+  // 데스크탑 헤더: 기존 코드 그대로
   return (
     <S.Wrapper>
       {/* 상단 작은 헤더 */}
@@ -76,7 +132,7 @@ function Header() {
               key={index}
               onMouseEnter={() => handleMouseEnter(index)}
               onMouseLeave={handleMouseLeave}
-              onClick={() => handleCategoryClick(category)} // 클릭 이벤트 추가
+              onClick={() => handleCategoryClick(category)}
             >
               <S.Text>{category.title}</S.Text>
               {activeCategory === index && category.items && (
@@ -84,7 +140,7 @@ function Header() {
                   {category.items.map((item, idx) => (
                     <S.DropdownItem
                       key={idx}
-                      onClick={() => handleItemClick(item)} // 아이템 클릭 시 이동
+                      onClick={() => handleItemClick(item)}
                     >
                       {item.name}
                     </S.DropdownItem>

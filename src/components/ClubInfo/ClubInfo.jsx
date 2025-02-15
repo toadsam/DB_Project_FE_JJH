@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-
 import { useParams, useNavigate } from "react-router-dom";
-
 import axios from "axios";
 import * as S from "./ClubInfo.styles";
 import defaultImage from "../../asset/mainLogo.png";
@@ -25,7 +23,6 @@ const userRole = () => {
 
 function ClubInfo() {
   const { club_id } = useParams();
-
   const navigate = useNavigate();
   const [clubInfo, setClubInfo] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -101,7 +98,6 @@ function ClubInfo() {
             <S.SidebarItem
               key={index}
               $isSelected={selectedItem === item}
-
               onClick={() => handleSidebarClick(item)}
             >
               {item}
@@ -117,7 +113,7 @@ function ClubInfo() {
         </S.Header>
         <S.CardContainer>
           <S.CardLogo
-            src={clubInfo?.image || defaultImage}
+            src={clubInfo?.logo_url || defaultImage}
             alt={clubInfo?.club_name || "Club Logo"}
           />
           <S.CardContent>
@@ -132,18 +128,19 @@ function ClubInfo() {
               <S.CardInfoItem>
                 <S.ContactLabel>연락처</S.ContactLabel>
                 <S.ContactValue>
-                  {clubInfo?.club_contact_phone_number || "연락처 정보가 없습니다."}
+                  {clubInfo?.club_contact_phone_number ||
+                    "연락처 정보가 없습니다."}
                 </S.ContactValue>
               </S.CardInfoItem>
               <S.CardInfoItem>
                 <S.ContactLabel>SNS</S.ContactLabel>
                 <S.ContactValue>
                   <a
-                    href={clubInfo?.club_sns || "#"}
+                    href={clubInfo?.club_sns1 || "#"}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {clubInfo?.club_sns || "SNS 정보가 없습니다."}
+                    {clubInfo?.club_sns1 || "SNS 정보가 없습니다."}
                   </a>
                 </S.ContactValue>
               </S.CardInfoItem>
@@ -161,30 +158,39 @@ function ClubInfo() {
             </S.Section>
 
             <S.Section>
-              <S.SectionTitle>분류</S.SectionTitle>
+              <S.SectionTitle>주요 활동</S.SectionTitle>
               <S.SectionContent>
-                {clubInfo?.club_category || "분류 정보가 없습니다."}
+                {clubInfo?.club_main_activities || "주요 활동 설명이 없습니다."}
               </S.SectionContent>
             </S.Section>
 
-            <S.Section>
+            {/* <S.Section>
               <S.SectionTitle>상세 분류</S.SectionTitle>
               <S.SectionContent>
                 {clubInfo?.detail_category_1 || "상세 분류 정보가 없습니다."}
               </S.SectionContent>
-            </S.Section>
+            </S.Section> */}
 
-            <S.Section>
-              <S.SectionTitle>대학 및 학과</S.SectionTitle>
-              <S.SectionContent>
-                {clubInfo?.college_name || "대학 정보가 없습니다."} / {clubInfo?.department_name || "학과 정보가 없습니다."}
-              </S.SectionContent>
-            </S.Section>
+            {clubInfo?.club_activity_images &&
+              clubInfo.club_activity_images.length > 0 && (
+                <S.Section>
+                  <S.SectionTitle>활동 사진</S.SectionTitle>
+                  <S.ActivityImagesGrid>
+                    {clubInfo.club_activity_images.map((imgUrl, index) => (
+                      <S.ActivityImageItem
+                        key={index}
+                        src={imgUrl}
+                        alt={`활동 사진 ${index + 1}`}
+                      />
+                    ))}
+                  </S.ActivityImagesGrid>
+                </S.Section>
+              )}
           </>
-
         )}
+
         {selectedItem === "모집 공고" && <ClubApply club_id={club_id} />}
-        {selectedItem === "행사 공고" && <ClubEvent />}
+        {selectedItem === "행사 공고" && <ClubEvent club_id={club_id} />}
       </S.InfoContainer>
     </S.PageContainer>
   );

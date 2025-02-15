@@ -12,7 +12,7 @@ const categories = [
   },
 ];
 
-function MiniClub() {
+function EventInfo() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -67,16 +67,12 @@ function MiniClub() {
         <S.TitleBar />
         <S.Container>
           {events.map((event) => (
-            <S.EventBox key={event.id}>
+            <S.EventBox key={event.id} bg={event.image}>
               <S.ImageWrapper>
                 <img src={event.image} alt={event.club_name} />
               </S.ImageWrapper>
               <S.Title>{event.title}</S.Title>
-              {/* <S.Description>
-                {event.description.length > 25
-                  ? `${event.description.slice(0, 25)}...`
-                  : event.description}
-              </S.Description>{" "} */}
+              {/* 필요 시 Description 추가 */}
               <S.Location>{event.location}</S.Location>
               <S.Date>{new Date(event.event_date).toLocaleDateString()}</S.Date>
             </S.EventBox>
@@ -87,4 +83,4 @@ function MiniClub() {
   );
 }
 
-export default MiniClub;
+export default EventInfo;
