@@ -9,8 +9,8 @@ function RecruitmentListPage() {
   const [recruitments, setRecruitments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [filter, setFilter] = useState("all"); // 모집 유형 필터
-  const [sortOrder, setSortOrder] = useState("latest"); // 정렬 (최신순)
+  const [filter, setFilter] = useState("all");
+  const [sortOrder, setSortOrder] = useState("latest");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,13 +28,11 @@ function RecruitmentListPage() {
     fetchRecruitments();
   }, []);
 
-  // 모집 유형 필터링
   const filteredRecruitments = recruitments.filter((item) => {
     if (filter === "all") return true;
     return item.recruitment_type === filter;
   });
 
-  // 정렬 (최신순 / 오래된순)
   const sortedRecruitments = [...filteredRecruitments].sort((a, b) => {
     return sortOrder === "latest"
       ? new Date(b.recruitment_start_date) - new Date(a.recruitment_start_date)
@@ -47,8 +45,7 @@ function RecruitmentListPage() {
   return (
     <S.Container>
       <S.Title>모집공고 목록</S.Title>
-      
-      {/* 필터 및 정렬 */}
+
       <S.FilterContainer>
         <S.Select onChange={(e) => setFilter(e.target.value)}>
           <option value="all">전체</option>
@@ -61,10 +58,12 @@ function RecruitmentListPage() {
         </S.Select>
       </S.FilterContainer>
 
-      {/* 모집공고 리스트 */}
       <S.List>
         {sortedRecruitments.map((recruitment) => (
-          <S.Card key={recruitment.recruitment_id} onClick={() => navigate(`/recruitment/${recruitment.recruitment_id}`)}>
+          <S.Card
+            key={recruitment.recruitment_id}
+            onClick={() => navigate(`/recruitment/${recruitment.recruitment_id}`)}
+          >
             <S.CardTitle>{recruitment.recruitment_title}</S.CardTitle>
             <S.CardInfo>모집 유형: {recruitment.recruitment_type}</S.CardInfo>
             <S.CardInfo>시작일: {recruitment.recruitment_start_date}</S.CardInfo>
