@@ -4,11 +4,11 @@ import * as S from "./RecruitmentPage.styles";
 
 function RecruitmentPage() {
   const [title, setTitle] = useState("");
-  const [type, setType] = useState("상시모집"); 
+  const [type, setType] = useState("상시모집");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
-  const [startDate, setStartDate] = useState(""); 
-  const [endDate, setEndDate] = useState(""); 
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -18,11 +18,10 @@ function RecruitmentPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 상시모집일 경우 자동으로 날짜 설정
-    const recruitmentStartDate = type === "상시모집" ? new Date().toISOString().split("T")[0] : startDate;
+    const recruitmentStartDate =
+      type === "상시모집" ? new Date().toISOString().split("T")[0] : startDate;
     const recruitmentEndDate = type === "상시모집" ? "2099-12-31" : endDate;
 
-    // 필수 입력 검증
     if (!title || !description || (!startDate && type === "수시모집") || (!endDate && type === "수시모집")) {
       setError("제목, 모집 내용, 시작일(수시모집), 종료일(수시모집)은 필수 입력 사항입니다.");
       return;
@@ -47,7 +46,6 @@ function RecruitmentPage() {
 
       if (response.status === 201) {
         setSuccess("모집공고가 성공적으로 등록되었습니다.");
-        // 입력 필드 초기화
         setTitle("");
         setType("상시모집");
         setPhoneNumber("");
@@ -66,13 +64,19 @@ function RecruitmentPage() {
   return (
     <S.Container>
       <S.Content>
+        {/* ✅ 새로운 카테고리 디자인 적용 */}
         <S.Sidebar>
-          <S.SidebarItem>모집글 설정</S.SidebarItem>
-          <S.SidebarItem>모집 공고</S.SidebarItem>
-          <S.SidebarItem>행사 관리</S.SidebarItem>
-          <S.SidebarItem>회원 관리</S.SidebarItem>
-          <S.SidebarItem>가입신청서 처리</S.SidebarItem>
-          <S.SidebarItem>기타</S.SidebarItem>
+          <S.SidebarTitle>카테고리</S.SidebarTitle>
+          <S.SidebarList>
+            <S.SidebarItem>동아리 소개</S.SidebarItem>
+            <S.SidebarItem>모집 공고</S.SidebarItem>
+            <S.SidebarItem>행사 공고</S.SidebarItem>
+            <S.SidebarItem>중앙동아리</S.SidebarItem>
+            <S.SidebarItem>소학회</S.SidebarItem>
+            <S.SidebarItem>모집공고</S.SidebarItem>
+            <S.SidebarItem>부원관리</S.SidebarItem>
+            <S.SidebarItem>신청목록</S.SidebarItem>
+          </S.SidebarList>
         </S.Sidebar>
 
         <S.Main>
@@ -114,7 +118,6 @@ function RecruitmentPage() {
               onChange={(e) => setEmail(e.target.value)}
             />
 
-            {/* 모집 유형이 '수시모집'일 때만 날짜 입력 필드 표시 */}
             {type === "수시모집" && (
               <>
                 <S.Label>모집 시작일</S.Label>
