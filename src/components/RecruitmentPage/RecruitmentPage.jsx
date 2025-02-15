@@ -4,11 +4,11 @@ import * as S from "./RecruitmentPage.styles";
 
 function RecruitmentPage() {
   const [title, setTitle] = useState("");
-  const [type, setType] = useState("상시모집");
+  const [type, setType] = useState("상시모집"); 
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState(""); 
+  const [endDate, setEndDate] = useState(""); 
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -17,8 +17,14 @@ function RecruitmentPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!title || !description || !startDate || !endDate) {
-      setError("제목, 모집 내용, 시작일, 종료일은 필수 입력 사항입니다.");
+
+    // 상시모집일 경우 자동으로 날짜 설정
+    const recruitmentStartDate = type === "상시모집" ? new Date().toISOString().split("T")[0] : startDate;
+    const recruitmentEndDate = type === "상시모집" ? "2099-12-31" : endDate;
+
+    // 필수 입력 검증
+    if (!title || !description || (!startDate && type === "수시모집") || (!endDate && type === "수시모집")) {
+      setError("제목, 모집 내용, 시작일(수시모집), 종료일(수시모집)은 필수 입력 사항입니다.");
       return;
     }
 
@@ -27,19 +33,21 @@ function RecruitmentPage() {
       recruitment_type: type,
       recruitment_phone_number: phoneNumber || null,
       recruitment_email: email || null,
-      recruitment_start_date: startDate,
-      recruitment_end_date: endDate,
+      recruitment_start_date: recruitmentStartDate,
+      recruitment_end_date: recruitmentEndDate,
       recruitment_description: description,
     };
 
     try {
       console.log("🔹 [API 요청 데이터]:", requestData);
+
       const response = await axios.post(API_URL, requestData, {
         headers: { "Content-Type": "application/json" },
       });
 
       if (response.status === 201) {
         setSuccess("모집공고가 성공적으로 등록되었습니다.");
+        // 입력 필드 초기화
         setTitle("");
         setType("상시모집");
         setPhoneNumber("");
@@ -58,17 +66,13 @@ function RecruitmentPage() {
   return (
     <S.Container>
       <S.Content>
-        {/* ✅ ClubInfo와 같은 Sidebar 디자인 적용 */}
         <S.Sidebar>
-          <S.SidebarTitle>카테고리</S.SidebarTitle>
-          <S.SidebarList>
-            <S.SidebarItem>모집글 설정</S.SidebarItem>
-            <S.SidebarItem>모집 공고</S.SidebarItem>
-            <S.SidebarItem>행사 관리</S.SidebarItem>
-            <S.SidebarItem>회원 관리</S.SidebarItem>
-            <S.SidebarItem>가입신청서 처리</S.SidebarItem>
-            <S.SidebarItem>기타</S.SidebarItem>
-          </S.SidebarList>
+          <S.SidebarItem>모집글 설정</S.SidebarItem>
+          <S.SidebarItem>모집 공고</S.SidebarItem>
+          <S.SidebarItem>행사 관리</S.SidebarItem>
+          <S.SidebarItem>회원 관리</S.SidebarItem>
+          <S.SidebarItem>가입신청서 처리</S.SidebarItem>
+          <S.SidebarItem>기타</S.SidebarItem>
         </S.Sidebar>
 
         <S.Main>
@@ -93,6 +97,51 @@ function RecruitmentPage() {
               <option value="상시모집">상시모집</option>
               <option value="수시모집">수시모집</option>
             </S.Select>
+
+            <S.Label>연락처 (선택 입력)</S.Label>
+            <S.Input 
+              type="text" 
+              placeholder="010-0000-0000"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+            />
+
+            <S.Label>이메일 (선택 입력)</S.Label>
+            <S.Input 
+              type="email" 
+              placeholder="example@ajou.ac.kr"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+
+            {/* 모집 유형이 '수시모집'일 때만 날짜 입력 필드 표시 */}
+            {type === "수시모집" && (
+              <>
+                <S.Label>모집 시작일</S.Label>
+                <S.Input 
+                  type="date" 
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  required={type === "수시모집"} 
+                />
+
+                <S.Label>모집 종료일</S.Label>
+                <S.Input 
+                  type="date" 
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  required={type === "수시모집"} 
+                />
+              </>
+            )}
+
+            <S.Label>모집 내용</S.Label>
+            <S.TextArea 
+              placeholder="모집에 대한 상세 설명을 입력하세요."
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              required
+            />
 
             <S.SubmitButton type="submit">게시</S.SubmitButton>
           </S.Form>
