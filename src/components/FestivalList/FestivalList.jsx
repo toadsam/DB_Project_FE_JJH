@@ -5,7 +5,10 @@ import defaultImage from "../../asset/mainLogo.png"; // 기본 이미지 불러�
 
 // Swiper 관련 import
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Mousewheel } from "swiper/modules";
 import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -13,17 +16,6 @@ function FestivalList() {
   const [events, setEvents] = useState([]); // API 데이터 상태 관리
   const [loading, setLoading] = useState(false); // 로딩 상태 관리
   const [error, setError] = useState(null); // 에러 상태 관리
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-
-  // 창 크기에 따라 모바일 여부 업데이트
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -46,7 +38,7 @@ function FestivalList() {
         );
       } catch (err) {
         setError(err.response?.data?.message || err.message);
-        setEvents([]); // 에러 발생 시 빈 배열로 설정
+        setEvents([]);
       } finally {
         setLoading(false);
       }
@@ -61,59 +53,34 @@ function FestivalList() {
   return (
     <S.Container>
       <S.Title1>새로운 행사가 올라왔어요 {">"}</S.Title1>
-      {isMobile ? (
-        // 모바일 환경: Swiper를 이용해 슬라이드(캐러셀)로 표시
-        <Swiper
-          spaceBetween={20}
-          slidesPerView="auto"
-          freeMode={true} // 드래그 시 자연스러운 스크롤 효과
-          grabCursor={true} // 드래그 가능함을 표시
-          simulateTouch={true} // 데스크탑에서도 터치 드래그처럼 작동
-        >
-          {events.map((event) => (
-            <SwiperSlide key={event.id} style={{ width: "180px" }}>
-              <S.EventBox>
-                <S.ImageWrapper>
-                  <img
-                    src={event.image}
-                    alt={event.title}
-                    style={{
-                      width: "100%",
-                      height: "auto",
-                      borderRadius: "10px",
-                    }}
-                  />
-                </S.ImageWrapper>
-                <S.Title>{event.title}</S.Title>
-                <S.Location>{event.location}</S.Location>
-                <S.Date>
-                  {new Date(event.event_date).toLocaleDateString()}
-                </S.Date>
-              </S.EventBox>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      ) : (
-        // 데스크탑 환경: 기존 그리드 레이아웃
-        events.map((event) => (
-          <S.EventBox key={event.id}>
-            <S.ImageWrapper>
-              <img
-                src={event.image}
-                alt={event.title}
-                style={{
-                  width: "100%",
-                  height: "auto",
-                  borderRadius: "10px",
-                }}
-              />
-            </S.ImageWrapper>
-            <S.Title>{event.title}</S.Title>
-            <S.Location>{event.location}</S.Location>
-            <S.Date>{new Date(event.event_date).toLocaleDateString()}</S.Date>
-          </S.EventBox>
-        ))
-      )}
+      <Swiper
+        spaceBetween={20}
+        slidesPerView="auto"
+        freeMode={true}
+        grabCursor={true}
+        simulateTouch={true}
+        pagination={{ clickable: true }}
+        mousewheel={true}
+        modules={[Navigation, Pagination, Mousewheel]}
+        style={{ justifyContent: "flex-start" }}
+      >
+        {events.map((event) => (
+          <SwiperSlide key={event.id} style={{ width: "180px" }}>
+            <S.EventBox>
+              <S.ImageWrapper style={{ height: "180px", overflow: "hidden" }}>
+                <img
+                  src={event.image}
+                  alt={event.title}
+                  style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "10px" }}
+                />
+              </S.ImageWrapper>
+              <S.Title>{event.title}</S.Title>
+              <S.Location>{event.location}</S.Location>
+              <S.Date>{new Date(event.event_date).toLocaleDateString()}</S.Date>
+            </S.EventBox>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </S.Container>
   );
 }
