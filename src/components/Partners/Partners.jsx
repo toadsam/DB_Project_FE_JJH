@@ -91,7 +91,7 @@ function Partners() {
                 <SwiperSlide key={img.id}>
                   <img
                     src={img.url}
-                    alt={`Post ${selectedPost.id} Image ${img.id}`}
+                    alt={`Post ${selectedPost.id} slide ${img.id}`}
                     style={{ width: "100%", borderRadius: "8px" }}
                   />
                 </SwiperSlide>
