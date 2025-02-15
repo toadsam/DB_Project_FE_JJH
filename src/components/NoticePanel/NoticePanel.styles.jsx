@@ -11,6 +11,7 @@ export const PanelContainer = styled.div`
   box-sizing: border-box;
   overflow-x: auto; /* 수평 스크롤 활성화 */
   scroll-behavior: smooth; /* 부드러운 스크롤 */
+  
 `;
 
 export const TabMenu = styled.div`
