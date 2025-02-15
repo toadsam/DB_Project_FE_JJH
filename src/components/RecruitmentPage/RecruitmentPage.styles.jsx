@@ -58,6 +58,7 @@ export const Sidebar = styled.div`
   gap: 1rem;
 `;
 
+// ✅ 카테고리 제목 강조
 export const SidebarTitle = styled.h3`
   font-size: 1.2rem;
   font-weight: bold;
@@ -75,10 +76,12 @@ export const SidebarList = styled.ul`
 
 export const SidebarItem = styled.li`
   font-size: 1rem;
-  color: #333;
+  color: ${(props) => (props.$isSelected ? "#0056b3" : "#333")};
+  font-weight: ${(props) => (props.$isSelected ? "bold" : "normal")};
   cursor: pointer;
   padding: 0.75rem 1rem;
   border-radius: 6px;
+  background-color: ${(props) => (props.$isSelected ? "#e6f7ff" : "transparent")};
   transition: all 0.3s ease-in-out;
 
   &:hover {
@@ -86,8 +89,6 @@ export const SidebarItem = styled.li`
     color: #0056b3;
   }
 `;
-
-
 
 export const Main = styled.main`
   flex: 1;

@@ -12,6 +12,7 @@ function RecruitmentPage() {
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [selectedItem, setSelectedItem] = useState("모집 공고"); // 현재 선택된 항목
 
   const API_URL = `http://43.203.79.210:5001/api/recruitments/19`;
 
@@ -68,14 +69,17 @@ function RecruitmentPage() {
         <S.Sidebar>
           <S.SidebarTitle>카테고리</S.SidebarTitle>
           <S.SidebarList>
-            <S.SidebarItem>동아리 소개</S.SidebarItem>
-            <S.SidebarItem>모집 공고</S.SidebarItem>
-            <S.SidebarItem>행사 공고</S.SidebarItem>
-            <S.SidebarItem>중앙동아리</S.SidebarItem>
-            <S.SidebarItem>소학회</S.SidebarItem>
-            <S.SidebarItem>모집공고</S.SidebarItem>
-            <S.SidebarItem>부원관리</S.SidebarItem>
-            <S.SidebarItem>신청목록</S.SidebarItem>
+            {["동아리 소개", "모집 공고", "행사 공고", "중앙동아리", "소학회", "모집공고", "부원관리", "신청목록"].map(
+              (item, index) => (
+                <S.SidebarItem
+                  key={index}
+                  $isSelected={selectedItem === item}
+                  onClick={() => setSelectedItem(item)}
+                >
+                  {item}
+                </S.SidebarItem>
+              )
+            )}
           </S.SidebarList>
         </S.Sidebar>
 
