@@ -23,6 +23,7 @@ import MemberManagementPage from "./components/MemberManagementPage/MemberManage
 import ApplicationListPage from "./components/ApplicationListPage/ApplicationListPage";
 import ClubEvent from "./components/ClubEvent/ClubEvent";
 import Introduction from "./components/Introduction/Introduction";
+import RecruitmentListPage from "./components/RecruitmentListPage/RecruitmentListPage"; // ✅ 모집공고 목록 페이지 추가
 import * as S from "./router.styles";
 
 function AppRouter() {
@@ -65,6 +66,7 @@ function AppRouter() {
         <Route path="/member-management" element={<MemberManagementPage />} />
         <Route path="/application-list" element={<ApplicationListPage />} />
         <Route path="/club-event/:id" element={<ClubEvent />} />
+        <Route path="/recruitment-list" element={<RecruitmentListPage />} /> {/* ✅ 모집공고 목록 추가 */}
         <Route path="/introduce" element={<Introduction />} />
       </Routes>
     </Router>

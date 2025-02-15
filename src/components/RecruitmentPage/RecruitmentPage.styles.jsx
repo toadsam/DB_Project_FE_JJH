@@ -22,53 +22,53 @@ export const Logo = styled.div`
   color: #0056b3;
 `;
 
-// ✅ 네비게이션 스타일 수정
-export const Nav = styled.nav`
-  display: flex;
-  gap: 2rem; /* 일정한 간격 유지 */
-  align-items: center;
-`;
-
-export const NavItem = styled.div`
-  color: #000; /* 검은색으로 변경 */
-  font-size: 1rem;
-  font-weight: bold;
-  cursor: pointer;
-  padding: 0.5rem 1rem; /* 클릭 영역 확대 및 일정한 크기 */
-  transition: color 0.3s ease-in-out;
-
-  &:hover {
-    color: #0056b3; /* 마우스 오버 시 색상 변경 */
-  }
-`;
-
 export const Content = styled.div`
   display: flex;
   margin: 2rem;
+  gap: 12px; /* 사이드바와 본문 간격 축소 */
 `;
 
+// ✅ 새로운 Sidebar 스타일 추가 (ClubInfo 스타일 반영)
 export const Sidebar = styled.div`
-  width: 200px;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  border-right: 1px solid #ddd;
-  padding-right: 1rem;
+  width: 180px;
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
-export const SidebarItem = styled.div`
-  cursor: pointer;
-  font-size: 1rem;
+export const SidebarTitle = styled.h3`
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
   color: #333;
+`;
+
+export const SidebarList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+`;
+
+export const SidebarItem = styled.li`
+  font-size: 16px;
+  padding: 10px 15px;
+  margin: 5px 0;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
 
   &:hover {
-    color: #0056b3;
+    background-color: #e9ecef;
   }
 `;
 
 export const Main = styled.main`
   flex: 1;
-  padding-left: 2rem;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
 export const Title = styled.h2`
@@ -112,7 +112,6 @@ export const TextArea = styled.textarea`
   height: 150px;
 `;
 
-// ✅ Select 스타일 추가
 export const Select = styled.select`
   width: 100%;
   padding: 0.75rem;
