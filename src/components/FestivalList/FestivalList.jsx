@@ -27,7 +27,6 @@ function FestivalList() {
             "ngrok-skip-browser-warning": "69420",
           },
         });
-        console.log("API Response:", response.data);
         setEvents(
           Array.isArray(response.data)
             ? response.data.map((event) => ({
@@ -58,6 +57,7 @@ function FestivalList() {
         slidesPerView="auto"
         freeMode={true}
         grabCursor={true}
+        centerInsufficientSlides={false}  // 슬라이드 개수가 부족해도 왼쪽 정렬
         simulateTouch={true}
         pagination={{ clickable: true }}
         mousewheel={true}

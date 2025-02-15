@@ -6,6 +6,7 @@ export const Container = styled.div`
   gap: 20px;
   padding: 0 40px;
   justify-content: flex-start;
+    background-color: #f6f4f4;
 `;
 
 export const Title1 = styled.h1`
@@ -14,9 +15,9 @@ export const Title1 = styled.h1`
   font-weight: 700;
   color: #1d1d1f;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   margin-left: 10px;
-  margin-top: 30px;
+  margin-top: 20px;
 `;
 
 export const EventBox = styled.div`
