@@ -3,6 +3,13 @@ import * as S from "./FestivalList.styles"; // 스타일 정의
 import axios from "axios";
 import defaultImage from "../../asset/mainLogo.png"; // 기본 이미지 불러오기
 
+// Swiper 관련 import
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Mousewheel } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+
 const API_URL = process.env.REACT_APP_API_URL;
 
 function FestivalList() {
@@ -12,7 +19,7 @@ function FestivalList() {
 
   useEffect(() => {
     const fetchEvents = async () => {
-      setLoading(true); // 로딩 시작
+      setLoading(true);
       try {
         const response = await axios.get(`${API_URL}/api/home/updatedevent`, {
           headers: {
@@ -20,7 +27,6 @@ function FestivalList() {
             "ngrok-skip-browser-warning": "69420",
           },
         });
-        console.log("API Response:", response.data); // 디버깅
         setEvents(
           Array.isArray(response.data)
             ? response.data.map((event) => ({
@@ -31,9 +37,9 @@ function FestivalList() {
         );
       } catch (err) {
         setError(err.response?.data?.message || err.message);
-        setEvents([]); // 에러 발생 시 빈 배열로 설정
+        setEvents([]);
       } finally {
-        setLoading(false); // 로딩 종료
+        setLoading(false);
       }
     };
 
@@ -45,26 +51,36 @@ function FestivalList() {
 
   return (
     <S.Container>
-      <S.Title1>새로운 행사가 올라왔어요{" >"}</S.Title1>
-      {events.map((event) => (
-        <S.EventBox key={event.id}>
-          <S.ImageWrapper>
-            <img
-              src={event.image} // 이미지 URL 또는 기본 이미지
-              alt={event.title}
-              style={{ width: "100%", height: "auto", borderRadius: "10px" }}
-            />
-          </S.ImageWrapper>
-          <S.Title>{event.title}</S.Title>
-          {/* <S.Description>
-            {event.description.length > 30
-              ? `${event.description.slice(0, 30)}...`
-              : event.description}
-          </S.Description> */}
-          <S.Location>{event.location}</S.Location>
-          <S.Date>{new Date(event.event_date).toLocaleDateString()}</S.Date>
-        </S.EventBox>
-      ))}
+      <S.Title1>새로운 행사가 올라왔어요 {">"}</S.Title1>
+      <Swiper
+        spaceBetween={20}
+        slidesPerView="auto"
+        freeMode={true}
+        grabCursor={true}
+        centerInsufficientSlides={false}  // 슬라이드 개수가 부족해도 왼쪽 정렬
+        simulateTouch={true}
+        pagination={{ clickable: true }}
+        mousewheel={true}
+        modules={[Navigation, Pagination, Mousewheel]}
+        style={{ justifyContent: "flex-start" }}
+      >
+        {events.map((event) => (
+          <SwiperSlide key={event.id} style={{ width: "180px" }}>
+            <S.EventBox>
+              <S.ImageWrapper style={{ height: "180px", overflow: "hidden" }}>
+                <img
+                  src={event.image}
+                  alt={event.title}
+                  style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "10px" }}
+                />
+              </S.ImageWrapper>
+              <S.Title>{event.title}</S.Title>
+              <S.Location>{event.location}</S.Location>
+              <S.Date>{new Date(event.event_date).toLocaleDateString()}</S.Date>
+            </S.EventBox>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </S.Container>
   );
 }

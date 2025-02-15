@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import * as S from "./Category.styles";
 
 import 체육 from "../../asset/체육.png";
@@ -10,7 +11,7 @@ import 사교 from "../../asset/사교.png";
 import 봉사 from "../../asset/봉사.jpg";
 
 const categories = [
-  { name: "체육", image: 체육 },
+  { name: "스포츠", image: 체육 },
   { name: "학술", image: 학술 },
   { name: "종교", image: 종교 },
   { name: "문화/예술", image: 문화예술 },
@@ -24,6 +25,7 @@ const CategoryList = () => {
   const isDragging = useRef(false); // 드래그 상태 확인
   const startX = useRef(0); // 드래그 시작 지점
   const scrollLeft = useRef(0); // 드래그 시작 시 스크롤 위치
+  const navigate = useNavigate();
 
   // 마우스 눌렀을 때
   const handleMouseDown = (e) => {
@@ -45,9 +47,14 @@ const CategoryList = () => {
   const handleMouseUp = () => {
     isDragging.current = false;
   };
+
+  const handleCategoryClick = (categoryName) => {
+    // categoryName은 "문화/예술"이지만, encodeURIComponent()를 사용하면 URL에는 "문화%2F예술"로 인코딩됨.
+    navigate(`/category/${encodeURIComponent(categoryName)}`);
+  };
+
   return (
     <S.CategoryContainer>
-      {/* <S.Title>카테고리 &gt;</S.Title> */}
       <S.ScrollWrapper
         ref={scrollRef} // 스크롤 참조
         onMouseDown={handleMouseDown} // 마우스 눌렀을 때
@@ -56,7 +63,11 @@ const CategoryList = () => {
         onMouseLeave={handleMouseUp} // 마우스가 영역을 떠났을 때도 처리
       >
         {categories.map((category, index) => (
-          <S.CategoryBox key={index}>
+          <S.CategoryBox
+            key={index}
+            onClick={() => handleCategoryClick(category.name)}
+            style={{ cursor: "pointer" }} // 클릭 가능하다는 표시
+          >
             <img src={category.image} alt={category.name} />
             <span>{category.name}</span>
           </S.CategoryBox>

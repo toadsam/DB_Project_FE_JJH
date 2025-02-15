@@ -4,11 +4,19 @@ export const PageContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  width: 100%;
   box-sizing: border-box;
   overflow: visible;
+  width: 100%;
+  max-width: 1200px; /* 디자인 기준 폭 */
+  margin: 0 auto;
+  padding: 0 20px;
 
-  padding: 20px 80px;
+  /* 모바일 전용 스타일 */
+  @media (max-width: 768px) {
+    flex-direction: column; /* 세로로 배치해서 카테고리(사이드바)가 위로 오게 함 */
+    max-width: 100%;
+    padding: 0 10px;
+  }
 `;
 export const Sidebar = styled.div`
   width: 180px;
@@ -20,7 +28,16 @@ export const Sidebar = styled.div`
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   position: sticky;
   margin-top: 50px;
+
+  /* 모바일 전용 스타일 */
+  @media (max-width: 768px) {
+    width: 100%;
+    margin: 0 auto 20px auto; /* 상단에 배치되고 아래쪽 마진 추가 */
+    position: relative; /* 스크롤에 자연스럽게 따라감 */
+    top: 0;
+  }
 `;
+
 
 export const SidebarTitle = styled.h2`
   font-size: 18px;
@@ -75,7 +92,6 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
 `;
-
 export const InfoContainer = styled.div`
   width: 100%;
   margin: 0 auto;
@@ -84,6 +100,11 @@ export const InfoContainer = styled.div`
   font-family: "Arial", sans-serif;
   display: flex;
   flex-direction: column;
+
+  /* 모바일 전용 스타일 */
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
 `;
 export const Loading = styled.div`
   font-size: 18px;
@@ -199,11 +220,19 @@ export const CardContainer = styled.div`
   background-color: #f6f4f4; /* 카드 배경색 */
   border: 1px solid #ddd; /* 테두리 */
   border-radius: 5px; /* 모서리 둥글게 */
-
   justify-content: space-between;
   margin-bottom: 30px;
   margin-top: 30px;
+
+  /* 모바일 전용 스타일 */
+  @media (max-width: 768px) {
+    flex-direction: column; /* 카드 내 요소들을 세로 정렬 */
+    width: 100%;
+    padding: 15px;
+    align-items: center; /* 자식 요소들을 가운데 정렬 */
+  }
 `;
+
 
 export const CardLogo = styled(ClubLogo)`
   width: 250px;
@@ -238,4 +267,18 @@ export const CardHashTagItem = styled(CardInfoItem)`
   background-color: transparent;
   font-weight: normal; /* 기존 스타일과 통일 */
   color: #555;
+`;
+
+export const ActivityImagesGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+`;
+
+export const ActivityImageItem = styled.img`
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
 `;

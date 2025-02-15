@@ -6,7 +6,7 @@ import logo from "../../asset/img.jpg";
 const categories = [
   {
     title: "중앙동아리",
-    navigateTo: "/clublist",
+    navigateTo: "/clublist", // 이동할 경로 추가
   },
   {
     title: "소학회",
@@ -21,40 +21,25 @@ const categories = [
     items: [
       { name: "소개글", navigateTo: "/introduce" },
       { name: "공지사항", navigateTo: "/notice" },
-      { name: "모집공고 목록", navigateTo: "/recruitment-list" }, // ✅ 모집공고 목록 추가
     ],
   },
   {
     title: "내정보",
-    items: [
-      { name: "마이페이지", navigateTo: "/mypage" },
-    ],
+    items: [{ name: "마이페이지", navigateTo: "/mypage" }],
   },
 ];
 
 function Header() {
   const [activeCategory, setActiveCategory] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // ✅ 로그인 상태 관리
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
-  // ✅ 로그인 여부 확인 (localStorage의 토큰 확인)
+  // 화면 크기에 따라 모바일 여부 업데이트
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    setIsLoggedIn(!!token); // 토큰이 있으면 true, 없으면 false
-  }, []);
-
-  // ✅ 로그인 후 헤더 상태를 즉시 반영
-  useEffect(() => {
-    const checkLoginStatus = () => {
-      const token = localStorage.getItem("accessToken");
-      setIsLoggedIn(!!token);
-    };
-
-    window.addEventListener("storage", checkLoginStatus); // 로그인 상태 변경 감지
-
-    return () => {
-      window.removeEventListener("storage", checkLoginStatus);
-    };
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const handleMouseEnter = (index) => {
@@ -67,34 +52,71 @@ function Header() {
 
   const handleCategoryClick = (category) => {
     if (category.navigateTo) {
+      if (isMobile) setMobileMenuOpen(false);
       navigate(category.navigateTo);
     }
   };
 
   const handleItemClick = (item) => {
     if (item.navigateTo) {
+      if (isMobile) setMobileMenuOpen(false);
       navigate(item.navigateTo);
     }
   };
 
-  // ✅ 로그아웃 처리 함수
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("userInfo");
-    setIsLoggedIn(false); // 로그인 상태 업데이트
-    navigate("/login");
-  };
+  // 모바일: 햄버거 아이콘 클릭 시 토글
+  const handleMenuIconClick = () => setMobileMenuOpen((prev) => !prev);
 
+  // 모바일 헤더: 로고와 햄버거 아이콘만 보임 (햄버거 아이콘은 항상 보임)
+  if (isMobile) {
+    return (
+      <S.MobileWrapper>
+        <S.MobileHeader>
+          <S.LogoLinkMobile to="/">
+            <S.LogoMobile src={logo} alt="Ajou Logo" />
+          </S.LogoLinkMobile>
+          <S.MenuIcon onClick={handleMenuIconClick}>
+            <S.Bar />
+            <S.Bar />
+            <S.Bar />
+          </S.MenuIcon>
+        </S.MobileHeader>
+        {mobileMenuOpen && (
+          <S.MobileSidebar>
+            {categories.map((category, index) => (
+              <S.MobileMenuItem key={index}>
+                <S.MobileMenuTitle
+                  onClick={() => handleCategoryClick(category)}
+                >
+                  {category.title}
+                </S.MobileMenuTitle>
+                {category.items && (
+                  <S.MobileDropdown>
+                    {category.items.map((item, idx) => (
+                      <S.MobileDropdownItem
+                        key={idx}
+                        onClick={() => handleItemClick(item)}
+                      >
+                        {item.name}
+                      </S.MobileDropdownItem>
+                    ))}
+                  </S.MobileDropdown>
+                )}
+              </S.MobileMenuItem>
+            ))}
+          </S.MobileSidebar>
+        )}
+      </S.MobileWrapper>
+    );
+  }
+
+  // 데스크탑 헤더: 기존 코드 그대로
   return (
     <S.Wrapper>
       {/* 상단 작은 헤더 */}
       <S.TopBar>
-        <S.TopBarItem onClick={() => navigate("/")}>HOME</S.TopBarItem>
-        {isLoggedIn ? (
-          <S.TopBarItem onClick={handleLogout}>LOGOUT</S.TopBarItem>
-        ) : (
-          <S.TopBarItem onClick={() => navigate("/login")}>LOGIN</S.TopBarItem>
-        )}
+        <S.TopBarItem>HOME</S.TopBarItem>
+        <S.TopBarItem onClick={() => navigate("/login")}>LOGIN</S.TopBarItem>
         <S.TopBarItem>PORTAL</S.TopBarItem>
         <S.TopBarItem>LANGUAGE ▼</S.TopBarItem>
       </S.TopBar>

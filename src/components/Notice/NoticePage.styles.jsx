@@ -4,13 +4,17 @@ export const Container = styled.div`
   width: 80%; /* 전체 컨테이너 너비 설정 */
   margin: 0 auto; /* 좌우 중앙 정렬 */
   text-align: center;
-  padding: 20px;
+
+  max-width: 1200px; /* 디자인 기준 폭 (예: 1200px) */
+  margin: 0 auto; /* 좌우 자동 여백 -> 중앙 정렬 */
+  padding: 0 20px; /* 작은 화면일 때 내부 여백 추가 */
 `;
 
 export const Title = styled.h1`
   font-size: 22px;
   color: #333;
   margin-bottom: 15px;
+  margin-top: 20px;
 `;
 
 export const TitleBar = styled.div`

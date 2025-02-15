@@ -14,7 +14,7 @@ function ClubApply({ club_id }) {
       try {
         console.log("Fetching recruitment info for club_id:", club_id);
         const response = await axios.get(
-          `${API_URL}/api/clubs/${club_id}/recruitment`,
+          `${API_URL}/api/clubs/${club_id}/recruitments`,
           {
             headers: {
               "Content-Type": "application/json",

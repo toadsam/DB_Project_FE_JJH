@@ -23,10 +23,11 @@ import MemberManagementPage from "./components/MemberManagementPage/MemberManage
 import ApplicationListPage from "./components/ApplicationListPage/ApplicationListPage";
 import ClubEvent from "./components/ClubEvent/ClubEvent";
 import Introduction from "./components/Introduction/Introduction";
-import RecruitmentListPage from "./components/RecruitmentListPage/RecruitmentListPage"; // ✅ 모집공고 목록 페이지 추가
-import RecruitmentDetailPage from "./components/RecruitmentDetailPage/RecruitmentDetailPage"; // 추가
+import ClubCategory from "./components/ClubCategory/ClubCategory";
 import * as S from "./router.styles";
+import NoticeLayout from "./components/Notice/NoticeLayout";
 
+import Partners from "./components/Partners/Partners";
 function AppRouter() {
   return (
     <Router basename="/DB_Project_FE">
@@ -36,17 +37,19 @@ function AppRouter() {
           path="/"
           element={
             <>
-              <Category />{" "}
-              <S.RowContainer>
-                <S.PanelWrapper>
-                  <AcademicSchedule />
-                </S.PanelWrapper>
-                <S.PanelWrapper>
-                  <NoticePanel />
-                </S.PanelWrapper>
-              </S.RowContainer>
-              <FestivalList />
-              <NewRecruitment />
+              <S.MainContainer>
+                <Category />{" "}
+                <S.RowContainer>
+                  <S.PanelWrapper>
+                    <AcademicSchedule />
+                  </S.PanelWrapper>
+                  <S.PanelWrapper>
+                    <NoticePanel />
+                  </S.PanelWrapper>
+                </S.RowContainer>
+                <NewRecruitment />
+                <FestivalList />
+              </S.MainContainer>
             </>
           }
         />
@@ -56,7 +59,10 @@ function AppRouter() {
         <Route path="/clubinfo/:club_id" element={<ClubInfo />} />
         <Route path="/member-info/:id" element={<MemberInfo />} />
         <Route path="/event-info/:id" element={<EventInfo />} />
-        <Route path="/notice" element={<NoticePage />} />
+        <Route path="/notice" element={<NoticeLayout />}>
+        <Route index element={<NoticePage />} />
+        <Route path="partners" element={<Partners />} />
+      </Route>
         <Route path="/login" element={<LoginPage />} /> {/* 로그인 페이지 */}
         <Route path="/edit-profile" element={<EditProfilePage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />
@@ -67,10 +73,8 @@ function AppRouter() {
         <Route path="/member-management" element={<MemberManagementPage />} />
         <Route path="/application-list" element={<ApplicationListPage />} />
         <Route path="/club-event/:id" element={<ClubEvent />} />
-        <Route path="/recruitment-list" element={<RecruitmentListPage />} /> {/* ✅ 모집공고 목록 추가 */}
         <Route path="/introduce" element={<Introduction />} />
-        <Route path="/recruitment/:recruitment_id" element={<RecruitmentDetailPage />} />
-        
+        <Route path="/category/:categoryName" element={<ClubCategory />} />
       </Routes>
     </Router>
   );

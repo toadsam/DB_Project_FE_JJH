@@ -6,6 +6,7 @@ export const Container = styled.div`
   gap: 20px;
   padding: 0 40px;
   justify-content: flex-start;
+    background-color: #f6f4f4;
 `;
 
 export const Title1 = styled.h1`
@@ -14,9 +15,9 @@ export const Title1 = styled.h1`
   font-weight: 700;
   color: #1d1d1f;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   margin-left: 10px;
-  margin-top: 30px;
+  margin-top: 20px;
 `;
 
 export const EventBox = styled.div`
@@ -29,6 +30,8 @@ export const EventBox = styled.div`
   flex-direction: column;
   transition: transform 0.3s ease;
   margin-bottom: 30px;
+  cursor: pointer;
+
   &:hover {
     transform: translateY(-10px);
   }
@@ -45,7 +48,7 @@ export const ImageWrapper = styled.div`
     object-fit: cover;
   }
 
-  /* 상단 라벨 스타일 */
+  /* 상단 라벨 스타일 (필요 시 사용) */
   &::before {
     content: attr(data-label);
     position: absolute;
