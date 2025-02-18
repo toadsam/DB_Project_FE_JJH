@@ -3,7 +3,9 @@ export const MainContainer = styled.div`
   width: 100%;
   max-width: 1200px; /* 디자인 기준 폭 (예: 1200px) */
   margin: 0 auto; /* 좌우 자동 여백 -> 중앙 정렬 */
-  padding: 0 20px; /* 작은 화면일 때 내부 여백 추가 */
+  @media (max-width: 768px) {
+    max-width: 100%; /* 모바일에서는 화면 전체 너비를 사용 */
+  }
 `;
 export const RowContainer = styled.div`
   display: flex;
