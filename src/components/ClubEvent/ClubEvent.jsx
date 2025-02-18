@@ -66,24 +66,11 @@ function ClubApply({ club_id }) {
                   {event.event_category || "카테고리 정보가 없습니다."}
                 </S.Value>
               </S.InfoItem>
-              <S.InfoItem>
-                <S.Label>연락처:</S.Label>
-                <S.Value>
-                  {event.event_contact_phone_number ||
-                    "연락처 정보가 없습니다."}
-                </S.Value>
-              </S.InfoItem>
-              <S.InfoItem>
-                <S.Label>이메일:</S.Label>
-                <S.Value>
-                  {event.event_contact_email || "이메일 정보가 없습니다."}
-                </S.Value>
-              </S.InfoItem>
             </S.InfoBox>
           </div>
         ))
       ) : (
-        <S.Error>행사 정보를 찾을 수 없습니다.</S.Error>
+        <S.Error>❌진행 중인 행사가 없습니다.</S.Error>
       )}
     </S.ApplyContainer>
   );

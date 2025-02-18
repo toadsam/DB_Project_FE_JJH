@@ -20,7 +20,7 @@ function NoticeList() {
           },
         });
         // ID 내림차순 정렬 (최신순)
-        const sortedData = response.data.sort((a, b) => b.id - a.id);
+        const sortedData = response.data.sort((a, b) => a.id - b.id);
         setNotices(sortedData);
       } catch (err) {
         setError("데이터를 불러오는 중 오류가 발생했습니다.");

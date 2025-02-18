@@ -44,7 +44,7 @@ export const LogoLink = styled(Link)`
 `;
 
 export const Logo = styled.img`
-  width: 130px;
+  width: 170px;
   height: auto;
   padding-left: 50px;
 `;
@@ -67,7 +67,7 @@ export const MenuItem = styled.div`
 `;
 
 export const Text = styled.span`
-  font-size: 14px;
+  font-size: 15px;
   color: ${(props) => props.color || "#000"};
 `;
 
@@ -94,6 +94,9 @@ export const DropdownItem = styled.div`
   padding: 5px 10px;
   color: #333;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   &:hover {
     background-color: #f0f0f0;
     color: #007aff;
@@ -124,6 +127,7 @@ export const LogoMobile = styled.img`
   height: auto;
 `;
 
+/* 햄버거 아이콘 */
 export const MenuIcon = styled.div`
   cursor: pointer;
   display: flex;
@@ -131,7 +135,7 @@ export const MenuIcon = styled.div`
   justify-content: space-between;
   width: 25px;
   height: 20px;
-  z-index: 1100; /* 햄버거 아이콘은 헤더와 함께 위에 표시 */
+  z-index: 1100;
 `;
 
 export const Bar = styled.div`
@@ -140,12 +144,12 @@ export const Bar = styled.div`
   border-radius: 2px;
 `;
 
-/* 모바일 사이드바 (드로어) - 헤더 영역을 침범하지 않도록 top 값 설정 */
+/* 모바일 사이드바 - 메뉴들을 가운데 정렬 */
 export const MobileSidebar = styled.div`
   position: fixed;
   top: 60px; /* 헤더 높이만큼 띄움 */
   right: 0;
-  width: 250px;
+  width: 150px;
   height: 100%;
   background-color: #fff;
   box-shadow: -4px 0 8px rgba(0, 0, 0, 0.1);
@@ -155,25 +159,34 @@ export const MobileSidebar = styled.div`
   flex-direction: column;
 `;
 
-/* 모바일 메뉴 아이템 및 드롭다운 (제공하신 Sidebar 예시와 유사하게) */
+/* 모바일 메뉴 아이템 */
 export const MobileMenuItem = styled.div`
   margin-top: 20px;
+  width: 100%;
+  text-align: center;
 `;
 
+/* 모바일 메뉴 제목: 아이콘과 텍스트를 가운데 정렬 */
 export const MobileMenuTitle = styled.div`
   font-size: 15px;
   font-weight: 700;
   color: #1d1d1f;
   cursor: pointer;
+  display: flex;
+  align-items: left;
+  justify-content: left;
+  gap: 8px;
 `;
 
+/* 모바일 드롭다운: 아코디언 형식 */
 export const MobileDropdown = styled.div`
-  margin-left: 10px;
   margin-top: 10px;
   display: flex;
   flex-direction: column;
+  align-items: left;
 `;
 
+/* 모바일 드롭다운 항목 */
 export const MobileDropdownItem = styled.div`
   font-size: 14px;
   font-weight: 400;
@@ -183,6 +196,9 @@ export const MobileDropdownItem = styled.div`
   padding: 5px 10px;
   border-radius: 5px;
   transition: background-color 0.3s ease, color 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 
   &:hover {
     background-color: #f0f0f0;
