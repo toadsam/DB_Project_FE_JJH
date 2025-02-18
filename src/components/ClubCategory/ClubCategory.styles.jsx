@@ -90,25 +90,19 @@ export const TitleBar = styled.div`
   border-radius: 2px;
 `;
 
-/* Container: 기본 4열 그리드, 화면이 작아지면 2열 또는 1열 */
+/* Container: 화면 크기에 따라 카드 개수가 자동 조정되도록 함 */
 export const Container = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  /* repeat(auto-fit, minmax(150px, 1fr)) 를 사용해
+     화면 크기에 따라 카드 개수가 유동적으로 바뀌도록 설정 */
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 20px;
   width: 100%;
-
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
+  justify-content: center;
 `;
 
-/* EventBox: 데스크탑에서는 카드 형태, 모바일에서는 가로로 긴 직사각형으로 변경 */
+/* EventBox: 모바일에서도 데스크탑과 동일한 카드 형태를 유지 */
 export const EventBox = styled.div`
-  width: 180px;
   background-color: #ffffff;
   border: 0.2px solid rgb(213, 213, 213);
   overflow: hidden;
@@ -122,31 +116,20 @@ export const EventBox = styled.div`
   }
 
   @media (max-width: 768px) {
+    /* 모바일에서도 카드형식을 유지하며, 필요 시 카드 크기를 조정 */
     width: 100%;
-    height: 100px; /* 모바일 시 카드 높이 조정 (원하는 값으로 수정 가능) */
-    flex-direction: row;
-    align-items: center;
     padding: 10px;
-    border: none;
-    /* club logo를 배경 이미지로, 살짝 반투명 오버레이 효과 적용 */
-    background-image: linear-gradient(
-        rgba(255, 255, 255, 0.6),
-        rgba(255, 255, 255, 0.6)
-      ),
-      url(${(props) => props.bg});
-    background-size: cover;
-    background-position: center;
   }
 `;
 
-/* ImageWrapper: 데스크탑에서는 동아리 로고 이미지 표시, 모바일에서는 숨김 */
+/* ImageWrapper: 데스크탑/모바일 모두 이미지를 보여줌 */
 export const ImageWrapper = styled.div`
   width: 100%;
   position: relative;
 
   img {
     width: 100%;
-    height: 100%;
+    height: 180px;
     object-fit: cover;
   }
 
@@ -162,10 +145,6 @@ export const ImageWrapper = styled.div`
     padding: 4px 8px;
     border-radius: 4px;
   }
-
-  @media (max-width: 768px) {
-    display: none;
-  }
 `;
 
 export const Title = styled.h2`
@@ -176,9 +155,8 @@ export const Title = styled.h2`
   margin: 10px 0;
 
   @media (max-width: 768px) {
-    flex: 1;
     text-align: left;
-    margin: 0 10px;
+    margin: 10px 0 0 0;
     color: #000;
   }
 `;
@@ -187,9 +165,9 @@ export const Description = styled.p`
   font-size: 14px;
   color: #6e6e73;
   text-align: center;
-  margin: 0 10px 10px;
+  margin: 0 10px 10px 10px;
 
   @media (max-width: 768px) {
-    display: none;
+    text-align: left;
   }
 `;

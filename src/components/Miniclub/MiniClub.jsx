@@ -39,7 +39,7 @@ function MiniClub() {
           Array.isArray(response.data)
             ? response.data.map((event) => ({
                 ...event,
-                image: defaultImage,
+                image: event.logo_url || defaultImage,
                 description:
                   event.club_description || "설명이 제공되지 않았습니다.",
               }))
@@ -107,7 +107,7 @@ function MiniClub() {
                 <img
                   src={event.image}
                   alt={event.title}
-                  style={{ width: "100%", height: "100%", objectFit: "cover"}}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
               </S.ImageWrapper>
               <S.Title>{event.club_name}</S.Title>
