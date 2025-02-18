@@ -1,53 +1,49 @@
 import React, { useState } from "react";
-import axios from "axios"; // API 요청을 위한 axios 추가
+import axios from "axios";
 import * as S from "./RecruitmentPage.styles";
 
 function RecruitmentPage() {
   const [title, setTitle] = useState("");
-  const [type, setType] = useState("상시모집"); // 🔥 변경: club_category로 사용됨
+  const [type, setType] = useState("상시모집");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [description, setDescription] = useState("");
-  const [error, setError] = useState(""); // 오류 메시지 상태
-  const [success, setSuccess] = useState(""); // 성공 메시지 상태
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [selectedItem, setSelectedItem] = useState("모집 공고"); // 현재 선택된 항목
 
-  // ✅ 클럽 ID를 설정 (이 값을 실제 환경에 맞게 변경해야 함)
-  //const clubId = "123"; // 👉 여기에 실제 club_id를 넣어야 함!
-
-  // ✅ API URL 변경 (club_id 추가)
   const API_URL = `http://43.203.79.210:5001/api/recruitments/19`;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 필수 입력 검증
-    if (!title || !description || !startDate || !endDate) {
-      setError("제목, 모집 내용, 시작일, 종료일은 필수 입력 사항입니다.");
+    const recruitmentStartDate =
+      type === "상시모집" ? new Date().toISOString().split("T")[0] : startDate;
+    const recruitmentEndDate = type === "상시모집" ? "2099-12-31" : endDate;
+
+    if (!title || !description || (!startDate && type === "수시모집") || (!endDate && type === "수시모집")) {
+      setError("제목, 모집 내용, 시작일(수시모집), 종료일(수시모집)은 필수 입력 사항입니다.");
       return;
     }
 
     const requestData = {
       recruitment_title: title,
-      recruitment_type: type, // 🔥 변경: `recruitment_type` → `club_category`
+      recruitment_type: type,
       recruitment_phone_number: phoneNumber || null,
       recruitment_email: email || null,
-      recruitment_start_date: startDate,
-      recruitment_end_date: endDate,
+      recruitment_start_date: recruitmentStartDate,
+      recruitment_end_date: recruitmentEndDate,
       recruitment_description: description,
     };
 
     try {
-      console.log("🔹 [API 요청 데이터]:", requestData); // 요청 데이터 콘솔 확인
+      console.log("🔹 [API 요청 데이터]:", requestData);
 
       const response = await axios.post(API_URL, requestData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
       });
-
-      console.log("✅ [API 응답]:", response.data);
 
       if (response.status === 201) {
         setSuccess("모집공고가 성공적으로 등록되었습니다.");
@@ -69,14 +65,24 @@ function RecruitmentPage() {
   return (
     <S.Container>
       <S.Content>
+        {/* ✅ 새로운 카테고리 디자인 적용 */}
         <S.Sidebar>
-          <S.SidebarItem>모집글 설정</S.SidebarItem>
-          <S.SidebarItem>모집 공고</S.SidebarItem>
-          <S.SidebarItem>행사 관리</S.SidebarItem>
-          <S.SidebarItem>회원 관리</S.SidebarItem>
-          <S.SidebarItem>가입신청서 처리</S.SidebarItem>
-          <S.SidebarItem>기타</S.SidebarItem>
+          <S.SidebarTitle>카테고리</S.SidebarTitle>
+          <S.SidebarList>
+            {["동아리 소개", "모집 공고", "행사 공고", "중앙동아리", "소학회", "모집공고", "부원관리", "신청목록"].map(
+              (item, index) => (
+                <S.SidebarItem
+                  key={index}
+                  $isSelected={selectedItem === item}
+                  onClick={() => setSelectedItem(item)}
+                >
+                  {item}
+                </S.SidebarItem>
+              )
+            )}
+          </S.SidebarList>
         </S.Sidebar>
+
         <S.Main>
           <S.Title>
             <S.Highlight>SWeat</S.Highlight> - 모집공고
@@ -116,21 +122,25 @@ function RecruitmentPage() {
               onChange={(e) => setEmail(e.target.value)}
             />
 
-            <S.Label>모집 시작일</S.Label>
-            <S.Input 
-              type="date" 
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              required
-            />
+            {type === "수시모집" && (
+              <>
+                <S.Label>모집 시작일</S.Label>
+                <S.Input 
+                  type="date" 
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  required={type === "수시모집"} 
+                />
 
-            <S.Label>모집 종료일</S.Label>
-            <S.Input 
-              type="date" 
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              required
-            />
+                <S.Label>모집 종료일</S.Label>
+                <S.Input 
+                  type="date" 
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  required={type === "수시모집"} 
+                />
+              </>
+            )}
 
             <S.Label>모집 내용</S.Label>
             <S.TextArea 

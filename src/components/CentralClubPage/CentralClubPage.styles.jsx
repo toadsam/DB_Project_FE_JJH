@@ -1,6 +1,5 @@
 import styled from "styled-components";
 
-
 export const TextArea = styled.textarea`
   width: 100%;
   padding: 0.75rem;
@@ -10,6 +9,15 @@ export const TextArea = styled.textarea`
   background-color: #f9f9f9;
   resize: none;
   height: 150px;
+`;
+
+export const Select = styled.select`
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
 `;
 
 export const Container = styled.div`
@@ -111,3 +119,4 @@ export const SuccessMessage = styled.p`
   font-size: 0.9rem;
   margin-bottom: 1rem;
 `;
+

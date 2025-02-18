@@ -24,20 +24,20 @@ export const Logo = styled.div`
 
 export const Nav = styled.nav`
   display: flex;
-  gap: 2rem; /* 일정한 간격 유지 */
+  gap: 2rem;
   align-items: center;
 `;
 
 export const NavItem = styled.div`
-  color: #000; /* 검은색으로 변경 */
+  color: #000;
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  padding: 0.5rem 1rem; /* 클릭 영역 확대 및 일정한 크기 */
+  padding: 0.5rem 1rem;
   transition: color 0.3s ease-in-out;
 
   &:hover {
-    color: #0056b3; /* 마우스 오버 시 색상 변경 */
+    color: #0056b3;
   }
 `;
 
@@ -47,20 +47,44 @@ export const Content = styled.div`
 `;
 
 export const Sidebar = styled.div`
-  width: 200px;
+  width: 240px;
+  padding: 1.5rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  border-right: 1px solid #ddd;
-  padding-right: 1rem;
 `;
 
-export const SidebarItem = styled.div`
-  cursor: pointer;
-  font-size: 1rem;
+// ✅ 카테고리 제목 강조
+export const SidebarTitle = styled.h3`
+  font-size: 1.2rem;
+  font-weight: bold;
   color: #333;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #ddd;
+`;
+
+export const SidebarList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+`;
+
+export const SidebarItem = styled.li`
+  font-size: 1rem;
+  color: ${(props) => (props.$isSelected ? "#0056b3" : "#333")};
+  font-weight: ${(props) => (props.$isSelected ? "bold" : "normal")};
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  background-color: ${(props) => (props.$isSelected ? "#e6f7ff" : "transparent")};
+  transition: all 0.3s ease-in-out;
 
   &:hover {
+    background-color: #f0f4ff;
     color: #0056b3;
   }
 `;
@@ -96,7 +120,7 @@ export const Input = styled.input`
   padding: 0.75rem;
   font-size: 1rem;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 6px;
   background-color: #f9f9f9;
 `;
 
@@ -105,7 +129,7 @@ export const TextArea = styled.textarea`
   padding: 0.75rem;
   font-size: 1rem;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 6px;
   background-color: #f9f9f9;
   resize: none;
   height: 150px;
@@ -116,7 +140,7 @@ export const Select = styled.select`
   padding: 0.75rem;
   font-size: 1rem;
   border: 1px solid #ddd;
-  border-radius: 4px;
+  border-radius: 6px;
   background-color: #f9f9f9;
   cursor: pointer;
 `;
@@ -127,9 +151,10 @@ export const SubmitButton = styled.button`
   background-color: #0056b3;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   margin-top: 1rem;
+  transition: all 0.3s ease-in-out;
 
   &:hover {
     background-color: #003f7f;
