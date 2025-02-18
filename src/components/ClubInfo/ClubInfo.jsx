@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import * as S from "./ClubInfo.styles";
 import defaultImage from "../../asset/mainLogo.png";
@@ -24,11 +24,15 @@ const userRole = () => {
 function ClubInfo() {
   const { club_id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const [clubInfo, setClubInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedItem, setSelectedItem] = useState("동아리 소개");
   const role = userRole();
+  const [selectedItem, setSelectedItem] = useState(
+    location.state?.defaultTab || "동아리 소개"
+  );
+  const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     const fetchClubData = async () => {
@@ -66,27 +70,15 @@ function ClubInfo() {
 
   const handleSidebarClick = (item) => {
     setSelectedItem(item);
-    if (role === "admin") {
-      switch (item) {
-        case "중앙동아리":
-          navigate("/central-club");
-          break;
-        case "소확회":
-          navigate("/small-club");
-          break;
-        case "모집공고":
-          navigate("/recruitment");
-          break;
-        case "부원관리":
-          navigate("/member-management");
-          break;
-        case "신청목록":
-          navigate("/application-list");
-          break;
-        default:
-          break;
-      }
-    }
+    navigate(`/clubinfo/${club_id}`, { state: { defaultTab: item } });
+  };
+
+  const handleImageClick = (imgUrl) => {
+    setSelectedImage(imgUrl);
+  };
+
+  const closeImageModal = () => {
+    setSelectedImage(null);
   };
 
   return (
@@ -164,13 +156,6 @@ function ClubInfo() {
               </S.SectionContent>
             </S.Section>
 
-            {/* <S.Section>
-              <S.SectionTitle>상세 분류</S.SectionTitle>
-              <S.SectionContent>
-                {clubInfo?.detail_category_1 || "상세 분류 정보가 없습니다."}
-              </S.SectionContent>
-            </S.Section> */}
-
             {clubInfo?.club_activity_images &&
               clubInfo.club_activity_images.length > 0 && (
                 <S.Section>
@@ -181,6 +166,7 @@ function ClubInfo() {
                         key={index}
                         src={imgUrl}
                         alt={`활동 사진 ${index + 1}`}
+                        onClick={() => handleImageClick(imgUrl)}
                       />
                     ))}
                   </S.ActivityImagesGrid>
@@ -192,6 +178,15 @@ function ClubInfo() {
         {selectedItem === "모집 공고" && <ClubApply club_id={club_id} />}
         {selectedItem === "행사 공고" && <ClubEvent club_id={club_id} />}
       </S.InfoContainer>
+
+      {selectedImage && (
+        <S.ModalOverlay onClick={closeImageModal}>
+          <S.ModalContent onClick={(e) => e.stopPropagation()}>
+            <S.CloseButton onClick={closeImageModal}>X</S.CloseButton>
+            <S.ModalImage src={selectedImage} alt="확대된 활동 사진" />
+          </S.ModalContent>
+        </S.ModalOverlay>
+      )}
     </S.PageContainer>
   );
 }
