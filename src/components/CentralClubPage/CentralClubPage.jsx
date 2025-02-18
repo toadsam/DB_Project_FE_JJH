@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import axios from "axios"; // API 요청을 위한 axios 추가
+import axios from "axios";
 import * as S from "./CentralClubPage.styles";
 
 function CentralClubPage() {
-  // ✅ 입력값 상태 관리
   const [clubName, setClubName] = useState("");
-  const [clubType, setClubType] = useState("");
+  const clubType = "중앙동아리"; // 동아리 구분을 중앙동아리로 고정
   const [clubLocation, setClubLocation] = useState("");
   const [clubSNS, setClubSNS] = useState("");
   const [clubPhoneNumber, setClubPhoneNumber] = useState("");
@@ -14,21 +13,19 @@ function CentralClubPage() {
   const [clubDescription, setClubDescription] = useState("");
   const [details, setDetails] = useState("");
 
-  const [error, setError] = useState(""); // 오류 메시지 상태
-  const [success, setSuccess] = useState(""); // 성공 메시지 상태
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  const API_URL = "http://43.203.79.210:5001/api/clubs/central"; // ✅ 실제 백엔드 API 주소
+  const API_URL = "http://43.203.79.210:5001/api/clubs/central";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 필수 입력 검증
-    if (!clubName || !clubType || !clubLocation || !clubCategory || !clubDescription) {
+    if (!clubName || !clubLocation || !clubCategory || !clubDescription) {
       setError("필수 항목을 모두 입력해주세요.");
       return;
     }
 
-    // 전송할 데이터 준비
     const requestData = {
       club_name: clubName,
       club_type: clubType,
@@ -45,21 +42,29 @@ function CentralClubPage() {
       const response = await axios.post(API_URL, requestData, {
         headers: { "Content-Type": "application/json" },
       });
-      
+
       console.log("✅ [API 응답]:", response.data);
-    
+
       if (response.status === 201) {
         setSuccess("동아리 등록 신청이 완료되었습니다.");
         setError("");
-        // 폼 초기화
-        setClubName(""); setClubType(""); setClubLocation(""); setClubSNS("");
-        setClubPhoneNumber(""); setClubEmail(""); setClubCategory(""); 
+        setClubName(""); setClubLocation(""); setClubSNS("");
+        setClubPhoneNumber(""); setClubEmail(""); setClubCategory("");
         setClubDescription(""); setDetails("");
       }
     } catch (err) {
-      // 서버 응답 메시지 출력
-      console.error("❌ [API 요청 실패]:", err.response ? err.response.data : err);
-      setError(err.response?.data?.message || "서버 오류가 발생했습니다. 다시 시도해주세요.");
+      if (err.response) {
+        console.error("❌ [서버 응답 오류]:", err.response.data);
+        console.error("❌ [서버 상태 코드]:", err.response.status);
+        console.error("❌ [서버 응답 헤더]:", err.response.headers);
+        setError(`서버 오류: ${err.response.data.message || '알 수 없는 오류 발생'}`);
+      } else if (err.request) {
+        console.error("❌ [요청 오류]: 요청이 서버에 도달하지 못했습니다.", err.request);
+        setError("서버에 연결할 수 없습니다. 네트워크 상태를 확인하세요.");
+      } else {
+        console.error("❌ [설정 오류]:", err.message);
+        setError("요청을 설정하는 중 오류가 발생했습니다.");
+      }
     }
   };
 
@@ -80,12 +85,7 @@ function CentralClubPage() {
           />
 
           <S.Label>동아리 구분</S.Label>
-          <S.Input 
-            placeholder="중앙동아리 or 소학회" 
-            value={clubType} 
-            onChange={(e) => setClubType(e.target.value)}
-            required
-          />
+          <S.Input value={clubType} disabled />
 
           <S.Label>동아리 위치</S.Label>
           <S.Input 
@@ -117,12 +117,20 @@ function CentralClubPage() {
           />
 
           <S.Label>동아리 카테고리</S.Label>
-          <S.Input 
-            placeholder="학술" 
+          <S.Select 
             value={clubCategory} 
             onChange={(e) => setClubCategory(e.target.value)}
             required
-          />
+          >
+            <option value="">카테고리를 선택하세요</option>
+            <option value="스포츠">스포츠</option>
+            <option value="학술">학술</option>
+            <option value="종교">종교</option>
+            <option value="문화/예술">문화/예술</option>
+            <option value="창업">창업</option>
+            <option value="사교">사교</option>
+            <option value="봉사">봉사</option>
+          </S.Select>
 
           <S.Label>동아리 설명</S.Label>
           <S.TextArea 
@@ -133,11 +141,21 @@ function CentralClubPage() {
           />
 
           <S.Label>세부 카테고리</S.Label>
-          <S.Input 
-            placeholder="과학기술분과" 
+          <S.Select 
             value={details} 
             onChange={(e) => setDetails(e.target.value)}
-          />
+          >
+            <option value="">세부 카테고리를 선택하세요</option>
+            <option value="과학기술분과">과학기술분과</option>
+            <option value="레저스포츠분과">레저스포츠분과</option>
+            <option value="사회활동분과">사회활동분과</option>
+            <option value="연행예술분과">연행예술분과</option>
+            <option value="준동아리">준동아리</option>
+            <option value="종교분과">종교분과</option>
+            <option value="창작전시분과">창작전시분과</option>
+            <option value="체육분과">체육분과</option>
+            <option value="학술언론분과">학술언론분과</option>
+          </S.Select>
 
           <S.SubmitButton type="submit">신청</S.SubmitButton>
         </S.Form>
@@ -147,3 +165,4 @@ function CentralClubPage() {
 }
 
 export default CentralClubPage;
+
