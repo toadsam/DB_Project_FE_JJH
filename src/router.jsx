@@ -26,6 +26,8 @@ import Introduction from "./components/Introduction/Introduction";
 import ClubCategory from "./components/ClubCategory/ClubCategory";
 import * as S from "./router.styles";
 import NoticeLayout from "./components/Notice/NoticeLayout";
+import RecruitmentListPage from "./components/RecruitmentListPage/RecruitmentListPage"; // 모집공고 목록 페이지
+import RecruitmentDetailPage from "./components/RecruitmentDetailPage/RecruitmentDetailPage"; // 모집공고 상세 페이지
 
 import Partners from "./components/Partners/Partners";
 function AppRouter() {
@@ -75,6 +77,8 @@ function AppRouter() {
         <Route path="/club-event/:id" element={<ClubEvent />} />
         <Route path="/introduce" element={<Introduction />} />
         <Route path="/category/:categoryName" element={<ClubCategory />} />
+        <Route path="/recruitment-list" element={<RecruitmentListPage />} />
+        <Route path="/recruitment/:id" element={<RecruitmentDetailPage />} />
       </Routes>
     </Router>
   );

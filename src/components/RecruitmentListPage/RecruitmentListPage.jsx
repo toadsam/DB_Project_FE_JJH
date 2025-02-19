@@ -62,7 +62,7 @@ function RecruitmentListPage() {
         {sortedRecruitments.map((recruitment) => (
           <S.Card
             key={recruitment.recruitment_id}
-            onClick={() => navigate(`/recruitment/${recruitment.recruitment_id}`)}
+            onClick={() => navigate(`/recruitment/${recruitment.recruitment_id}`)} // ✅ basename 확인 필수
           >
             <S.CardTitle>{recruitment.recruitment_title}</S.CardTitle>
             <S.CardInfo>모집 유형: {recruitment.recruitment_type}</S.CardInfo>

@@ -16,7 +16,7 @@ function CentralClubPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const API_URL = "http://43.203.79.210:5001/api/clubs/central";
+  const API_URL = "process.env.REACT_APP_API_URL;";
 
   const handleSubmit = async (e) => {
     e.preventDefault();

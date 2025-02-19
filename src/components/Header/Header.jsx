@@ -21,6 +21,7 @@ const categories = [
     items: [
       { name: "소개글", navigateTo: "/introduce" },
       { name: "공지사항", navigateTo: "/notice" },
+      { name: "모집공고 목록", navigateTo: "/recruitment-list" }, // ✅ 여기 추가
     ],
   },
   {
