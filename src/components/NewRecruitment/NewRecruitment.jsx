@@ -66,6 +66,7 @@ function FestivalList() {
       <S.TitleLink onClick={() => navigate("/recruitment-list")}>
         새로운 모집공고가 올라왔어요 {">"}
       </S.TitleLink>
+      
       <Swiper
         spaceBetween={20}
         slidesPerView="auto"
@@ -107,6 +108,24 @@ function FestivalList() {
             </S.EventBox>
           </SwiperSlide>
         ))}
+
+        {/* ✅ "더보기" 버튼 추가 - 클릭하면 모집공고 전체 리스트 페이지로 이동 */}
+        <SwiperSlide style={{ width: "180px" }}>
+          <S.EventBox onClick={() => navigate("/recruitment-list")}>
+            <S.ImageWrapper
+              style={{
+                height: "270px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: "#f0f0f0",
+                borderRadius: "10px",
+              }}
+            >
+              <S.MoreText>더보기 {">"}</S.MoreText>
+            </S.ImageWrapper>
+          </S.EventBox>
+        </SwiperSlide>
       </Swiper>
     </S.Container>
   );

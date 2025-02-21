@@ -3,7 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
-import * as S from "./LoginPage.styles";
+import * as S from "./LoginPage.styles"; // 스타일 파일 유지
+import ajouLogo from "../../asset/img.jpg"; // 아주대 로고 이미지 추가
+import mascotImage from "../../asset/치토.jpeg"; // 아주대 마스코트 이미지 추가
 
 const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000"; 
 
@@ -103,77 +105,72 @@ function LoginPage() {
 
   return (
     <GoogleOAuthProvider clientId="67500785353-oq4u26r3uek1s7b569sfr52sjkvj7j36.apps.googleusercontent.com">
-      <S.Container>
-        <S.Main>
-          <S.Title>로그인 페이지</S.Title>
-          <S.SubText>Google 계정으로 로그인하세요.</S.SubText>
+      <S.LoginContainer>
+        <S.LoginWrapper>
+          {/* ✅ 왼쪽: 마스코트 이미지 */}
+          <S.ImageSection>
+            <S.MascotImage src={mascotImage} alt="아주대학교 마스코트" />
+          </S.ImageSection>
 
-          {!token ? (
-            <GoogleLogin
-              onSuccess={async (credentialResponse) => {
-                try {
-                  console.log("✅ Google OAuth 성공:", credentialResponse);
+          {/* ✅ 오른쪽: 로그인 폼 */}
+          <S.LoginFormSection>
+            <S.Logo src={ajouLogo} alt="아주대학교 로고" />
+            <S.Title>아주대학교 통합인증</S.Title>
 
-                  const decodedGoogleToken = jwtDecode(credentialResponse.credential);
-                  console.log("🔹 현재 로그인한 Google 이메일:", decodedGoogleToken.email);
-
-                  const authResponse = await axios.post(`${API_URL}/api/auth/google`, {
-                    token: credentialResponse.credential,
-                  });
-
-                  const { accessToken, refreshToken } = authResponse.data;
-
-                  const decodedToken = decodeToken(accessToken);
-                  console.log("✅ 디코딩된 Access Token:", decodedToken);
-
-                  localStorage.setItem("accessToken", accessToken);
-                  localStorage.setItem("refreshToken", refreshToken);
-                  localStorage.setItem("userInfo", JSON.stringify(decodedToken));
-
-                  axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
-
-                  setToken(accessToken);
-                  setUser(decodedToken);
-
-                  alert(`환영합니다, ${decodedToken.user_name || decodedToken.name || decodedToken.nickname || decodedToken.email}!`);
-                  navigate("/");
-                } catch (err) {
-                  console.error("🚨 Google 로그인 실패:", err.response || err);
-                  alert("Google 로그인 중 오류가 발생했습니다.");
-                }
-              }}
-              onError={() => alert("Google 로그인 실패!")}
-              auto_select={false}
-              useOneTap={false}
-              prompt="select_account"
-            />
-          ) : (
-            <S.UserSection>
-              <S.UserInfo>
-                환영합니다, {user?.user_name || user?.name || user?.nickname || user?.email}님! (역할: {user?.role})
-              </S.UserInfo>
-              <S.Button className="logout" onClick={handleLogout}>
-                로그아웃
-              </S.Button>
-            </S.UserSection>
-          )}
-
-          <S.LinksContainer>
-            <S.NavLink as={Link} to="/edit-profile">내 정보 수정</S.NavLink>
-            <S.NavLink as={Link} to="/change-password">비밀번호 변경</S.NavLink>
-            <S.NavLink as={Link} to="/central-club">중앙 동아리</S.NavLink>
-            <S.NavLink as={Link} to="/small-club">소확회</S.NavLink>
-            <S.NavLink as={Link} to="/recruitment">모집공고</S.NavLink>
-
-            {user?.role === "admin" && (
+            {!token ? (
               <>
-                <S.NavLink as={Link} to="/member-management">부원관리</S.NavLink>
-                <S.NavLink as={Link} to="/application-list">신청목록</S.NavLink>
+                <GoogleLogin
+                  onSuccess={async (credentialResponse) => {
+                    try {
+                      console.log("✅ Google OAuth 성공:", credentialResponse);
+
+                      const decodedGoogleToken = jwtDecode(credentialResponse.credential);
+                      console.log("🔹 현재 로그인한 Google 이메일:", decodedGoogleToken.email);
+
+                      const authResponse = await axios.post(`${API_URL}/api/auth/google`, {
+                        token: credentialResponse.credential,
+                      });
+
+                      const { accessToken, refreshToken } = authResponse.data;
+
+                      const decodedToken = decodeToken(accessToken);
+                      console.log("✅ 디코딩된 Access Token:", decodedToken);
+
+                      localStorage.setItem("accessToken", accessToken);
+                      localStorage.setItem("refreshToken", refreshToken);
+                      localStorage.setItem("userInfo", JSON.stringify(decodedToken));
+
+                      axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+
+                      setToken(accessToken);
+                      setUser(decodedToken);
+
+                      alert(`환영합니다, ${decodedToken.user_name || decodedToken.name || decodedToken.nickname || decodedToken.email}!`);
+                      navigate("/");
+                    } catch (err) {
+                      console.error("🚨 Google 로그인 실패:", err.response || err);
+                      alert("Google 로그인 중 오류가 발생했습니다.");
+                    }
+                  }}
+                  onError={() => alert("Google 로그인 실패!")}
+                  auto_select={false}
+                  useOneTap={false}
+                  prompt="select_account"
+                />
               </>
+            ) : (
+              <S.UserSection>
+                <S.UserInfo>
+                  환영합니다, {user?.user_name || user?.name || user?.nickname || user?.email}님! (역할: {user?.role})
+                </S.UserInfo>
+                <S.Button className="logout" onClick={handleLogout}>
+                  로그아웃
+                </S.Button>
+              </S.UserSection>
             )}
-          </S.LinksContainer>
-        </S.Main>
-      </S.Container>
+          </S.LoginFormSection>
+        </S.LoginWrapper>
+      </S.LoginContainer>
     </GoogleOAuthProvider>
   );
 }

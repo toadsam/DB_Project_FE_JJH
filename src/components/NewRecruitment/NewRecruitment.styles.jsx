@@ -9,7 +9,7 @@ export const Container = styled.div`
   background-color: #f6f4f4;
 `;
 
-/* ✅ 추가된 TitleLink - 모집공고 목록 페이지로 이동 */
+/* ✅ 모집공고 목록 페이지로 이동하는 제목 */
 export const TitleLink = styled.h1`
   width: 100%;
   font-size: 14px;
@@ -42,6 +42,21 @@ export const EventBox = styled.div`
   &:hover {
     transform: translateY(-10px);
   }
+`;
+
+/* ✅ "더보기" 버튼 스타일 (기존 카드 스타일과 동일) */
+export const MoreBox = styled(EventBox)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+/* ✅ "더보기" 텍스트 스타일 */
+export const MoreText = styled.p`
+  font-size: 16px;
+  font-weight: bold;
+  color: #007aff;
+  text-align: center;
 `;
 
 export const ImageWrapper = styled.div`
