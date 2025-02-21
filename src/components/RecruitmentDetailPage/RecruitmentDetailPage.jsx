@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import * as S from "./RecruitmentDetailPage.styles"; // 스타일 파일 추가
+import * as S from "./RecruitmentDetailPage.styles"; 
 
 const API_URL = "https://ajouclubserver.shop/api/recruitments";
 
 function RecruitmentDetailPage() {
-  const { recruitment_id } = useParams(); // URL에서 모집공고 ID 가져오기
+  const { id } = useParams(); // ✅ 수정: recruitment_id ❌ → id ✅
   const [recruitment, setRecruitment] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -14,7 +14,7 @@ function RecruitmentDetailPage() {
   useEffect(() => {
     const fetchRecruitmentDetail = async () => {
       try {
-        const response = await axios.get(`${API_URL}/${recruitment_id}`);
+        const response = await axios.get(`${API_URL}/${id}`); // ✅ URL 수정
         setRecruitment(response.data);
       } catch (err) {
         console.error("API Error:", err);
@@ -24,7 +24,7 @@ function RecruitmentDetailPage() {
       }
     };
     fetchRecruitmentDetail();
-  }, [recruitment_id]);
+  }, [id]);
 
   if (loading) return <S.Loading>Loading...</S.Loading>;
   if (error) return <S.Error>{error}</S.Error>;

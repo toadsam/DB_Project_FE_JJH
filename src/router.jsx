@@ -28,6 +28,7 @@ import * as S from "./router.styles";
 import NoticeLayout from "./components/Notice/NoticeLayout";
 import FootBar from "./components/FooterBar/FootBar";
 import Partners from "./components/Partners/Partners";
+import RecruitmentListPage from "./components/RecruitmentListPage/RecruitmentListPage"; // 모집공고 목록 페이지
 function AppRouter() {
   return (
     <Router basename="/DB_Project_FE">
@@ -75,6 +76,7 @@ function AppRouter() {
         <Route path="/club-event/:id" element={<ClubEvent />} />
         <Route path="/introduce" element={<Introduction />} />
         <Route path="/category/:categoryName" element={<ClubCategory />} />
+        <Route path="/recruitment-list" element={<RecruitmentListPage />} />
       </Routes>
       <FootBar />
     </Router>

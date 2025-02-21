@@ -6,10 +6,11 @@ export const Container = styled.div`
   gap: 20px;
   padding: 0 40px;
   justify-content: flex-start;
-    background-color: #f6f4f4;
+  background-color: #f6f4f4;
 `;
 
-export const Title1 = styled.h1`
+/* ✅ 모집공고 목록 페이지로 이동하는 제목 */
+export const TitleLink = styled.h1`
   width: 100%;
   font-size: 14px;
   font-weight: 700;
@@ -18,6 +19,12 @@ export const Title1 = styled.h1`
   margin-bottom: 10px;
   margin-left: 10px;
   margin-top: 20px;
+  cursor: pointer;
+  text-decoration: underline;
+
+  &:hover {
+    color: #0056b3;
+  }
 `;
 
 export const EventBox = styled.div`
@@ -37,6 +44,21 @@ export const EventBox = styled.div`
   }
 `;
 
+/* ✅ "더보기" 버튼 스타일 (기존 카드 스타일과 동일) */
+export const MoreBox = styled(EventBox)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+/* ✅ "더보기" 텍스트 스타일 */
+export const MoreText = styled.p`
+  font-size: 16px;
+  font-weight: bold;
+  color: #007aff;
+  text-align: center;
+`;
+
 export const ImageWrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -48,7 +70,6 @@ export const ImageWrapper = styled.div`
     object-fit: cover;
   }
 
-  /* 상단 라벨 스타일 (필요 시 사용) */
   &::before {
     content: attr(data-label);
     position: absolute;
