@@ -62,7 +62,10 @@ function FestivalList() {
 
   return (
     <S.Container>
-      <S.Title1>새로운 모집공고가 올라왔어요 {">"}</S.Title1>
+      {/* ✅ 클릭하면 모집공고 리스트 페이지로 이동 */}
+      <S.TitleLink onClick={() => navigate("/recruitment-list")}>
+        새로운 모집공고가 올라왔어요 {">"}
+      </S.TitleLink>
       <Swiper
         spaceBetween={20}
         slidesPerView="auto"

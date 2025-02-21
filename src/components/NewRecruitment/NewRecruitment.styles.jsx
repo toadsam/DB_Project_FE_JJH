@@ -6,10 +6,11 @@ export const Container = styled.div`
   gap: 20px;
   padding: 0 40px;
   justify-content: flex-start;
-    background-color: #f6f4f4;
+  background-color: #f6f4f4;
 `;
 
-export const Title1 = styled.h1`
+/* ✅ 추가된 TitleLink - 모집공고 목록 페이지로 이동 */
+export const TitleLink = styled.h1`
   width: 100%;
   font-size: 14px;
   font-weight: 700;
@@ -18,6 +19,12 @@ export const Title1 = styled.h1`
   margin-bottom: 10px;
   margin-left: 10px;
   margin-top: 20px;
+  cursor: pointer;
+  text-decoration: underline;
+
+  &:hover {
+    color: #0056b3;
+  }
 `;
 
 export const EventBox = styled.div`
@@ -48,7 +55,6 @@ export const ImageWrapper = styled.div`
     object-fit: cover;
   }
 
-  /* 상단 라벨 스타일 (필요 시 사용) */
   &::before {
     content: attr(data-label);
     position: absolute;
