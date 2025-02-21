@@ -47,6 +47,7 @@ export const Description = styled.p`
   color: #555;
   margin-bottom: 20px;
   line-height: 1.5;
+  white-space: pre-wrap;
 `;
 
 export const Section = styled.div`
@@ -75,11 +76,37 @@ export const Loading = styled.div`
 
 export const Error = styled.div`
   font-size: 18px;
-  color: red;
   text-align: center;
-  padding: 50px 0;
-  background-color: #ffe6e6;
-  border: 1px solid red;
+`;
+
+/* 최신 모집공고 이미지 */
+export const RecruitmentImage = styled.img`
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+  margin: 20px 0;
   border-radius: 8px;
-  margin: 20px auto;
+`;
+
+/* 전년도 모집공고 드롭다운 스타일 */
+export const PastRecruitmentContainer = styled.div`
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid #ccc;
+`;
+
+export const PastTitle = styled.h2`
+  font-size: 18px;
+  font-weight: bold;
+  color: #046cc4;
+  cursor: pointer;
+  margin-bottom: 10px;
+`;
+
+export const PastDescription = styled.p`
+  font-size: 16px;
+  color: #555;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  transition: max-height 0.3s ease;
 `;

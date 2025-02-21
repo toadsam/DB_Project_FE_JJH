@@ -27,7 +27,7 @@ function ClubList() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(""); // 선택한 카테고리 상태
+  const [selectedCategory, setSelectedCategory] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -67,13 +67,27 @@ function ClubList() {
     };
 
     fetchEvents();
-  }, [selectedCategory]); // 카테고리 변경 시 재호출
+  }, [selectedCategory]);
 
   if (loading) return <S.PageContainer>Loading...</S.PageContainer>;
   if (error) return <S.PageContainer>Error: {error}</S.PageContainer>;
 
   const handleEventClick = (id) => {
     navigate(`/clubinfo/${id}`);
+  };
+
+  // 모집 타입에 따라 빨간 박스에 들어갈 내용을 계산하는 함수
+  const getRecruitmentLabel = (event) => {
+    if (event.recruitment_type === null) {
+      return "상시";
+    } else if (event.recruitment_type === "수시모집") {
+      const today = new Date();
+      const endDate = new Date(event.recruitment_end_date);
+      const diffTime = endDate - today;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays < 0 ? "마감" : `D-${diffDays}`;
+    }
+    return "";
   };
 
   return (
@@ -100,18 +114,19 @@ function ClubList() {
         <S.TitleBar />
         <S.Container>
           {events.map((event) => (
-            // 데스크탑 모드에서는 내부에 이미지 영역이 보이고,
-            // 모바일 모드에서는 bg prop을 이용해 배경으로 club logo를 표시합니다.
             <S.EventBox
               key={event.club_id}
               onClick={() => handleEventClick(event.club_id)}
               bg={event.image}
             >
-              <S.ImageWrapper style={{ height: "180px", overflow: "hidden" }}>
+              <S.ImageWrapper
+                data-label={getRecruitmentLabel(event)}
+                style={{ height: "180px", overflow: "hidden" }}
+              >
                 <img
                   src={event.image}
-                  alt={event.title}
-                  style={{ width: "100%", height: "100%", objectFit: "cover"}}
+                  alt={event.club_name}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
               </S.ImageWrapper>
               <S.Title>{event.club_name}</S.Title>

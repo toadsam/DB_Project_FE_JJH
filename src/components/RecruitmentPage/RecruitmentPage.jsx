@@ -144,11 +144,15 @@ function RecruitmentPage() {
 
             <S.Label>모집 내용</S.Label>
             <S.TextArea 
-              placeholder="모집에 대한 상세 설명을 입력하세요."
+              placeholder="모집에 대한 상세 설명을 입력하세요. (엔터키를 사용해 줄바꿈 가능합니다.)"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
             />
+            
+            {/* 모집 내용 미리보기 – 사용자가 입력한 엔터(줄바꿈) 적용 */}
+            <S.Label>모집 내용 미리보기</S.Label>
+            <S.RecruitmentDescription>{description}</S.RecruitmentDescription>
 
             <S.SubmitButton type="submit">게시</S.SubmitButton>
           </S.Form>

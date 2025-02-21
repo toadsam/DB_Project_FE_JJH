@@ -1,9 +1,10 @@
+// ClubList.styles.js
+
 import styled from "styled-components";
 
-/* PageContainer: 데스크탑에서는 사이드바와 콘텐츠를 가로 배치, 모바일에서는 세로 배치 */
 export const PageContainer = styled.div`
   display: flex;
-  flex-direction: row; /* 데스크탑: 사이드바와 콘텐츠가 좌우로 */
+  flex-direction: row;
   gap: 20px;
   width: 100%;
   max-width: 1200px;
@@ -17,7 +18,6 @@ export const PageContainer = styled.div`
   }
 `;
 
-/* Sidebar: 데스크탑에서는 왼쪽, 모바일에서는 상단에 100% 너비 */
 export const Sidebar = styled.div`
   width: 180px;
   background-color: #f9f9f9;
@@ -90,26 +90,17 @@ export const TitleBar = styled.div`
   border-radius: 2px;
 `;
 
-/* Container: 그리드 레이아웃 (데스크탑: 4열, 태블릿: 2열, 모바일: 1열) */
+// Container: 화면 크기에 따라 카드 개수가 자동 조정되도록 함
 export const Container = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 20px;
   width: 100%;
-
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
+  justify-content: center;
 `;
 
-/* EventBox: 데스크탑에서는 카드 형태, 모바일에서는 가로로 긴 직사각형으로 변경 */
-/* bg prop을 통해 모바일 시 배경 이미지로 club logo를 표시 */
+// EventBox: 모바일에서도 데스크탑과 동일한 카드 형태를 유지
 export const EventBox = styled.div`
-  width: 180px;
   background-color: #ffffff;
   border: 0.2px solid rgb(213, 213, 213);
   overflow: hidden;
@@ -123,31 +114,20 @@ export const EventBox = styled.div`
   }
 
   @media (max-width: 768px) {
+    /* 모바일에서도 카드형식을 유지하며, 필요 시 카드 크기를 조정 */
     width: 100%;
-    height: 80px; /* 모바일 시 가로로 긴 직사각형 */
-    flex-direction: row;
-    align-items: center;
     padding: 10px;
-    border: none;
-    /* club logo를 배경으로, 살짝 반투명 오버레이 효과 */
-    background-image: linear-gradient(
-        rgba(255, 255, 255, 0.6),
-        rgba(255, 255, 255, 0.6)
-      ),
-      url(${(props) => props.bg});
-    background-size: cover;
-    background-position: center;
   }
 `;
 
-/* ImageWrapper: 모바일에서는 숨김 처리 */
+// ImageWrapper: 모바일에서도 이미지를 숨기지 않고 보여줌
 export const ImageWrapper = styled.div`
   width: 100%;
   position: relative;
 
   img {
     width: 100%;
-    height: 100%;
+    height: 180px;
     object-fit: cover;
   }
 
@@ -156,16 +136,12 @@ export const ImageWrapper = styled.div`
     position: absolute;
     top: 10px;
     left: 10px;
-    background-color: #ff4d4f;
+    background-color: rgb(255, 82, 85);
     color: white;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: bold;
-    padding: 4px 8px;
-    border-radius: 4px;
-  }
-
-  @media (max-width: 768px) {
-    display: none;
+    padding: 4px 10px;
+    border-radius: 8px;
   }
 `;
 
@@ -177,9 +153,8 @@ export const Title = styled.h2`
   margin: 10px 0;
 
   @media (max-width: 768px) {
-    flex: 1;
     text-align: left;
-    margin: 0 10px;
+    margin: 10px 0 0 0;
     color: #000;
   }
 `;
@@ -191,6 +166,6 @@ export const Description = styled.p`
   margin: 0 10px 10px 10px;
 
   @media (max-width: 768px) {
-    display: none;
+    text-align: left;
   }
 `;

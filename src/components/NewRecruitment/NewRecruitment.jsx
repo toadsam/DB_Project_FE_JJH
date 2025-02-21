@@ -86,10 +86,20 @@ function FestivalList() {
                 <img
                   src={event.main_image}
                   alt={event.title}
-                  style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "10px" }}
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    objectFit: "cover",
+                    borderRadius: "10px",
+                  }}
                 />
               </S.ImageWrapper>
-              <S.Title>{event.title}</S.Title>
+              <S.Title>
+                {event.title.length > 22
+                  ? `${event.title.substring(0, 22)}...`
+                  : event.title}
+              </S.Title>
+
               <S.Date>마감일자: {event.endDate}</S.Date>
             </S.EventBox>
           </SwiperSlide>

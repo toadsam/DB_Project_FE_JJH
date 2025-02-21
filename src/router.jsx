@@ -26,9 +26,7 @@ import Introduction from "./components/Introduction/Introduction";
 import ClubCategory from "./components/ClubCategory/ClubCategory";
 import * as S from "./router.styles";
 import NoticeLayout from "./components/Notice/NoticeLayout";
-import RecruitmentListPage from "./components/RecruitmentListPage/RecruitmentListPage"; // 모집공고 목록 페이지
-import RecruitmentDetailPage from "./components/RecruitmentDetailPage/RecruitmentDetailPage"; // 모집공고 상세 페이지
-
+import FootBar from "./components/FooterBar/FootBar";
 import Partners from "./components/Partners/Partners";
 function AppRouter() {
   return (
@@ -62,9 +60,9 @@ function AppRouter() {
         <Route path="/member-info/:id" element={<MemberInfo />} />
         <Route path="/event-info/:id" element={<EventInfo />} />
         <Route path="/notice" element={<NoticeLayout />}>
-        <Route index element={<NoticePage />} />
-        <Route path="partners" element={<Partners />} />
-      </Route>
+          <Route index element={<NoticePage />} />
+          <Route path="partners" element={<Partners />} />
+        </Route>
         <Route path="/login" element={<LoginPage />} /> {/* 로그인 페이지 */}
         <Route path="/edit-profile" element={<EditProfilePage />} />
         <Route path="/change-password" element={<ChangePasswordPage />} />
@@ -77,9 +75,8 @@ function AppRouter() {
         <Route path="/club-event/:id" element={<ClubEvent />} />
         <Route path="/introduce" element={<Introduction />} />
         <Route path="/category/:categoryName" element={<ClubCategory />} />
-        <Route path="/recruitment-list" element={<RecruitmentListPage />} />
-        <Route path="/recruitment/:id" element={<RecruitmentDetailPage />} />
       </Routes>
+      <FootBar />
     </Router>
   );
 }

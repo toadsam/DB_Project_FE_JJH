@@ -22,7 +22,6 @@ export const Logo = styled.div`
   color: #0056b3;
 `;
 
-// ✅ 네비게이션 스타일 수정
 export const Nav = styled.nav`
   display: flex;
   gap: 2rem;
@@ -136,7 +135,6 @@ export const TextArea = styled.textarea`
   height: 150px;
 `;
 
-// ✅ Select 스타일 추가
 export const Select = styled.select`
   width: 100%;
   padding: 0.75rem;
@@ -173,4 +171,16 @@ export const SuccessMessage = styled.p`
   color: green;
   font-size: 0.9rem;
   margin-bottom: 1rem;
+`;
+
+// 모집 내용의 줄바꿈(엔터) 적용을 위한 스타일 컴포넌트
+export const RecruitmentDescription = styled.div`
+  white-space: pre-line;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #333;
+  border: 1px solid #ddd;
+  padding: 0.75rem;
+  border-radius: 4px;
+  background-color: #fff;
 `;

@@ -38,7 +38,6 @@ export const Sidebar = styled.div`
   }
 `;
 
-
 export const SidebarTitle = styled.h2`
   font-size: 18px;
   font-weight: 700;
@@ -161,7 +160,7 @@ export const ContactItem = styled.div`
 export const ContactLabel = styled.span`
   font-weight: bold;
   color: #333;
-  margin-right: 10px;
+  min-width: 80px;
 `;
 
 export const ContactValue = styled.span`
@@ -233,7 +232,6 @@ export const CardContainer = styled.div`
   }
 `;
 
-
 export const CardLogo = styled(ClubLogo)`
   width: 250px;
   height: 200px;
@@ -281,4 +279,55 @@ export const ActivityImageItem = styled.img`
   height: 150px;
   object-fit: cover;
   border-radius: 8px;
+`;
+export const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+export const ModalContent = styled.div`
+  position: relative;
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 80%;
+  max-height: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const CloseButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #ff4d4f;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background: #d9363e;
+  }
+`;
+
+export const ModalImage = styled.img`
+  max-width: 450px;
+  max-height: 450px;
+  object-fit: contain;
 `;
