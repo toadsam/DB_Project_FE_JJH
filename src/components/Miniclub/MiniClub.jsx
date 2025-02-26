@@ -8,32 +8,27 @@ import collegesData from "../../colleges.json";
 const API_URL = process.env.REACT_APP_API_URL;
 
 function MiniClub() {
-  const [colleges, setColleges] = useState([]); // 단과대학 및 학과 목록
+  const [colleges, setColleges] = useState([]);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [selectedCollege, setSelectedCollege] = useState(""); // 선택한 단과대학
-  const [selectedDepartment, setSelectedDepartment] = useState(""); // 선택한 학과
+  const [selectedCollege, setSelectedCollege] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState("");
   const navigate = useNavigate();
 
-  // JSON 데이터를 바로 설정
   useEffect(() => {
     setColleges(collegesData);
   }, []);
 
-  // 선택한 단과대/학과에 따라 소학회 데이터 불러오기
   useEffect(() => {
     const fetchEvents = async () => {
       setLoading(true);
       try {
         let url = `${API_URL}/api/clubs/academic`;
         let params = {};
-        if (selectedCollege) {
-          params.college = selectedCollege;
-        }
-        if (selectedDepartment) {
-          params.department = selectedDepartment;
-        }
+        if (selectedCollege) params.college = selectedCollege;
+        if (selectedDepartment) params.department = selectedDepartment;
+
         const response = await axios.get(url, { params });
         setEvents(
           Array.isArray(response.data)
@@ -42,6 +37,9 @@ function MiniClub() {
                 image: event.logo_url || defaultImage,
                 description:
                   event.club_description || "설명이 제공되지 않았습니다.",
+                recruitment_scope: event.recruitment_scope,
+                recruitment_type: event.recruitment_type,
+                recruitment_end_date: event.recruitment_end_date,
               }))
             : []
         );
@@ -56,12 +54,25 @@ function MiniClub() {
     fetchEvents();
   }, [selectedCollege, selectedDepartment]);
 
+  // 모집 마감일 계산 함수
+  const getRecruitmentLabel = (event) => {
+    if (event.recruitment_type === null) {
+      return "상시";
+    } else if (event.recruitment_type === "수시모집") {
+      const today = new Date();
+      const endDate = new Date(event.recruitment_end_date);
+      const diffTime = endDate - today;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays < 0 ? "마감" : `D-${diffDays}`;
+    }
+    return "";
+  };
+
   if (loading) return <S.PageContainer>Loading...</S.PageContainer>;
   if (error) return <S.PageContainer>Error: {error}</S.PageContainer>;
 
   return (
     <S.PageContainer>
-      {/* 왼쪽 사이드바 */}
       <S.Sidebar>
         <S.SidebarTitle>소학회</S.SidebarTitle>
         <S.SidebarList>
@@ -92,7 +103,6 @@ function MiniClub() {
         </S.SidebarList>
       </S.Sidebar>
 
-      {/* 오른쪽 콘텐츠 */}
       <S.Content>
         <S.Title1>소학회</S.Title1>
         <S.TitleBar />
@@ -101,12 +111,16 @@ function MiniClub() {
             <S.EventBox
               key={event.club_id}
               onClick={() => navigate(`/clubinfo/${event.club_id}`)}
-              bg={event.image} // 모바일에서 배경 이미지로 사용
+              bg={event.image}
             >
-              <S.ImageWrapper style={{ height: "180px", overflow: "hidden" }}>
+              <S.ImageWrapper
+                data-label={getRecruitmentLabel(event)}
+                data-scope={event.recruitment_scope || "정보 없음"}
+                style={{ height: "180px", overflow: "hidden" }}
+              >
                 <img
                   src={event.image}
-                  alt={event.title}
+                  alt={event.club_name}
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
               </S.ImageWrapper>

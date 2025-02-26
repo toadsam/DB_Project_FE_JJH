@@ -140,8 +140,7 @@ export const EventBox = styled.div`
   }
 `;
 
-/* ImageWrapper: 모바일에서도 이미지를 숨기지 않고 항상 표시 */
-export const ImageWrapper = styled.div`
+/* ImageWrapper: 모바일에서도 이미지를 숨기지 않고 항상 표시 */ export const ImageWrapper = styled.div`
   width: 100%;
   position: relative;
 
@@ -155,13 +154,26 @@ export const ImageWrapper = styled.div`
     content: attr(data-label);
     position: absolute;
     top: 10px;
-    left: 10px;
-    background-color: #ff4d4f;
+    left: 10px; /* 왼쪽 상단에 배치 */
+    background-color: rgb(255, 82, 85);
     color: white;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: bold;
-    padding: 4px 8px;
-    border-radius: 4px;
+    padding: 4px 10px;
+    border-radius: 8px;
+  }
+
+  &::after {
+    content: attr(data-scope);
+    position: absolute;
+    top: 10px;
+    right: 10px; /* 오른쪽 상단에 배치 */
+    background-color: rgb(255, 82, 85);
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 8px;
   }
 `;
 
@@ -188,4 +200,9 @@ export const Description = styled.p`
   @media (max-width: 768px) {
     text-align: left;
   }
+`;
+export const RecruitmentInfo = styled.p`
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 4px;
 `;
