@@ -89,7 +89,6 @@ export const Loading = styled.div`
 
 export const Error = styled.div`
   font-size: 18px;
-
   text-align: center;
 `;
 export const Message = styled.p`
@@ -118,4 +117,17 @@ export const Label = styled.span`
 
 export const Value = styled.span`
   color: #555;
+`;
+
+export const ImageContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 10px 0;
+`;
+
+export const Image = styled.img`
+  width: 100px;
+  height: auto;
+  border-radius: 4px;
 `;

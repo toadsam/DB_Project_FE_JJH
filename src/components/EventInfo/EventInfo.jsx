@@ -46,6 +46,10 @@ function EventInfo() {
     fetchEvents();
   }, []);
 
+  const handleEventClick = () => {
+    alert("준비 중인 서비스입니다!");
+  };
+
   if (loading) return <S.PageContainer>Loading...</S.PageContainer>;
   if (error) return <S.PageContainer>Error: {error}</S.PageContainer>;
 
@@ -67,12 +71,15 @@ function EventInfo() {
         <S.TitleBar />
         <S.Container>
           {events.map((event) => (
-            <S.EventBox key={event.id} bg={event.image}>
+            <S.EventBox
+              key={event.id}
+              bg={event.image}
+              onClick={handleEventClick}
+            >
               <S.ImageWrapper>
                 <img src={event.image} alt={event.club_name} />
               </S.ImageWrapper>
               <S.Title>{event.title}</S.Title>
-              {/* 필요 시 Description 추가 */}
               <S.Location>{event.location}</S.Location>
               <S.Date>{new Date(event.event_date).toLocaleDateString()}</S.Date>
             </S.EventBox>
