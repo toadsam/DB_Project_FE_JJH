@@ -59,6 +59,19 @@ function ClubInfo() {
   if (loading) return <S.Loading>Loading...</S.Loading>;
   if (error) return <S.Error>{error}</S.Error>;
 
+  // 동아리 제목을 '중앙동아리 > 0000분과 > 동아리이름' 형식으로 설정
+  const getFormattedClubTitle = () => {
+    if (!clubInfo) return "동아리 이름";
+
+    if (clubInfo.club_type === "중앙동아리") {
+      return `중앙동아리 > ${clubInfo.detail_category_1 || "분과 없음"} > ${
+        clubInfo.club_name
+      }`;
+    }
+
+    return clubInfo.club_name;
+  };
+
   const sidebarItems = [
     "동아리 소개",
     "모집 공고",
@@ -100,7 +113,7 @@ function ClubInfo() {
 
       <S.InfoContainer>
         <S.Header>
-          <S.ClubTitle>{clubInfo?.club_name || "동아리 이름"}</S.ClubTitle>
+          <S.ClubTitle>{getFormattedClubTitle()}</S.ClubTitle>
           <S.TitleBar />
         </S.Header>
         <S.CardContainer>

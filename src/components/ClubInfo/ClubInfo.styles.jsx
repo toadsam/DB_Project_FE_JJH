@@ -200,6 +200,7 @@ export const SectionTitle = styled.h2`
 `;
 
 export const SectionContent = styled.p`
+  white-space: pre-wrap;
   font-size: 16px;
   color: #555;
   line-height: 1.5;
