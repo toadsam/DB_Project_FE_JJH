@@ -62,7 +62,13 @@ function RecruitmentListPage() {
         {sortedRecruitments.map((recruitment) => (
           <S.Card
             key={recruitment.recruitment_id}
-            onClick={() => navigate(`/recruitment/${recruitment.recruitment_id}`)}
+            onClick={() => {
+              if (recruitment.club_id) {
+                navigate(`/clubinfo/${recruitment.club_id}`); // ✅ club_id 기반으로 이동
+              } else {
+                alert("이 모집공고에 연결된 동아리가 없습니다.");
+              }
+            }}
           >
             <S.CardTitle>{recruitment.recruitment_title}</S.CardTitle>
             <S.CardInfo>모집 유형: {recruitment.recruitment_type}</S.CardInfo>

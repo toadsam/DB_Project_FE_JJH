@@ -9,14 +9,13 @@ import { jwtDecode } from "jwt-decode";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-const userRole = () => {
-  const token = localStorage.getItem("token");
+const getUserInfo = () => {
+  const token = localStorage.getItem("accessToken"); // ✅ 최신 accessToken 가져오기
   if (!token) return null;
   try {
-    const decoded = jwtDecode(token);
-    return decoded.role;
+    return jwtDecode(token);
   } catch (error) {
-    console.error("Invalid token:", error);
+    console.error("🚨 Invalid token:", error);
     return null;
   }
 };
@@ -28,13 +27,16 @@ function ClubInfo() {
   const [clubInfo, setClubInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const role = userRole();
+  const userInfo = getUserInfo();
   const [selectedItem, setSelectedItem] = useState(
     location.state?.defaultTab || "동아리 소개"
   );
   const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
+    console.log("📌 현재 접속한 클럽 ID:", club_id);
+    console.log("📌 디코딩된 사용자 정보:", userInfo);
+
     const fetchClubData = async () => {
       setLoading(true);
       try {
@@ -45,8 +47,9 @@ function ClubInfo() {
           },
         });
         setClubInfo(response.data);
+        console.log("✅ 클럽 데이터 불러오기 성공:", response.data);
       } catch (err) {
-        console.error("API Error:", err.response || err.message);
+        console.error("🚨 API Error:", err.response || err.message);
         setError("데이터를 불러오는 중 오류가 발생했습니다.");
       } finally {
         setLoading(false);
@@ -59,7 +62,7 @@ function ClubInfo() {
   if (loading) return <S.Loading>Loading...</S.Loading>;
   if (error) return <S.Error>{error}</S.Error>;
 
-  // 동아리 제목을 '중앙동아리 > 0000분과 > 동아리이름' 형식으로 설정
+
   const getFormattedClubTitle = () => {
     if (!clubInfo) return "동아리 이름";
 
@@ -76,22 +79,15 @@ function ClubInfo() {
     "동아리 소개",
     "모집 공고",
     "행사 공고",
-    ...(role === "admin"
-      ? ["중앙동아리", "소확회", "모집공고", "부원관리", "신청목록"]
-      : []),
+    ...(isClubAdmin ? ["모집공고 작성", "모집공고 수정"] : []), // ✅ club_id가 같을 경우 추가됨
   ];
 
   const handleSidebarClick = (item) => {
     setSelectedItem(item);
-    navigate(`/clubinfo/${club_id}`, { state: { defaultTab: item } });
-  };
-
-  const handleImageClick = (imgUrl) => {
-    setSelectedImage(imgUrl);
-  };
-
-  const closeImageModal = () => {
-    setSelectedImage(null);
+    console.log(`📌 클릭한 카테고리: ${item}`);
+    if (item === "모집공고 작성") navigate(`/recruitment/create/${club_id}`);
+    if (item === "모집공고 수정") navigate(`/recruitment/edit/${club_id}`);
+    else navigate(`/clubinfo/${club_id}`, { state: { defaultTab: item } });
   };
 
   return (
@@ -168,38 +164,12 @@ function ClubInfo() {
                 {clubInfo?.club_main_activities || "주요 활동 설명이 없습니다."}
               </S.SectionContent>
             </S.Section>
-
-            {clubInfo?.club_activity_images &&
-              clubInfo.club_activity_images.length > 0 && (
-                <S.Section>
-                  <S.SectionTitle>활동 사진</S.SectionTitle>
-                  <S.ActivityImagesGrid>
-                    {clubInfo.club_activity_images.map((imgUrl, index) => (
-                      <S.ActivityImageItem
-                        key={index}
-                        src={imgUrl}
-                        alt={`활동 사진 ${index + 1}`}
-                        onClick={() => handleImageClick(imgUrl)}
-                      />
-                    ))}
-                  </S.ActivityImagesGrid>
-                </S.Section>
-              )}
           </>
         )}
 
         {selectedItem === "모집 공고" && <ClubApply club_id={club_id} />}
         {selectedItem === "행사 공고" && <ClubEvent club_id={club_id} />}
       </S.InfoContainer>
-
-      {selectedImage && (
-        <S.ModalOverlay onClick={closeImageModal}>
-          <S.ModalContent onClick={(e) => e.stopPropagation()}>
-            <S.CloseButton onClick={closeImageModal}>X</S.CloseButton>
-            <S.ModalImage src={selectedImage} alt="확대된 활동 사진" />
-          </S.ModalContent>
-        </S.ModalOverlay>
-      )}
     </S.PageContainer>
   );
 }
