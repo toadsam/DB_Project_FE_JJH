@@ -119,8 +119,7 @@ export const Container = styled.div`
   }
 `;
 
-/* EventBox: 데스크탑에서는 카드 형태, 모바일에서는 가로로 긴 직사각형 카드로 변경 */
-/* 모바일 시 bg prop을 통해 배경 이미지와 반투명 오버레이 효과 적용 */
+/* EventBox: 데스크탑과 모바일 모두 카드 형태를 유지 */
 export const EventBox = styled.div`
   width: 180px;
   background-color: #ffffff;
@@ -137,29 +136,17 @@ export const EventBox = styled.div`
 
   @media (max-width: 768px) {
     width: 100%;
-    height: 140px; /* 모바일 카드 높이 (원하는 값으로 조정 가능) */
-    flex-direction: row;
-    align-items: center;
     padding: 10px;
-    border: none;
-    background-image: linear-gradient(
-        rgba(255, 255, 255, 0.6),
-        rgba(255, 255, 255, 0.6)
-      ),
-      url(${(props) => props.bg});
-    background-size: cover;
-    background-position: center;
   }
 `;
 
-/* ImageWrapper: 데스크탑에서는 이미지 표시, 모바일에서는 숨김 처리 */
-export const ImageWrapper = styled.div`
+/* ImageWrapper: 모바일에서도 이미지를 숨기지 않고 항상 표시 */ export const ImageWrapper = styled.div`
   width: 100%;
   position: relative;
 
   img {
     width: 100%;
-    height: 100%;
+    height: 180px;
     object-fit: cover;
   }
 
@@ -167,21 +154,29 @@ export const ImageWrapper = styled.div`
     content: attr(data-label);
     position: absolute;
     top: 10px;
-    left: 10px;
-    background-color: #ff4d4f;
+    left: 10px; /* 왼쪽 상단에 배치 */
+    background-color: rgb(255, 82, 85);
     color: white;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: bold;
-    padding: 4px 8px;
-    border-radius: 4px;
+    padding: 4px 10px;
+    border-radius: 8px;
   }
 
-  @media (max-width: 768px) {
-    display: none;
+  &::after {
+    content: attr(data-scope);
+    position: absolute;
+    top: 10px;
+    right: 10px; /* 오른쪽 상단에 배치 */
+    background-color: rgb(255, 82, 85);
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 4px 10px;
+    border-radius: 8px;
   }
 `;
 
-/* Title: 데스크탑은 중앙 정렬, 모바일은 좌측 정렬 */
 export const Title = styled.h2`
   font-size: 16px;
   font-weight: 700;
@@ -190,14 +185,12 @@ export const Title = styled.h2`
   margin: 10px 0;
 
   @media (max-width: 768px) {
-    flex: 1;
     text-align: left;
-    margin: 0 10px;
+    margin: 10px 0 0 0;
     color: #000;
   }
 `;
 
-/* Description: 데스크탑은 표시, 모바일은 숨김 처리 */
 export const Description = styled.p`
   font-size: 14px;
   color: #6e6e73;
@@ -205,6 +198,11 @@ export const Description = styled.p`
   margin: 0 10px 10px 10px;
 
   @media (max-width: 768px) {
-    display: none;
+    text-align: left;
   }
+`;
+export const RecruitmentInfo = styled.p`
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 4px;
 `;

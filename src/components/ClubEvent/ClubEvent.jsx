@@ -47,6 +47,25 @@ function ClubApply({ club_id }) {
             <S.Description>
               {event.description || "행사 설명이 제공되지 않았습니다."}
             </S.Description>
+            {event.event_image_url && (
+              <S.ImageContainer>
+                {Array.isArray(event.event_image_url) ? (
+                  event.event_image_url.map((url, index) => (
+                    <S.Image
+                      key={index}
+                      src={url}
+                      alt={`${event.title} 이미지 ${index + 1}`}
+                    />
+                  ))
+                ) : (
+                  <S.Image
+                    src={event.event_image_url}
+                    alt={`${event.title} 이미지`}
+                  />
+                )}
+              </S.ImageContainer>
+            )}
+
             <S.InfoBox>
               <S.InfoItem>
                 <S.Label>장소:</S.Label>

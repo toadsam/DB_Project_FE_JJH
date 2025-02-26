@@ -62,12 +62,18 @@ function ClubInfo() {
   if (loading) return <S.Loading>Loading...</S.Loading>;
   if (error) return <S.Error>{error}</S.Error>;
 
-  // ✅ 현재 클럽이 사용자의 `club_ids` 배열에 포함되어 있는지 확인
-  const userClubIds = userInfo?.club_ids || []; // ✅ undefined 방지
-  const isClubAdmin = userClubIds.includes(Number(club_id)); // ✅ 정확한 비교를 위해 숫자로 변환
-  console.log("🔍 현재 사용자 club_ids 배열:", userClubIds);
-  console.log("🔍 현재 URL의 club_id:", Number(club_id));
-  console.log("🔍 클럽 관리자인가?:", isClubAdmin);
+
+  const getFormattedClubTitle = () => {
+    if (!clubInfo) return "동아리 이름";
+
+    if (clubInfo.club_type === "중앙동아리") {
+      return `중앙동아리 > ${clubInfo.detail_category_1 || "분과 없음"} > ${
+        clubInfo.club_name
+      }`;
+    }
+
+    return clubInfo.club_name;
+  };
 
   const sidebarItems = [
     "동아리 소개",
@@ -103,7 +109,7 @@ function ClubInfo() {
 
       <S.InfoContainer>
         <S.Header>
-          <S.ClubTitle>{clubInfo?.club_name || "동아리 이름"}</S.ClubTitle>
+          <S.ClubTitle>{getFormattedClubTitle()}</S.ClubTitle>
           <S.TitleBar />
         </S.Header>
         <S.CardContainer>
