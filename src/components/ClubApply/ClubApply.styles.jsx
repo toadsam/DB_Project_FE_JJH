@@ -110,3 +110,12 @@ export const PastDescription = styled.p`
   white-space: pre-wrap;
   transition: max-height 0.3s ease;
 `;
+export const ApplyButton = styled.a`
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #f44336; /* 붉은 계열 강조 색상 */
+  padding: 5px 10px;
+  border-radius: 12px;
+`;

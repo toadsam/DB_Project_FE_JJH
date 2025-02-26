@@ -25,8 +25,6 @@ function ClubApply({ club_id }) {
           }
         );
 
-        // 만약 2개 이상의 모집공고가 있다면,
-        // 최신 공고는 currentRecruitment, 이전 공고는 pastRecruitment로 설정합니다.
         if (response.data.length > 1) {
           const sortedData = response.data.sort(
             (a, b) => new Date(b.created_at) - new Date(a.created_at)
@@ -78,6 +76,16 @@ function ClubApply({ club_id }) {
               <S.DaysLeftBadge>
                 {calculateDaysLeft(currentRecruitment.recruitment_end_date)}
               </S.DaysLeftBadge>
+            )}
+            {/* 신청하기 버튼 */}
+            {currentRecruitment.application_url && (
+              <S.ApplyButton
+                href={currentRecruitment.application_url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                신청하기
+              </S.ApplyButton>
             )}
           </S.TitleContainer>
 
