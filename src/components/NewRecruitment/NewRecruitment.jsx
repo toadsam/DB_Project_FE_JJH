@@ -40,7 +40,7 @@ function FestivalList() {
                 endDate:
                   event.recruitment_end_date === "0000-00-00" ||
                   event.recruitment_end_date === null
-                    ? "마감일 미정"
+                    ? "상시모집"
                     : new Date(event.recruitment_end_date).toLocaleDateString(),
                 main_image: event.main_image || defaultImage,
               }))
