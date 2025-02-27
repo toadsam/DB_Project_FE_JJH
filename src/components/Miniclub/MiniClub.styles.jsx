@@ -8,39 +8,13 @@ export const PageContainer = styled.div`
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+  box-sizing: border-box;
 
   @media (max-width: 768px) {
     flex-direction: column;
     padding: 10px;
     gap: 10px;
   }
-`;
-
-/* Sidebar: 데스크탑에서는 왼쪽 고정, 모바일에서는 상단 전체 너비 */
-export const Sidebar = styled.div`
-  width: 180px;
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 10px;
-  margin-right: 30px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 20px;
-  height: fit-content;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    margin-right: 0;
-    margin-bottom: 10px;
-    position: static;
-  }
-`;
-
-export const SidebarTitle = styled.h2`
-  font-size: 18px;
-  font-weight: 700;
-  color: #1d1d1f;
-  margin-bottom: 10px;
 `;
 
 export const SidebarList = styled.ul`
@@ -85,6 +59,7 @@ export const Content = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
 export const Title1 = styled.h1`
@@ -104,24 +79,19 @@ export const TitleBar = styled.div`
   border-radius: 2px;
 `;
 
-/* Container: 그리드 레이아웃, 데스크탑은 4열, 태블릿은 2열, 모바일은 1열 */
 export const Container = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 20px;
   width: 100%;
-
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
+  margin: 0 auto;
+  justify-items: center;
 `;
 
-/* EventBox: 데스크탑과 모바일 모두 카드 형태를 유지 */
+/* EventBox: 카드 자체는 그리드 셀의 너비에 맞춰 중앙에 배치 */
 export const EventBox = styled.div`
-  width: 180px;
+  width: 100%;
+  max-width: 180px;
   background-color: #ffffff;
   border: 0.2px solid rgb(213, 213, 213);
   overflow: hidden;
@@ -129,6 +99,7 @@ export const EventBox = styled.div`
   flex-direction: column;
   transition: transform 0.3s ease;
   cursor: pointer;
+  margin: 0 auto; /* 그리드 셀 내에서 중앙 정렬 */
 
   &:hover {
     transform: translateY(-8px);
@@ -140,7 +111,8 @@ export const EventBox = styled.div`
   }
 `;
 
-/* ImageWrapper: 모바일에서도 이미지를 숨기지 않고 항상 표시 */ export const ImageWrapper = styled.div`
+/* ImageWrapper: 이미지는 항상 전체 너비에 맞게 표시 */
+export const ImageWrapper = styled.div`
   width: 100%;
   position: relative;
 
@@ -154,7 +126,7 @@ export const EventBox = styled.div`
     content: attr(data-label);
     position: absolute;
     top: 10px;
-    left: 10px; /* 왼쪽 상단에 배치 */
+    left: 10px;
     background-color: rgb(255, 82, 85);
     color: white;
     font-size: 11px;
@@ -167,7 +139,7 @@ export const EventBox = styled.div`
     content: attr(data-scope);
     position: absolute;
     top: 10px;
-    right: 10px; /* 오른쪽 상단에 배치 */
+    right: 10px;
     background-color: rgb(255, 82, 85);
     color: white;
     font-size: 11px;
@@ -201,8 +173,49 @@ export const Description = styled.p`
     text-align: left;
   }
 `;
+
 export const RecruitmentInfo = styled.p`
   font-size: 0.9rem;
   color: #666;
   margin-top: 4px;
+`;
+export const SidebarHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px 10px; /* 패딩을 줄임 */
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+/* Sidebar: 데스크탑에서는 왼쪽 고정, 모바일에서는 상단 전체 너비 */
+export const Sidebar = styled.div`
+  width: 180px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  margin-right: 30px;
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 20px;
+  height: fit-content;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
+    position: static;
+  }
+`;
+
+export const SidebarTitle = styled.h2`
+  font-size: 16px; /* 폰트 크기 감소 */
+  font-weight: 600; /* 두께를 약간 낮춤 */
+  color: #1d1d1f;
+  margin: 0; /* 여백 제거 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;

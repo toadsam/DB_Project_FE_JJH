@@ -4,6 +4,7 @@ import axios from "axios";
 import defaultImage from "../../asset/mainLogo.png";
 import { useNavigate } from "react-router-dom";
 import collegesData from "../../colleges.json";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -15,6 +16,17 @@ function MiniClub() {
   const [selectedCollege, setSelectedCollege] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const navigate = useNavigate();
+
+  // 모바일 여부 감지
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // 모바일 사이드바 확장 여부
+  const [sidebarExpanded, setSidebarExpanded] = useState(false);
 
   useEffect(() => {
     setColleges(collegesData);
@@ -71,40 +83,91 @@ function MiniClub() {
   if (loading) return <S.PageContainer>Loading...</S.PageContainer>;
   if (error) return <S.PageContainer>Error: {error}</S.PageContainer>;
 
+  // 브레드크럼 텍스트: 기본은 "소학회 > 전체"
+  // 단과대(대학)가 선택되면 "소학회 > [대학]"
+  // 소속학과가 선택되면 "소학회 > [대학] > [학과]"
+  const breadcrumb = `소학회 > ${selectedCollege ? selectedCollege : "전체"}${
+    selectedDepartment ? " > " + selectedDepartment : ""
+  }`;
+
   return (
     <S.PageContainer>
       <S.Sidebar>
-        <S.SidebarTitle>소학회</S.SidebarTitle>
-        <S.SidebarList>
-          {colleges.map((college, index) => (
-            <div key={index}>
-              <S.SidebarItem
-                onClick={() =>
-                  setSelectedCollege(
-                    selectedCollege === college.name ? "" : college.name
-                  )
-                }
-                isselected={selectedCollege === college.name}
-              >
-                {college.name}
-              </S.SidebarItem>
-              {selectedCollege === college.name &&
-                college.departments.map((dept, idx) => (
-                  <S.SidebarSubItem
-                    key={idx}
-                    onClick={() => setSelectedDepartment(dept)}
-                    isselected={selectedDepartment === dept}
-                  >
-                    {dept}
-                  </S.SidebarSubItem>
+        {isMobile ? (
+          <>
+            <S.SidebarHeader
+              onClick={() => setSidebarExpanded(!sidebarExpanded)}
+            >
+              <S.SidebarTitle>소학회</S.SidebarTitle>
+              {sidebarExpanded ? <FaChevronUp /> : <FaChevronDown />}
+            </S.SidebarHeader>
+            {sidebarExpanded && (
+              <S.SidebarList>
+                {colleges.map((college, index) => (
+                  <div key={index}>
+                    <S.SidebarItem
+                      onClick={() => {
+                        // 대학 선택 시 소속학과 초기화
+                        setSelectedCollege(
+                          selectedCollege === college.name ? "" : college.name
+                        );
+                        setSelectedDepartment("");
+                      }}
+                      isselected={selectedCollege === college.name}
+                    >
+                      {college.name}
+                    </S.SidebarItem>
+                    {selectedCollege === college.name &&
+                      college.departments.map((dept, idx) => (
+                        <S.SidebarSubItem
+                          key={idx}
+                          onClick={() => setSelectedDepartment(dept)}
+                          isselected={selectedDepartment === dept}
+                        >
+                          {dept}
+                        </S.SidebarSubItem>
+                      ))}
+                  </div>
                 ))}
-            </div>
-          ))}
-        </S.SidebarList>
+              </S.SidebarList>
+            )}
+          </>
+        ) : (
+          <>
+            <S.SidebarTitle>소학회</S.SidebarTitle>
+            <S.SidebarList>
+              {colleges.map((college, index) => (
+                <div key={index}>
+                  <S.SidebarItem
+                    onClick={() => {
+                      setSelectedCollege(
+                        selectedCollege === college.name ? "" : college.name
+                      );
+                      setSelectedDepartment("");
+                    }}
+                    isselected={selectedCollege === college.name}
+                  >
+                    {college.name}
+                  </S.SidebarItem>
+                  {selectedCollege === college.name &&
+                    college.departments.map((dept, idx) => (
+                      <S.SidebarSubItem
+                        key={idx}
+                        onClick={() => setSelectedDepartment(dept)}
+                        isselected={selectedDepartment === dept}
+                      >
+                        {dept}
+                      </S.SidebarSubItem>
+                    ))}
+                </div>
+              ))}
+            </S.SidebarList>
+          </>
+        )}
       </S.Sidebar>
 
       <S.Content>
-        <S.Title1>소학회</S.Title1>
+        <S.Title1>{breadcrumb}</S.Title1>
         <S.TitleBar />
         <S.Container>
           {events.map((event) => (

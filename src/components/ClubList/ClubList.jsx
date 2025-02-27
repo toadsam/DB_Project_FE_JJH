@@ -3,6 +3,7 @@ import * as S from "./ClubList.styles";
 import axios from "axios";
 import defaultImage from "../../asset/mainLogo.png";
 import { useNavigate } from "react-router-dom";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -29,6 +30,17 @@ function ClubList() {
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("");
   const navigate = useNavigate();
+
+  // 모바일 여부 감지
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // 모바일 사이드바 확장 여부
+  const [sidebarExpanded, setSidebarExpanded] = useState(false);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -92,23 +104,47 @@ function ClubList() {
 
   return (
     <S.PageContainer>
-      {/* 데스크탑: 왼쪽 사이드바, 모바일: 상단에 표시 */}
       <S.Sidebar>
-        <S.SidebarTitle>{categories[0].title}</S.SidebarTitle>
-        <S.SidebarList>
-          {categories[0].items.map((item, index) => (
-            <S.SidebarItem
-              key={index}
-              onClick={() => setSelectedCategory(item)}
-              isSelected={selectedCategory === item}
+        {isMobile ? (
+          <>
+            <S.SidebarHeader
+              onClick={() => setSidebarExpanded(!sidebarExpanded)}
             >
-              {item}
-            </S.SidebarItem>
-          ))}
-        </S.SidebarList>
+              <S.SidebarTitle>{categories[0].title}</S.SidebarTitle>
+              {sidebarExpanded ? <FaChevronUp /> : <FaChevronDown />}
+            </S.SidebarHeader>
+            {sidebarExpanded && (
+              <S.SidebarList>
+                {categories[0].items.map((item, index) => (
+                  <S.SidebarItem
+                    key={index}
+                    onClick={() => setSelectedCategory(item)}
+                    isSelected={selectedCategory === item}
+                  >
+                    {item}
+                  </S.SidebarItem>
+                ))}
+              </S.SidebarList>
+            )}
+          </>
+        ) : (
+          <>
+            <S.SidebarTitle>{categories[0].title}</S.SidebarTitle>
+            <S.SidebarList>
+              {categories[0].items.map((item, index) => (
+                <S.SidebarItem
+                  key={index}
+                  onClick={() => setSelectedCategory(item)}
+                  isSelected={selectedCategory === item}
+                >
+                  {item}
+                </S.SidebarItem>
+              ))}
+            </S.SidebarList>
+          </>
+        )}
       </S.Sidebar>
 
-      {/* 오른쪽 콘텐츠 영역 */}
       <S.Content>
         <S.Title1>
           중앙동아리 {">"} {selectedCategory || "전체"}

@@ -4,6 +4,32 @@ import * as S from "./ClubApply.styles";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
+// 이미지 캐러셀 컴포넌트
+function ImageCarousel({ images }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const prevImage = () => {
+    setCurrentIndex(
+      (prevIndex) => (prevIndex - 1 + images.length) % images.length
+    );
+  };
+
+  const nextImage = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+  };
+
+  return (
+    <S.ImageCarouselContainer>
+      <S.LeftArrow onClick={prevImage}>&lt;</S.LeftArrow>
+      <S.RecruitmentImage
+        src={images[currentIndex]}
+        alt={`Recruitment ${currentIndex + 1}`}
+      />
+      <S.RightArrow onClick={nextImage}>&gt;</S.RightArrow>
+    </S.ImageCarouselContainer>
+  );
+}
+
 function ClubApply({ club_id }) {
   const [currentRecruitment, setCurrentRecruitment] = useState(null);
   const [pastRecruitment, setPastRecruitment] = useState(null);
@@ -60,12 +86,37 @@ function ClubApply({ club_id }) {
     return text.replace(/\\n/g, "\n").replace(/\n/g, "\n");
   };
 
+  // 모집공고의 이미지 렌더링 함수
+  const renderRecruitmentImages = () => {
+    let images = [];
+    // recruitment_images가 있으면 쉼표로 구분된 여러 이미지 URL로 간주
+    if (currentRecruitment && currentRecruitment.recruitment_images) {
+      images = currentRecruitment.recruitment_images
+        .split(",")
+        .map((url) => url.trim())
+        .filter((url) => url !== "");
+    }
+    // recruitment_image_url이 단일 이미지일 경우
+    else if (currentRecruitment && currentRecruitment.recruitment_image_url) {
+      images = [currentRecruitment.recruitment_image_url];
+    }
+    if (images.length === 0) return null;
+    if (images.length === 1) {
+      return (
+        <S.ImageContainer style={{ justifyContent: "center" }}>
+          <S.RecruitmentImage src={images[0]} alt="Recruitment" />
+        </S.ImageContainer>
+      );
+    }
+    return <ImageCarousel images={images} />;
+  };
+
   if (loading) return <S.Loading>Loading...</S.Loading>;
   if (error) return <S.Error>{error}</S.Error>;
 
   return (
     <S.ApplyContainer>
-      {/* 최신(현재) 모집공고 */}
+      {/* 최신 모집공고 */}
       {currentRecruitment ? (
         <>
           <S.TitleContainer>
@@ -89,13 +140,8 @@ function ClubApply({ club_id }) {
             )}
           </S.TitleContainer>
 
-          {/* 이미지가 있으면 보여줌 */}
-          {currentRecruitment.recruitment_image_url && (
-            <S.RecruitmentImage
-              src={currentRecruitment.recruitment_image_url}
-              alt="Recruitment"
-            />
-          )}
+          {/* 이미지 렌더링 */}
+          {renderRecruitmentImages()}
 
           <S.Description>
             {formatText(currentRecruitment.recruitment_description) ||
