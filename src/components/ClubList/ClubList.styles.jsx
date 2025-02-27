@@ -10,38 +10,15 @@ export const PageContainer = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  box-sizing: border-box; /* 패딩이 전체 너비에 포함되도록 */
 
   @media (max-width: 768px) {
     flex-direction: column;
     padding: 10px;
     gap: 10px;
+    max-width: 100%; /* 모바일에서는 전체 너비 사용 */
+    overflow-x: hidden; /* 수평 스크롤 방지 */
   }
-`;
-
-export const Sidebar = styled.div`
-  width: 180px;
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 10px;
-  margin-right: 30px;
-  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 20px;
-  height: fit-content;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    margin-right: 0;
-    margin-bottom: 10px;
-    position: static;
-  }
-`;
-
-export const SidebarTitle = styled.h2`
-  font-size: 18px;
-  font-weight: 700;
-  color: #1d1d1f;
-  margin-bottom: 10px;
 `;
 
 export const SidebarList = styled.ul`
@@ -71,6 +48,7 @@ export const Content = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  width: 100%; /* 모바일에서 100% 너비 보장 */
 `;
 
 export const Title1 = styled.h1`
@@ -90,13 +68,14 @@ export const TitleBar = styled.div`
   border-radius: 2px;
 `;
 
-// Container: 화면 크기에 따라 카드 개수가 자동 조정되도록 함
 export const Container = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 20px;
   width: 100%;
+  margin: 0 auto;
   justify-content: center;
+  justify-items: center; /* 추가 */
 `;
 
 // EventBox: 모바일에서도 데스크탑과 동일한 카드 형태를 유지
@@ -168,4 +147,44 @@ export const Description = styled.p`
   @media (max-width: 768px) {
     text-align: left;
   }
+`;
+export const SidebarHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px 10px; /* 패딩을 줄임 */
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`;
+/* Sidebar: 데스크탑에서는 왼쪽 고정, 모바일에서는 상단 전체 너비 */
+export const Sidebar = styled.div`
+  width: 180px;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  margin-right: 30px;
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 20px;
+  height: fit-content;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
+    position: static;
+  }
+`;
+
+export const SidebarTitle = styled.h2`
+  font-size: 16px; /* 폰트 크기 감소 */
+  font-weight: 600; /* 두께를 약간 낮춤 */
+  color: #1d1d1f;
+  margin: 0; /* 여백 제거 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;

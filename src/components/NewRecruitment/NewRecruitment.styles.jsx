@@ -20,7 +20,7 @@ export const TitleLink = styled.h1`
   margin-left: 10px;
   margin-top: 20px;
   cursor: pointer;
-  text-decoration: underline;
+  text-decoration: none;
 
   &:hover {
     color: #0056b3;

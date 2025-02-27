@@ -3,17 +3,20 @@ import styled from "styled-components";
 /* PageContainer: 데스크탑에서는 사이드바와 콘텐츠를 가로로 배치, 모바일에서는 세로 배치 */
 export const PageContainer = styled.div`
   display: flex;
-  flex-direction: row; /* 기본: 사이드바와 콘텐츠가 좌우로 */
+  flex-direction: row;
   gap: 20px;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  box-sizing: border-box;
+  overflow-x: hidden; /* 추가: 수평 오버플로우 방지 */
 
   @media (max-width: 768px) {
     flex-direction: column;
     padding: 10px;
     gap: 10px;
+    max-width: 100%;
   }
 `;
 
@@ -21,7 +24,6 @@ export const PageContainer = styled.div`
 export const Sidebar = styled.div`
   width: 180px;
   background-color: #f9f9f9;
-  padding: 20px;
   border-radius: 10px;
   margin-right: 30px;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
@@ -38,12 +40,14 @@ export const Sidebar = styled.div`
 `;
 
 export const SidebarTitle = styled.h2`
-  font-size: 18px;
-  font-weight: 700;
+  font-size: 16px; /* 폰트 크기 감소 */
+  font-weight: 600; /* 두께를 약간 낮춤 */
   color: #1d1d1f;
-  margin-bottom: 10px;
+  margin: 0; /* 여백 제거 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
-
 export const SidebarList = styled.ul`
   list-style: none;
   padding: 0;
@@ -90,15 +94,15 @@ export const TitleBar = styled.div`
   border-radius: 2px;
 `;
 
-/* Container: 화면 크기에 따라 카드 개수가 자동 조정되도록 함 */
 export const Container = styled.div`
   display: grid;
-  /* repeat(auto-fit, minmax(150px, 1fr)) 를 사용해
-     화면 크기에 따라 카드 개수가 유동적으로 바뀌도록 설정 */
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 20px;
   width: 100%;
+  margin: 0 auto;
+  overflow-x: hidden; /* 추가: 그리드 내 오버플로우 방지 */
   justify-content: center;
+  justify-items: center;
 `;
 
 /* EventBox: 모바일에서도 데스크탑과 동일한 카드 형태를 유지 */
@@ -170,4 +174,16 @@ export const Description = styled.p`
   @media (max-width: 768px) {
     text-align: left;
   }
+`;
+export const SidebarHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding: 8px 10px; /* 패딩을 줄임 */
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;

@@ -3,10 +3,10 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import * as S from "./ClubCategory.styles"; // 수정된 스타일 적용
 import defaultImage from "../../asset/mainLogo.png";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa"; // 기존 FaChevronRight 대신 FaChevronUp 사용
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-// 왼쪽 사이드바에 표시할 카테고리 목록 (화면에 그대로 표시)
 const categories = [
   { name: "스포츠" },
   { name: "학술" },
@@ -24,7 +24,17 @@ function CategoryClubList() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // 선택된 카테고리에 해당하는 동아리 목록을 API로부터 불러옴
+  // 모바일 여부 감지
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // 모바일 사이드바 확장 여부 상태
+  const [sidebarExpanded, setSidebarExpanded] = useState(false);
+
   useEffect(() => {
     const fetchClubs = async () => {
       setLoading(true);
@@ -59,36 +69,60 @@ function CategoryClubList() {
     fetchClubs();
   }, [categoryName]);
 
-  // 동아리 카드 클릭 시 상세 정보 페이지로 이동
   const handleClubClick = (clubId) => {
     navigate(`/clubinfo/${clubId}`);
   };
 
-  // 사이드바에서 카테고리 클릭 시 해당 카테고리 페이지로 이동
   const handleCategoryClick = (cat) => {
     navigate(`/category/${encodeURIComponent(cat)}`);
   };
 
   return (
     <S.PageContainer>
-      {/* 왼쪽 사이드바: 전체 카테고리 목록 */}
       <S.Sidebar>
-        <S.SidebarTitle>카테고리</S.SidebarTitle>
-        <S.SidebarList>
-          {categories.map((cat, index) => (
-            <S.SidebarItem
-              key={index}
-              onClick={() => handleCategoryClick(cat.name)}
-              isSelected={cat.name === categoryName}
-              style={{ cursor: "pointer" }}
+        {isMobile ? (
+          <>
+            <S.SidebarHeader
+              onClick={() => setSidebarExpanded(!sidebarExpanded)}
             >
-              {cat.name}
-            </S.SidebarItem>
-          ))}
-        </S.SidebarList>
+              <S.SidebarTitle>카테고리</S.SidebarTitle>
+              {sidebarExpanded ? <FaChevronUp /> : <FaChevronDown />}
+            </S.SidebarHeader>
+
+            {sidebarExpanded && (
+              <S.SidebarList>
+                {categories.map((cat, index) => (
+                  <S.SidebarItem
+                    key={index}
+                    onClick={() => handleCategoryClick(cat.name)}
+                    isSelected={cat.name === categoryName}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {cat.name}
+                  </S.SidebarItem>
+                ))}
+              </S.SidebarList>
+            )}
+          </>
+        ) : (
+          <>
+            <S.SidebarTitle>카테고리</S.SidebarTitle>
+            <S.SidebarList>
+              {categories.map((cat, index) => (
+                <S.SidebarItem
+                  key={index}
+                  onClick={() => handleCategoryClick(cat.name)}
+                  isSelected={cat.name === categoryName}
+                  style={{ cursor: "pointer" }}
+                >
+                  {cat.name}
+                </S.SidebarItem>
+              ))}
+            </S.SidebarList>
+          </>
+        )}
       </S.Sidebar>
 
-      {/* 오른쪽 콘텐츠: 선택한 카테고리에 해당하는 동아리 목록 */}
       <S.Content>
         <S.Title1>{categoryName} 동아리</S.Title1>
         <S.TitleBar />
@@ -99,14 +133,16 @@ function CategoryClubList() {
             <S.EventBox
               key={club.club_id}
               onClick={() => handleClubClick(club.club_id)}
-              bg={club.image} // 모바일에서 배경 이미지로 사용
+              bg={club.image}
             >
-
-              <S.ImageWrapper data-label={club.club_type} style={{ height: "180px", overflow: "hidden" }}>
+              <S.ImageWrapper
+                data-label={club.club_type}
+                style={{ height: "180px", overflow: "hidden" }}
+              >
                 <img
                   src={club.image}
                   alt={club.title}
-                  style={{ width: "100%", height: "100%", objectFit: "cover"}}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
               </S.ImageWrapper>
               <S.Title>{club.club_name}</S.Title>

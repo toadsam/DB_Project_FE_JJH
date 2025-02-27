@@ -119,4 +119,3 @@ export const SuccessMessage = styled.p`
   font-size: 0.9rem;
   margin-bottom: 1rem;
 `;
-
