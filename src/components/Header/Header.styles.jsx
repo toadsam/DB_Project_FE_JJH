@@ -86,7 +86,7 @@ export const Dropdown = styled.div`
   z-index: 10;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center; /* 중앙 정렬 */
 `;
 
 export const DropdownItem = styled.div`
@@ -96,6 +96,7 @@ export const DropdownItem = styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: center; /* 중앙 정렬 */
   gap: 8px;
   &:hover {
     background-color: #f0f0f0;
@@ -173,8 +174,8 @@ export const MobileMenuTitle = styled.div`
   color: #1d1d1f;
   cursor: pointer;
   display: flex;
-  align-items: left;
-  justify-content: left;
+  align-items: center;
+  justify-content: center;
   gap: 8px;
 `;
 

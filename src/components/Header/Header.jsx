@@ -39,8 +39,8 @@ const categories = [
   },
   {
     title: "내정보",
+    navigateTo: "/mypage",
     icon: <FaUserAlt />,
-    items: [{ name: "마이페이지", navigateTo: "/mypage", icon: <FaUserAlt /> }],
   },
 ];
 
@@ -66,13 +66,18 @@ function Header() {
   };
 
   const handleCategoryClick = (category) => {
+    // "내정보" 클릭 시 alert 띄우고 이동하지 않음
+    if (category.title === "내정보") {
+      alert("준비중인 서비스입니다!");
+      if (isMobile) setMobileMenuOpen(false);
+      return;
+    }
     // 하위 항목이 없다면 바로 이동
     if (!category.items && category.navigateTo) {
       if (isMobile) setMobileMenuOpen(false);
       navigate(category.navigateTo);
     }
   };
-
   const handleItemClick = (item) => {
     if (item.navigateTo) {
       if (isMobile) setMobileMenuOpen(false);
