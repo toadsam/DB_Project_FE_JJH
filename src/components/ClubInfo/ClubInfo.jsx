@@ -5,13 +5,12 @@ import * as S from "./ClubInfo.styles";
 import defaultImage from "../../asset/mainLogo.png";
 import ClubApply from "../ClubApply/ClubApply";
 import ClubEvent from "../ClubEvent/ClubEvent";
-
 import { jwtDecode } from "jwt-decode";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 const getUserInfo = () => {
-  const token = localStorage.getItem("accessToken"); // 최신 accessToken 가져오기
+  const token = localStorage.getItem("accessToken");
   if (!token) return null;
   try {
     return jwtDecode(token);
@@ -29,18 +28,22 @@ function ClubInfo() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // getUserInfo를 useMemo로 호출해 한 번만 계산되도록 함
   const userInfo = useMemo(() => getUserInfo(), []);
 
-  // JWT 토큰에 clubAdmin 속성이 true라면 해당 사용자는 클럽 관리자라고 가정
-  const isClubAdmin = userInfo && userInfo.clubAdmin;
+  // ✅ 현재 로그인한 사용자가 관리자인지 확인하는 로직 추가
+  const isClubAdmin = userInfo?.club_ids?.includes(Number(club_id)); // 클럽 ID 배열에서 현재 클럽 ID 포함 여부 확인
 
-  // 관리자인 경우에만 추가 메뉴를 보여줌
   const [selectedItem, setSelectedItem] = useState(
     location.state?.defaultTab || "동아리 소개"
   );
 
   useEffect(() => {
+    if (!localStorage.getItem("accessToken")) {
+      alert("로그인이 필요합니다!");
+      navigate("/login");
+      return;
+    }
+
     const fetchClubData = async () => {
       setLoading(true);
       try {
@@ -60,31 +63,16 @@ function ClubInfo() {
     };
 
     fetchClubData();
-  }, [club_id]);
+  }, [club_id, navigate]);
 
   if (loading) return <S.Loading>Loading...</S.Loading>;
   if (error) return <S.Error>{error}</S.Error>;
 
-  const getFormattedClubTitle = () => {
-    if (!clubInfo) return "동아리 이름";
-    if (clubInfo.club_type === "중앙동아리") {
-      return `중앙동아리 > ${clubInfo.detail_category_1 || "분과 없음"} > ${
-        clubInfo.club_name
-      }`;
-    } else if (clubInfo.club_type === "소학회") {
-      return `소학회 > ${clubInfo.college_name || "단과대"} > ${
-        clubInfo.department_name || "소속학과"
-      } > ${clubInfo.club_name}`;
-    }
-    return clubInfo.club_name;
-  };
-
-  // 기본 메뉴에 관리자인 경우에만 추가 메뉴를 포함
   const sidebarItems = [
     "동아리 소개",
     "모집 공고",
     "행사 공고",
-    ...(isClubAdmin ? ["모집공고 작성", "모집공고 수정"] : []),
+    ...(isClubAdmin ? ["모집공고 작성", "모집공고 수정"] : []), // ✅ 클럽 관리자만 볼 수 있는 페이지 추가
   ];
 
   const handleSidebarClick = (item) => {
@@ -117,7 +105,7 @@ function ClubInfo() {
 
       <S.InfoContainer>
         <S.Header>
-          <S.ClubTitle>{getFormattedClubTitle()}</S.ClubTitle>
+          <S.ClubTitle>{clubInfo?.club_name || "동아리 이름"}</S.ClubTitle>
           <S.TitleBar />
         </S.Header>
         <S.CardContainer>
@@ -176,6 +164,20 @@ function ClubInfo() {
 
         {selectedItem === "모집 공고" && <ClubApply club_id={club_id} />}
         {selectedItem === "행사 공고" && <ClubEvent club_id={club_id} />}
+
+        {/* ✅ 클럽 관리자만 접근할 수 있는 페이지 렌더링 */}
+        {isClubAdmin && selectedItem === "모집공고 작성" && (
+          <S.AdminSection>
+            <S.SectionTitle>모집공고 작성 페이지</S.SectionTitle>
+            <S.SectionContent>여기에 모집공고 작성 폼을 넣으세요.</S.SectionContent>
+          </S.AdminSection>
+        )}
+        {isClubAdmin && selectedItem === "모집공고 수정" && (
+          <S.AdminSection>
+            <S.SectionTitle>모집공고 수정 페이지</S.SectionTitle>
+            <S.SectionContent>여기에 모집공고 수정 폼을 넣으세요.</S.SectionContent>
+          </S.AdminSection>
+        )}
       </S.InfoContainer>
     </S.PageContainer>
   );
