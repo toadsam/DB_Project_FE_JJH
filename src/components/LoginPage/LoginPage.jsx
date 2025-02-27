@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { GoogleOAuthProvider, GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
@@ -7,7 +7,7 @@ import * as S from "./LoginPage.styles"; // 스타일 파일 유지
 import ajouLogo from "../../asset/img.jpg"; // 아주대 로고 이미지 추가
 import mascotImage from "../../asset/치토.jpeg"; // 아주대 마스코트 이미지 추가
 
-const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000"; 
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000";
 
 const decodeToken = (token) => {
   if (!token) return null;
@@ -27,7 +27,11 @@ function LoginPage() {
   // ✅ 로그아웃 처리
   const handleLogout = useCallback(async () => {
     try {
-      await axios.post(`${API_URL}/api/auth/logout`, {}, { withCredentials: true });
+      await axios.post(
+        `${API_URL}/api/auth/logout`,
+        {},
+        { withCredentials: true }
+      );
 
       alert("✅ 로그아웃 되었습니다.");
       localStorage.clear();
@@ -55,7 +59,9 @@ function LoginPage() {
         return;
       }
 
-      const response = await axios.post(`${API_URL}/api/auth/refresh`, { refreshToken });
+      const response = await axios.post(`${API_URL}/api/auth/refresh`, {
+        refreshToken,
+      });
       const { accessToken } = response.data;
 
       localStorage.setItem("accessToken", accessToken);
@@ -124,12 +130,20 @@ function LoginPage() {
                     try {
                       console.log("✅ Google OAuth 성공:", credentialResponse);
 
-                      const decodedGoogleToken = jwtDecode(credentialResponse.credential);
-                      console.log("🔹 현재 로그인한 Google 이메일:", decodedGoogleToken.email);
+                      const decodedGoogleToken = jwtDecode(
+                        credentialResponse.credential
+                      );
+                      console.log(
+                        "🔹 현재 로그인한 Google 이메일:",
+                        decodedGoogleToken.email
+                      );
 
-                      const authResponse = await axios.post(`${API_URL}/api/auth/google`, {
-                        token: credentialResponse.credential,
-                      });
+                      const authResponse = await axios.post(
+                        `${API_URL}/api/auth/google`,
+                        {
+                          token: credentialResponse.credential,
+                        }
+                      );
 
                       const { accessToken, refreshToken } = authResponse.data;
 
@@ -138,17 +152,32 @@ function LoginPage() {
 
                       localStorage.setItem("accessToken", accessToken);
                       localStorage.setItem("refreshToken", refreshToken);
-                      localStorage.setItem("userInfo", JSON.stringify(decodedToken));
+                      localStorage.setItem(
+                        "userInfo",
+                        JSON.stringify(decodedToken)
+                      );
 
-                      axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
+                      axios.defaults.headers.common[
+                        "Authorization"
+                      ] = `Bearer ${accessToken}`;
 
                       setToken(accessToken);
                       setUser(decodedToken);
 
-                      alert(`환영합니다, ${decodedToken.user_name || decodedToken.name || decodedToken.nickname || decodedToken.email}!`);
+                      alert(
+                        `환영합니다, ${
+                          decodedToken.user_name ||
+                          decodedToken.name ||
+                          decodedToken.nickname ||
+                          decodedToken.email
+                        }!`
+                      );
                       navigate("/");
                     } catch (err) {
-                      console.error("🚨 Google 로그인 실패:", err.response || err);
+                      console.error(
+                        "🚨 Google 로그인 실패:",
+                        err.response || err
+                      );
                       alert("Google 로그인 중 오류가 발생했습니다.");
                     }
                   }}
@@ -161,7 +190,12 @@ function LoginPage() {
             ) : (
               <S.UserSection>
                 <S.UserInfo>
-                  환영합니다, {user?.user_name || user?.name || user?.nickname || user?.email}님! (역할: {user?.role})
+                  환영합니다,{" "}
+                  {user?.user_name ||
+                    user?.name ||
+                    user?.nickname ||
+                    user?.email}
+                  님! (역할: {user?.role})
                 </S.UserInfo>
                 <S.Button className="logout" onClick={handleLogout}>
                   로그아웃
