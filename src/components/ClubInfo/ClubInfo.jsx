@@ -31,7 +31,7 @@ function ClubInfo() {
   const [selectedItem, setSelectedItem] = useState(
     location.state?.defaultTab || "동아리 소개"
   );
-  const [selectedImage, setSelectedImage] = useState(null);
+  // const [selectedImage, setSelectedImage] = useState(null);
 
   useEffect(() => {
     console.log("📌 현재 접속한 클럽 ID:", club_id);
@@ -57,11 +57,10 @@ function ClubInfo() {
     };
 
     fetchClubData();
-  }, [club_id]);
+  }, [club_id, userInfo]);
 
   if (loading) return <S.Loading>Loading...</S.Loading>;
   if (error) return <S.Error>{error}</S.Error>;
-
 
   const getFormattedClubTitle = () => {
     if (!clubInfo) return "동아리 이름";
@@ -79,7 +78,7 @@ function ClubInfo() {
     "동아리 소개",
     "모집 공고",
     "행사 공고",
-    ...(isClubAdmin ? ["모집공고 작성", "모집공고 수정"] : []), // ✅ club_id가 같을 경우 추가됨
+    // ...(isClubAdmin ? ["모집공고 작성", "모집공고 수정"] : []), // ✅ club_id가 같을 경우 추가됨
   ];
 
   const handleSidebarClick = (item) => {
