@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import * as S from "./RecruitmentListPage.styles"; // 기존 스타일 파일
 import axios from "axios";
-import * as S from "./RecruitmentListPage.styles";
 
 const API_URL = "https://ajouclubserver.shop/api/recruitments";
 
@@ -39,8 +39,8 @@ function RecruitmentListPage() {
       : new Date(a.recruitment_start_date) - new Date(b.recruitment_start_date);
   });
 
-  if (loading) return <S.Loading>Loading...</S.Loading>;
-  if (error) return <S.Error>{error}</S.Error>;
+  if (loading) return <S.Container>Loading...</S.Container>;
+  if (error) return <S.Container>Error: {error}</S.Container>;
 
   return (
     <S.Container>
@@ -64,7 +64,9 @@ function RecruitmentListPage() {
             key={recruitment.recruitment_id}
             onClick={() => {
               if (recruitment.club_id) {
-                navigate(`/clubinfo/${recruitment.club_id}`); // ✅ club_id 기반으로 이동
+                navigate(`/clubinfo/${recruitment.club_id}`, {
+                  state: { defaultTab: "모집 공고" },
+                });
               } else {
                 alert("이 모집공고에 연결된 동아리가 없습니다.");
               }
@@ -72,7 +74,9 @@ function RecruitmentListPage() {
           >
             <S.CardTitle>{recruitment.recruitment_title}</S.CardTitle>
             <S.CardInfo>모집 유형: {recruitment.recruitment_type}</S.CardInfo>
-            <S.CardInfo>시작일: {recruitment.recruitment_start_date}</S.CardInfo>
+            <S.CardInfo>
+              시작일: {recruitment.recruitment_start_date}
+            </S.CardInfo>
             <S.CardInfo>종료일: {recruitment.recruitment_end_date}</S.CardInfo>
           </S.Card>
         ))}
