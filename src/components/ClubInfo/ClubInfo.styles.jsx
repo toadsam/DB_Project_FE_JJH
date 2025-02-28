@@ -116,20 +116,6 @@ export const Section = styled.div`
   margin-bottom: 10px;
 `;
 
-export const SectionTitle = styled.h2`
-  font-size: 17px;
-  color: #046cc4;
-  display: inline-block; /* 텍스트 크기에 맞게 배경색 크기 조정 */
-`;
-
-export const SectionContent = styled.p`
-  white-space: pre-wrap;
-  font-size: 16px;
-  color: #555;
-  line-height: 1.5;
-  text-align: left; /* 텍스트를 왼쪽 정렬 */
-`;
-
 export const ButtonWrapper = styled.div`
   text-align: center;
   margin-top: 30px;
@@ -368,6 +354,29 @@ export const CardLogo = styled(ClubLogo)`
   }
 `;
 
-/* 그 외 데스크탑 디자인에 영향 주지 않는 다른 컴포넌트들에도
-   모바일에서 overflow나 사이즈 조절이 필요하다면, 동일하게
-   @media (max-width: 768px) { ... } 안에서 수정해주세요. */
+export const SectionTitle = styled.h2`
+  font-size: 17px;
+  color: #046cc4;
+  display: inline-block;
+  /* 데스크탑은 기본 왼쪽 정렬 유지 */
+  text-align: left;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    text-align: center; /* 모바일에서는 중앙 정렬 */
+    margin-left: 20px;
+  }
+`;
+
+export const SectionContent = styled.p`
+  white-space: pre-wrap;
+  font-size: 16px;
+  color: #555;
+  line-height: 1.5;
+  text-align: left; /* 기본 왼쪽 정렬 */
+
+  @media (max-width: 768px) {
+    text-align: center; /* 모바일에서는 중앙 정렬 */
+    margin-left: 20px;
+  }
+`;
