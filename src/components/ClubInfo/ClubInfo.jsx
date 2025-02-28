@@ -162,13 +162,34 @@ function ClubInfo() {
             <S.Section>
               <S.SectionTitle>동아리 설명</S.SectionTitle>
               <S.SectionContent>
-                {clubInfo?.club_description || "동아리 설명이 없습니다."}
+                {clubInfo?.club_description
+                  ? clubInfo.club_description
+                      // \n 또는 \\n을 실제 개행 문자로 치환
+                      .replace(/\\n/g, "\n")
+                      .split("\n")
+                      .map((line, index) => (
+                        <React.Fragment key={index}>
+                          {line}
+                          <br />
+                        </React.Fragment>
+                      ))
+                  : "동아리 설명이 없습니다."}
               </S.SectionContent>
             </S.Section>
             <S.Section>
               <S.SectionTitle>주요 활동</S.SectionTitle>
               <S.SectionContent>
-                {clubInfo?.club_main_activities || "주요 활동 설명이 없습니다."}
+                {clubInfo?.club_main_activities
+                  ? clubInfo.club_main_activities
+                      .replace(/\\n/g, "\n")
+                      .split("\n")
+                      .map((line, index) => (
+                        <React.Fragment key={index}>
+                          {line}
+                          <br />
+                        </React.Fragment>
+                      ))
+                  : "주요 활동 설명이 없습니다."}
               </S.SectionContent>
             </S.Section>
           </>

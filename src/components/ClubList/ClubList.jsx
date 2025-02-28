@@ -174,9 +174,17 @@ function ClubList() {
               </S.ImageWrapper>
               <S.Title>{event.club_name}</S.Title>
               <S.Description>
-                {event.description.length > 35
-                  ? `${event.description.slice(0, 35)}...`
-                  : event.description}
+                {(() => {
+                  const desc = event.description.replace(/\\n/g, "\n");
+                  const truncated =
+                    desc.length > 25 ? desc.slice(0, 25) + "..." : desc;
+                  return truncated.split("\n").map((line, index) => (
+                    <React.Fragment key={index}>
+                      {line}
+                      {index !== truncated.split("\n").length - 1 && <br />}
+                    </React.Fragment>
+                  ));
+                })()}
               </S.Description>
             </S.EventBox>
           ))}
