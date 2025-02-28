@@ -160,10 +160,11 @@ export const SidebarHeader = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
-/* Sidebar: 데스크탑에서는 왼쪽 고정, 모바일에서는 상단 전체 너비 */
-export const Sidebar = styled.div`
+/* Sidebar: 데스크탑에서는 왼쪽 고정, 모바일에서는 상단 전체 너비 */ export const Sidebar = styled.div`
+  /* 데스크톱 기본 스타일 */
   width: 180px;
   background-color: #f9f9f9;
+  padding: 20px; /* 데스크톱일 때는 20px 패딩 */
   border-radius: 10px;
   margin-right: 30px;
   box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
@@ -171,20 +172,30 @@ export const Sidebar = styled.div`
   top: 20px;
   height: fit-content;
 
+  /* 모바일(768px 이하)에서 덮어쓰기 */
   @media (max-width: 768px) {
     width: 100%;
     margin-right: 0;
     margin-bottom: 10px;
     position: static;
+    padding: 8px 10px; /* 모바일일 때는 8px 10px으로 변경 */
   }
 `;
 
 export const SidebarTitle = styled.h2`
-  font-size: 16px; /* 폰트 크기 감소 */
-  font-weight: 600; /* 두께를 약간 낮춤 */
+  /* 데스크톱 기본 스타일 */
+  font-size: 18px; /* 데스크톱에서 18px */
+  font-weight: 700; /* 데스크톱에서 700 */
   color: #1d1d1f;
-  margin: 0; /* 여백 제거 */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin-bottom: 10px;
+
+  /* 모바일(768px 이하)에서 덮어쓰기 */
+  @media (max-width: 768px) {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `;
