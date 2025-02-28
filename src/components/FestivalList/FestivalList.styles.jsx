@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
-// 상단 제목 및 더보기 버튼 영역
 export const TitleRow = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end; /* 기본적으로 오른쪽 정렬 */
   align-items: center;
+  position: relative;
   width: 100%;
   padding: 20px 40px;
   box-sizing: border-box;
@@ -20,11 +20,14 @@ export const TitleText = styled.h1`
   font-weight: 700;
   color: #1d1d1f;
   margin: 0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 `;
 
 export const MoreButton = styled.button`
   font-size: 14px;
-  color: #black;
+  color: black;
   background-color: #f6f4f4;
   border: 1px solid rgb(164, 164, 164);
   padding: 6px 10px;
