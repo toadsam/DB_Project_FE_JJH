@@ -113,19 +113,20 @@ function ClubList() {
               <S.SidebarTitle>{categories[0].title}</S.SidebarTitle>
               {sidebarExpanded ? <FaChevronUp /> : <FaChevronDown />}
             </S.SidebarHeader>
-            {sidebarExpanded && (
-              <S.SidebarList>
-                {categories[0].items.map((item, index) => (
-                  <S.SidebarItem
-                    key={index}
-                    onClick={() => setSelectedCategory(item)}
-                    isSelected={selectedCategory === item}
-                  >
-                    {item}
-                  </S.SidebarItem>
-                ))}
-              </S.SidebarList>
-            )}
+            <S.SidebarList expanded={sidebarExpanded}>
+              {categories[0].items.map((item, index) => (
+                <S.SidebarItem
+                  key={index}
+                  onClick={() => {
+                    setSelectedCategory(item);
+                    setSidebarExpanded(false); // 항목 클릭 후 사이드바 닫기
+                  }}
+                  isSelected={selectedCategory === item}
+                >
+                  {item}
+                </S.SidebarItem>
+              ))}
+            </S.SidebarList>
           </>
         ) : (
           <>
