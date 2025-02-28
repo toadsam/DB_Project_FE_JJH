@@ -25,6 +25,11 @@ export const SidebarList = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
+  display: ${(props) => (props.expanded ? "block" : "none")};
+
+  @media (min-width: 768px) {
+    display: block; /* 데스크탑에서는 항상 보이도록 */
+  }
 `;
 
 export const SidebarItem = styled.li`
