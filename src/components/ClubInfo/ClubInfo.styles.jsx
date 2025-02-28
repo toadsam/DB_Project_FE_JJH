@@ -1,43 +1,5 @@
 import styled from "styled-components";
 
-export const PageContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  box-sizing: border-box;
-  overflow: visible;
-  width: 100%;
-  max-width: 1200px; /* 디자인 기준 폭 */
-  margin: 0 auto;
-  padding: 0 20px;
-
-  /* 모바일 전용 스타일 */
-  @media (max-width: 768px) {
-    flex-direction: column; /* 세로로 배치해서 카테고리(사이드바)가 위로 오게 함 */
-    max-width: 100%;
-    padding: 0 10px;
-  }
-`;
-export const Sidebar = styled.div`
-  width: 180px;
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 10px;
-  margin-right: 30px;
-  margin-left: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  margin-top: 50px;
-
-  /* 모바일 전용 스타일 */
-  @media (max-width: 768px) {
-    width: 100%;
-    margin: 0 auto 20px auto; /* 상단에 배치되고 아래쪽 마진 추가 */
-    position: relative; /* 스크롤에 자연스럽게 따라감 */
-    top: 0;
-  }
-`;
-
 export const SidebarTitle = styled.h2`
   font-size: 18px;
   font-weight: 700;
@@ -91,20 +53,6 @@ export const Content = styled.div`
   display: flex;
   flex-direction: column;
 `;
-export const InfoContainer = styled.div`
-  width: 100%;
-  margin: 0 auto;
-  padding: 20px;
-  box-sizing: border-box;
-  font-family: "Arial", sans-serif;
-  display: flex;
-  flex-direction: column;
-
-  /* 모바일 전용 스타일 */
-  @media (max-width: 768px) {
-    padding: 10px;
-  }
-`;
 export const Loading = styled.div`
   font-size: 18px;
   color: #007aff;
@@ -130,13 +78,6 @@ export const LogoWrapper = styled.div`
   flex-shrink: 0;
 `;
 
-export const ClubLogo = styled.img`
-  width: 120px;
-  height: 120px;
-  border-radius: 10px;
-  object-fit: cover;
-`;
-
 export const ClubInfoWrapper = styled.div`
   flex-grow: 1;
 `;
@@ -155,24 +96,6 @@ export const ContactInfo = styled.div`
 export const ContactItem = styled.div`
   display: flex;
   margin-bottom: 5px;
-`;
-
-export const ContactLabel = styled.span`
-  font-weight: bold;
-  color: #333;
-  min-width: 80px;
-`;
-
-export const ContactValue = styled.span`
-  color: #555;
-  a {
-    color: black;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
 `;
 
 export const HashTags = styled.div`
@@ -233,10 +156,6 @@ export const CardContainer = styled.div`
   }
 `;
 
-export const CardLogo = styled(ClubLogo)`
-  width: 250px;
-  height: 200px;
-`;
 export const CardContent = styled.div`
   display: flex;
   flex-direction: column;
@@ -332,3 +251,118 @@ export const ModalImage = styled.img`
   max-height: 450px;
   object-fit: contain;
 `;
+export const PageContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  box-sizing: border-box;
+  overflow: visible;
+  width: 100%;
+  max-width: 1200px; /* 데스크탑 기준 */
+  margin: 0 auto;
+  padding: 0 20px;
+
+  /* 모바일 전용 스타일 */
+  @media (max-width: 768px) {
+    flex-direction: column;
+    max-width: 90%;
+    margin: 0; /* 화면 끝까지 꽉 채우기 */
+    padding: 0; /* 불필요한 여백 제거 */
+  }
+`;
+
+export const Sidebar = styled.div`
+  width: 180px;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  margin-right: 30px;
+  margin-left: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  margin-top: 50px;
+
+  /* 모바일 전용 스타일 */
+  @media (max-width: 768px) {
+    width: 100%;
+    margin: 0 auto 20px auto;
+    position: relative;
+    top: 0;
+  }
+`;
+
+export const InfoContainer = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
+  font-family: "Arial", sans-serif;
+  display: flex;
+  flex-direction: column;
+
+  /* 모바일 전용 스타일 */
+  @media (max-width: 768px) {
+    padding: 10px;
+    margin: 0;
+  }
+`;
+
+/* 연락처, SNS 등 텍스트 요소 overflow 방지를 위한 스타일 */
+export const ContactLabel = styled.span`
+  font-weight: bold;
+  color: #333;
+  min-width: 80px;
+
+  @media (max-width: 768px) {
+    display: block;
+    min-width: auto;
+    margin-bottom: 4px;
+  }
+`;
+
+export const ContactValue = styled.span`
+  color: #555;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+
+  a {
+    color: black;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  @media (max-width: 768px) {
+    display: block;
+    width: 100%;
+  }
+`;
+
+/* 이미지가 모바일에서 비율에 맞춰 유동적으로 표시되도록 */
+export const ClubLogo = styled.img`
+  width: 120px;
+  height: 120px;
+  border-radius: 10px;
+  object-fit: cover;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: auto;
+  }
+`;
+
+export const CardLogo = styled(ClubLogo)`
+  width: 250px;
+  height: 200px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: auto;
+    max-width: none;
+  }
+`;
+
+/* 그 외 데스크탑 디자인에 영향 주지 않는 다른 컴포넌트들에도
+   모바일에서 overflow나 사이즈 조절이 필요하다면, 동일하게
+   @media (max-width: 768px) { ... } 안에서 수정해주세요. */

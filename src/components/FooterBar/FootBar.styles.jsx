@@ -5,6 +5,10 @@ export const FooterContainer = styled.footer`
   background-color: #1e1e1e;
   color: #fff;
   padding: 30px 20px;
+
+  @media (max-width: 768px) {
+    padding: 30px 0; /* 모바일에서는 좌우 패딩 제거 */
+  }
 `;
 
 export const ContentWrapper = styled.div`
