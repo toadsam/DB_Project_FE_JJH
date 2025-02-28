@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import * as S from "./NewRecruitment.styles"; // 스타일 정의
+import * as S from "./NewRecruitment.styles"; // 위에 수정한 스타일 파일
 import axios from "axios";
-import defaultImage from "../../asset/mainLogo.png"; // 기본 이미지 불러오기
+import defaultImage from "../../asset/mainLogo.png";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Mousewheel } from "swiper/modules";
 import "swiper/css";
@@ -61,72 +61,59 @@ function FestivalList() {
   if (error) return <S.Container>Error: {error}</S.Container>;
 
   return (
-    <S.Container>
-      {/* 클릭 시 모집공고 리스트 페이지로 이동하는 제목 */}
-      <S.TitleLink onClick={() => navigate("/recruitment-list")}>
-        새로운 모집공고가 올라왔어요 {">"}
-      </S.TitleLink>
+    <>
+      {/* 상단 제목 및 더보기 버튼 */}
+      <S.TitleRow>
+        <S.TitleText>모집 소식 확인하기</S.TitleText>
+        <S.MoreButton onClick={() => navigate("/recruitment-list")}>
+          더보기
+        </S.MoreButton>
+      </S.TitleRow>
 
-      <Swiper
-        spaceBetween={20}
-        slidesPerView="auto"
-        freeMode={true}
-        grabCursor={true}
-        simulateTouch={true}
-        pagination={{ clickable: true }}
-        mousewheel={true}
-        modules={[Navigation, Pagination, Mousewheel]}
-      >
-        {/* "모아보기" 카드를 첫 슬라이드로 포함 */}
-        <SwiperSlide style={{ width: "180px" }}>
-          <S.EventBox onClick={() => navigate("/recruitment-list")}>
-            <S.ImageWrapper
-              style={{
-                height: "270px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: "#f0f0f0",
-                borderRadius: "10px",
-              }}
-            >
-              <S.MoreText>모아보기 {">"}</S.MoreText>
-            </S.ImageWrapper>
-          </S.EventBox>
-        </SwiperSlide>
-
-        {events.map((event) => (
-          <SwiperSlide key={event.id} style={{ width: "180px" }}>
-            <S.EventBox
-              onClick={() =>
-                navigate(`/clubinfo/${event.club_id}`, {
-                  state: { defaultTab: "모집 공고" },
-                })
-              }
-            >
-              <S.ImageWrapper style={{ height: "180px", overflow: "hidden" }}>
-                <img
-                  src={event.main_image}
-                  alt={event.title}
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    borderRadius: "10px",
-                  }}
-                />
-              </S.ImageWrapper>
-              <S.Title>
-                {event.title.length > 22
-                  ? `${event.title.substring(0, 22)}...`
-                  : event.title}
-              </S.Title>
-              <S.Date>마감일자: {event.endDate}</S.Date>
-            </S.EventBox>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </S.Container>
+      <S.Container>
+        <Swiper
+          spaceBetween={20}
+          slidesPerView="auto"
+          freeMode={true}
+          grabCursor={true}
+          simulateTouch={true}
+          pagination={{ clickable: true }}
+          mousewheel={true}
+          modules={[Navigation, Pagination, Mousewheel]}
+        >
+          {events.map((event) => (
+            <SwiperSlide key={event.id} style={{ width: "180px" }}>
+              <S.EventBox
+                onClick={() =>
+                  navigate(`/clubinfo/${event.club_id}`, {
+                    state: { defaultTab: "모집 공고" },
+                  })
+                }
+              >
+                <S.ImageWrapper style={{ height: "180px", overflow: "hidden" }}>
+                  <img
+                    src={event.main_image}
+                    alt={event.title}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      borderRadius: "10px",
+                    }}
+                  />
+                </S.ImageWrapper>
+                <S.Title>
+                  {event.title.length > 22
+                    ? `${event.title.substring(0, 22)}...`
+                    : event.title}
+                </S.Title>
+                <S.Date>마감일자: {event.endDate}</S.Date>
+              </S.EventBox>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </S.Container>
+    </>
   );
 }
 
