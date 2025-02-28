@@ -380,3 +380,13 @@ export const SectionContent = styled.p`
     margin-left: 20px;
   }
 `;
+export const Link = styled.a`
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+  display: block;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;

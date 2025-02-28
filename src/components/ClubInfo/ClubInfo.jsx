@@ -5,7 +5,6 @@ import * as S from "./ClubInfo.styles";
 import defaultImage from "../../asset/mainLogo.png";
 import ClubApply from "../ClubApply/ClubApply";
 import ClubEvent from "../ClubEvent/ClubEvent";
-
 import { jwtDecode } from "jwt-decode";
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -61,6 +60,15 @@ function ClubInfo() {
 
     fetchClubData();
   }, [club_id]);
+
+  // 전화번호 포맷 함수 (예: 010-xxxx-xxxx)
+  const formatPhoneNumber = (phoneNumber) => {
+    const cleaned = ("" + phoneNumber).replace(/\D/g, "");
+    if (cleaned.length === 11 && cleaned.startsWith("010")) {
+      return cleaned.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+    }
+    return phoneNumber;
+  };
 
   if (loading) return <S.Loading>Loading...</S.Loading>;
   if (error) return <S.Error>{error}</S.Error>;
@@ -137,20 +145,25 @@ function ClubInfo() {
               <S.CardInfoItem>
                 <S.ContactLabel>연락처</S.ContactLabel>
                 <S.ContactValue>
-                  {clubInfo?.club_contact_phone_number ||
-                    "연락처 정보가 없습니다."}
+                  {clubInfo?.club_contact_phone_number
+                    ? formatPhoneNumber(clubInfo.club_contact_phone_number)
+                    : "연락처 정보가 없습니다."}
                 </S.ContactValue>
               </S.CardInfoItem>
               <S.CardInfoItem>
                 <S.ContactLabel>SNS</S.ContactLabel>
                 <S.ContactValue>
-                  <a
-                    href={clubInfo?.club_sns1 || "#"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {clubInfo?.club_sns1 || "SNS 정보가 없습니다."}
-                  </a>
+                  {clubInfo?.club_sns1 ? (
+                    <S.Link
+                      href={clubInfo.club_sns1}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Instagram
+                    </S.Link>
+                  ) : (
+                    "SNS 정보가 없습니다."
+                  )}
                 </S.ContactValue>
               </S.CardInfoItem>
             </S.CardInfoBox>
@@ -164,7 +177,6 @@ function ClubInfo() {
               <S.SectionContent>
                 {clubInfo?.club_description
                   ? clubInfo.club_description
-                      // \n 또는 \\n을 실제 개행 문자로 치환
                       .replace(/\\n/g, "\n")
                       .split("\n")
                       .map((line, index) => (
