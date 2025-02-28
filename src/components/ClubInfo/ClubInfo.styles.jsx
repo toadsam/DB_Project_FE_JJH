@@ -168,6 +168,11 @@ export const CardContent = styled.div`
 export const CardInfoItem = styled.div`
   display: flex;
   gap: 10px; /* 라벨과 값 간 간격 */
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 `;
 export const CardInfoBox = styled.div`
   display: flex;
