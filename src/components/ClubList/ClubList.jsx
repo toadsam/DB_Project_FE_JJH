@@ -41,7 +41,11 @@ function ClubList() {
 
   // 모바일 사이드바 확장 여부
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
-
+  useEffect(() => {
+    if (isMobile) {
+      setSidebarExpanded(false);
+    }
+  }, [selectedCategory, isMobile]);
   useEffect(() => {
     const fetchEvents = async () => {
       setLoading(true);
