@@ -70,16 +70,21 @@ export const TitleBar = styled.div`
 
 export const Container = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+
+  grid-template-columns: repeat(auto-fit, minmax(150px, max-content));
   gap: 20px;
   width: 100%;
   margin: 0 auto;
-  justify-content: center;
-  justify-items: center; /* 추가 */
+
+  /* 왼쪽 정렬을 위해 center 대신 start 사용 */
+  justify-content: start;
+  align-items: start;
 `;
 
-// EventBox: 모바일에서도 데스크탑과 동일한 카드 형태를 유지
+/* EventBox: 카드 자체는 그리드 셀의 너비에 맞춰 중앙에 배치 */
 export const EventBox = styled.div`
+  width: 100%;
+  max-width: 180px;
   background-color: #ffffff;
   border: 0.2px solid rgb(213, 213, 213);
   overflow: hidden;
@@ -87,13 +92,13 @@ export const EventBox = styled.div`
   flex-direction: column;
   transition: transform 0.3s ease;
   cursor: pointer;
+  margin: 0 auto; /* 그리드 셀 내에서 중앙 정렬 */
 
   &:hover {
     transform: translateY(-8px);
   }
 
   @media (max-width: 768px) {
-    /* 모바일에서도 카드형식을 유지하며, 필요 시 카드 크기를 조정 */
     width: 100%;
     padding: 10px;
   }

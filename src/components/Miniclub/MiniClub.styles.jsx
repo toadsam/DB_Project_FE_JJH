@@ -81,11 +81,15 @@ export const TitleBar = styled.div`
 
 export const Container = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+
+  grid-template-columns: repeat(auto-fit, minmax(150px, max-content));
   gap: 20px;
   width: 100%;
   margin: 0 auto;
-  justify-items: center;
+
+  /* 왼쪽 정렬을 위해 center 대신 start 사용 */
+  justify-content: start;
+  align-items: start;
 `;
 
 /* EventBox: 카드 자체는 그리드 셀의 너비에 맞춰 중앙에 배치 */
