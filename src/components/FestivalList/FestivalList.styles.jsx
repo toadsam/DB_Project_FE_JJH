@@ -26,7 +26,7 @@ export const EventBox = styled.div`
   display: flex;
   flex-direction: column;
   transition: transform 0.3s ease;
-  
+
   box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
   margin-bottom: 30px;
 
