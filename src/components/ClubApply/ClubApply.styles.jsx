@@ -1,27 +1,22 @@
 import styled from "styled-components";
 
-export const ApplyContainer = styled.div`
-  width: 100%;
-  max-width: 1200px; /* 디자인 기준 폭 */
-  margin: 0 auto; /* 좌우 자동 여백 -> 중앙 정렬 */
-  padding: 0 20px; /* 내부 여백 추가 */
-  box-sizing: border-box;
-  font-family: "Arial", sans-serif;
-  display: flex;
-  flex-direction: column;
-`;
-
+// 데스크탑: 한 줄(row), 모바일: 세로(column)
 export const TitleContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 10px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
-export const Title = styled.h1`
-  font-size: 18px;
-  font-weight: bold;
-  color: #046cc4;
+// 빨간 박스들을 감싸는 컨테이너는 항상 가로 정렬
+export const ActionContainer = styled.div`
+  display: flex;
+  gap: 10px;
 `;
 
 export const DaysLeftBadge = styled.span`
@@ -33,29 +28,8 @@ export const DaysLeftBadge = styled.span`
   border-radius: 12px;
 `;
 
-export const Description = styled.p`
-  font-size: 16px;
-  color: #555;
-  margin-bottom: 20px;
-  line-height: 1.5;
-  white-space: pre-wrap;
-`;
-
 export const Section = styled.div`
   margin-bottom: 10px;
-`;
-
-export const SectionTitle = styled.h2`
-  font-size: 17px;
-  color: #046cc4;
-  display: inline-block;
-`;
-
-export const SectionContent = styled.p`
-  font-size: 16px;
-  color: #555;
-  line-height: 1.5;
-  text-align: left;
 `;
 
 export const Loading = styled.div`
@@ -153,4 +127,66 @@ export const ApplyButton = styled.a`
   background-color: #f44336; /* 붉은 계열 강조 색상 */
   padding: 5px 10px;
   border-radius: 12px;
+`;
+export const ApplyContainer = styled.div`
+  width: 100%;
+  max-width: 1200px; /* 데스크탑 기준 폭 */
+  margin: 0 auto; /* 좌우 자동 여백 -> 중앙 정렬 */
+  padding: 0 20px; /* 내부 여백 */
+  box-sizing: border-box;
+  font-family: "Arial", sans-serif;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 768px) {
+    max-width: 90%; /* 모바일 폭 90% */
+    padding: 0;
+    text-align: center; /* 내부 텍스트 중앙 정렬 */
+  }
+`;
+
+export const Title = styled.h1`
+  font-size: 18px;
+  font-weight: bold;
+  color: #046cc4;
+
+  @media (max-width: 768px) {
+    text-align: center;
+  }
+`;
+
+export const Description = styled.p`
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 20px;
+  line-height: 1.5;
+  white-space: pre-wrap; /* 기존 줄바꿈 유지 */
+
+  @media (max-width: 768px) {
+    text-align: center;
+    word-break: break-word; /* 길어지면 자동 줄바꿈 */
+  }
+`;
+
+export const SectionTitle = styled.h2`
+  font-size: 17px;
+  color: #046cc4;
+  display: inline-block;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    text-align: center;
+  }
+`;
+
+export const SectionContent = styled.p`
+  font-size: 16px;
+  color: #555;
+  line-height: 1.5;
+  text-align: left;
+
+  @media (max-width: 768px) {
+    text-align: center;
+    word-break: break-word;
+  }
 `;

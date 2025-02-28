@@ -31,7 +31,7 @@ import Partners from "./components/Partners/Partners";
 import RecruitmentListPage from "./components/RecruitmentListPage/RecruitmentListPage"; // 모집공고 목록 페이지
 function AppRouter() {
   return (
-    <Router basename="/DB_Project_FE">
+    <Router basename="/">
       <Header />
       <Routes>
         <Route
