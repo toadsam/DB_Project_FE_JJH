@@ -66,10 +66,14 @@ function Header() {
   };
 
   const handleCategoryClick = (category) => {
-    // "내정보" 클릭 시 alert 띄우고 이동하지 않음
+    // "내정보" 클릭 시
     if (category.title === "내정보") {
-      alert("준비중인 서비스입니다!");
-      if (isMobile) setMobileMenuOpen(false);
+      if (isMobile) {
+        setMobileMenuOpen(false);
+        navigate("/login");
+      } else {
+        alert("준비중인 서비스입니다!");
+      }
       return;
     }
     // 하위 항목이 없다면 바로 이동
@@ -78,6 +82,7 @@ function Header() {
       navigate(category.navigateTo);
     }
   };
+
   const handleItemClick = (item) => {
     if (item.navigateTo) {
       if (isMobile) setMobileMenuOpen(false);
