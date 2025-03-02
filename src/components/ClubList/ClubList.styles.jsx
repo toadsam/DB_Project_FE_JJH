@@ -278,3 +278,34 @@ export const MobileSearchIcon = styled.div`
   margin-left: 5px;
   color: #555;
 `;
+export const FilterContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-right: 20px;
+`;
+
+export const FilterButton = styled.button`
+  background-color: ${(props) => (props.isSelected ? "#007aff" : "#f0f0f0")};
+  color: ${(props) => (props.isSelected ? "#fff" : "#333")};
+  border: none;
+  width: 60px;
+  padding: 4px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: ${(props) => (props.isSelected ? "#005bb5" : "#e0e0e0")};
+  }
+`;
+export const MobileFilterContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-left: auto; /* 오른쪽 정렬 */
+
+  @media (min-width: 768px) {
+    display: none; /* 데스크탑에서는 숨기기 */
+  }
+`;

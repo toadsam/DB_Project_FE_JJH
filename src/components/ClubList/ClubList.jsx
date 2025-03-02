@@ -30,9 +30,11 @@ function ClubList() {
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedFilter, setSelectedFilter] = useState("전체"); // 기본값을 "전체"로!
+
   const navigate = useNavigate();
 
-  // 모바일 여부 감지
+  // 📌 모바일 여부 감지
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -40,7 +42,7 @@ function ClubList() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  // 모바일 사이드바 확장 여부
+  // 📌 모바일 사이드바 확장 여부
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
   useEffect(() => {
     if (isMobile) {
@@ -50,7 +52,7 @@ function ClubList() {
 
   // 🔄 카테고리 변경 시 검색어 리셋
   useEffect(() => {
-    setSearchTerm(""); // 카테고리 변경 시 검색어 초기화
+    setSearchTerm("");
   }, [selectedCategory]);
 
   useEffect(() => {
@@ -99,14 +101,15 @@ function ClubList() {
     navigate(`/clubinfo/${id}`);
   };
 
-  // 검색 input onChange 핸들러
+  // 🔍 검색 input onChange 핸들러
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
-  // 모집 마감일 계산 함수 추가!
+
+  // 📌 모집 마감일 계산 함수
   const getRecruitmentLabel = (event) => {
     if (!event.recruitment_type) {
-      return "상시"; // 모집 정보가 없으면 "상시"
+      return "상시";
     } else if (event.recruitment_type === "수시모집") {
       const today = new Date();
       const endDate = new Date(event.recruitment_end_date);
@@ -119,9 +122,20 @@ function ClubList() {
   };
 
   // 🔍 검색어로 시작하는 동아리만 필터링
-  const filteredEvents = events.filter((event) =>
+  let filteredEvents = events.filter((event) =>
     event.club_name.toLowerCase().startsWith(searchTerm.toLowerCase())
   );
+
+  // 📌 모집 필터 적용 (수시 / 상시)
+  if (selectedFilter === "수시") {
+    filteredEvents = filteredEvents.filter(
+      (event) => event.recruitment_type === "수시모집"
+    );
+  } else if (selectedFilter === "상시") {
+    filteredEvents = filteredEvents.filter(
+      (event) => !event.recruitment_type || event.recruitment_type === "상시"
+    );
+  }
 
   return (
     <S.PageContainer>
@@ -188,7 +202,38 @@ function ClubList() {
             중앙동아리 {">"} {selectedCategory || "전체"}
           </S.Title1>
 
-          {/* 📌 데스크탑 검색창 (기존 그대로 유지) */}
+          {/* 📌 필터 버튼 추가 */}
+          {!isMobile && (
+            <S.FilterContainer>
+              {" "}
+              <S.FilterButton
+                onClick={() =>
+                  setSelectedFilter(selectedFilter === "전체" ? "" : "전체")
+                }
+                isSelected={selectedFilter === "전체"}
+              >
+                전체
+              </S.FilterButton>
+              <S.FilterButton
+                onClick={() =>
+                  setSelectedFilter(selectedFilter === "수시" ? "" : "수시")
+                }
+                isSelected={selectedFilter === "수시"}
+              >
+                수시
+              </S.FilterButton>
+              <S.FilterButton
+                onClick={() =>
+                  setSelectedFilter(selectedFilter === "상시" ? "" : "상시")
+                }
+                isSelected={selectedFilter === "상시"}
+              >
+                상시
+              </S.FilterButton>{" "}
+            </S.FilterContainer>
+          )}
+
+          {/* 📌 데스크탑 검색창 */}
           {!isMobile && (
             <S.SearchContainer>
               <S.SearchInput
@@ -211,30 +256,14 @@ function ClubList() {
               key={event.club_id}
               onClick={() => handleEventClick(event.club_id)}
             >
-              <S.ImageWrapper
-                data-label={getRecruitmentLabel(event)}
-                style={{ height: "180px", overflow: "hidden" }}
-              >
-                <img
-                  src={event.image}
-                  alt={event.club_name}
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                />
+              <S.ImageWrapper data-label={getRecruitmentLabel(event)}>
+                <img src={event.image} alt={event.club_name} />
               </S.ImageWrapper>
-
               <S.Title>{event.club_name}</S.Title>
               <S.Description>
-                {(() => {
-                  const desc = event.description.replace(/\\n/g, "\n");
-                  const truncated =
-                    desc.length > 25 ? desc.slice(0, 25) + "..." : desc;
-                  return truncated.split("\n").map((line, index) => (
-                    <React.Fragment key={index}>
-                      {line}
-                      {index !== truncated.split("\n").length - 1 && <br />}
-                    </React.Fragment>
-                  ));
-                })()}
+                {event.description.length > 25
+                  ? `${event.description.slice(0, 25)}...`
+                  : event.description}
               </S.Description>
             </S.EventBox>
           ))}
