@@ -288,7 +288,6 @@ export const InfoContainer = styled.div`
   margin: 0 auto;
   padding: 20px;
   box-sizing: border-box;
-  font-family: "Arial", sans-serif;
   display: flex;
   flex-direction: column;
 

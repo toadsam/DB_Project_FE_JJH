@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const ApplyContainer = styled.div`
   box-sizing: border-box;
-  font-family: "Arial", sans-serif;
   display: flex;
   flex-direction: column;
   width: 100%;

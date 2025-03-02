@@ -136,7 +136,6 @@ export const ApplyContainer = styled.div`
   margin: 0 auto; /* 좌우 자동 여백 -> 중앙 정렬 */
 
   box-sizing: border-box;
-  font-family: "Arial", sans-serif;
   display: flex;
   flex-direction: column;
 
