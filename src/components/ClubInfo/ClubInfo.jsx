@@ -7,6 +7,11 @@ import ClubApply from "../ClubApply/ClubApply";
 import ClubEvent from "../ClubEvent/ClubEvent";
 import { jwtDecode } from "jwt-decode";
 import { FaInstagram } from "react-icons/fa";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 const API_URL = process.env.REACT_APP_API_URL;
 
 const getUserInfo = () => {
@@ -28,13 +33,12 @@ function ClubInfo() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // getUserInfo를 useMemo로 호출해 한 번만 계산되도록 함
+  const [selectedImageIndex, setSelectedImageIndex] = useState(null);
+
   const userInfo = useMemo(() => getUserInfo(), []);
 
-  // JWT 토큰에 clubAdmin 속성이 true라면 해당 사용자는 클럽 관리자라고 가정
   const isClubAdmin = userInfo && userInfo.clubAdmin;
 
-  // 관리자인 경우에만 추가 메뉴를 보여줌
   const [selectedItem, setSelectedItem] = useState(
     location.state?.defaultTab || "동아리 소개"
   );
@@ -105,7 +109,41 @@ function ClubInfo() {
       navigate(`/clubinfo/${club_id}`, { state: { defaultTab: item } });
     }
   };
+  // const handleNextImage = () => {
+  //   if (clubInfo?.club_activity_images) {
+  //     setSelectedImageIndex((prevIndex) =>
+  //       prevIndex === clubInfo.club_activity_images.length - 1
+  //         ? 0
+  //         : prevIndex + 1
+  //     );
+  //   }
+  // };
 
+  // const handlePrevImage = () => {
+  //   if (clubInfo?.club_activity_images) {
+  //     setSelectedImageIndex((prevIndex) =>
+  //       prevIndex === 0
+  //         ? clubInfo.club_activity_images.length - 1
+  //         : prevIndex - 1
+  //     );
+  //   }
+  // };
+
+  // // 터치 이벤트 (모바일 스와이프)
+  // const handleTouchStart = (e) => {
+  //   setStartX(e.touches[0].clientX);
+  // };
+
+  // const handleTouchMove = (e) => {
+  //   if (!startX) return;
+  //   const diffX = startX - e.touches[0].clientX;
+  //   if (diffX > 50) {
+  //     handleNextImage(); // 왼쪽으로 스와이프 -> 다음 이미지
+  //   } else if (diffX < -50) {
+  //     handlePrevImage(); // 오른쪽으로 스와이프 -> 이전 이미지
+  //   }
+  //   setStartX(null);
+  // };
   return (
     <S.PageContainer>
       <S.Sidebar>
@@ -207,6 +245,57 @@ function ClubInfo() {
                   : "주요 활동 설명이 없습니다."}
               </S.SectionContent>
             </S.Section>
+            {clubInfo?.club_activity_images &&
+              clubInfo.club_activity_images.length > 0 && (
+                <S.Section>
+                  <S.SectionTitle>활동 사진</S.SectionTitle>
+
+                  {/* 📌 데스크탑에서는 기존 그리드 유지 */}
+                  <S.ActivityImagesGrid>
+                    {clubInfo.club_activity_images.map((image, index) => (
+                      <S.ActivityImageItem
+                        key={index}
+                        src={image}
+                        alt={`활동 사진 ${index + 1}`}
+                        onClick={() => setSelectedImageIndex(index)}
+                      />
+                    ))}
+                  </S.ActivityImagesGrid>
+
+                  {/* 📌 모바일에서는 Swiper 적용 (손가락으로 스와이프 가능) */}
+                  <S.MobileSwiperContainer>
+                    <Swiper
+                      spaceBetween={10}
+                      slidesPerView="auto"
+                      freeMode={true}
+                      pagination={{ clickable: true, el: ".swiper-pagination" }}
+                      modules={[Pagination]}
+                      className="custom-swiper"
+                    >
+                      {clubInfo.club_activity_images.map((image, index) => (
+                        <SwiperSlide key={index} style={{ width: "150px" }}>
+                          <S.MobileGalleryImage
+                            src={image}
+                            alt={`활동 사진 ${index + 1}`}
+                            onClick={() => setSelectedImageIndex(index)}
+                          />
+                        </SwiperSlide>
+                      ))}
+                    </Swiper>
+                    <div className="swiper-pagination"></div>{" "}
+                    {/* 👇 페이지네이션 위치 조정 */}
+                  </S.MobileSwiperContainer>
+                </S.Section>
+              )}
+
+            {selectedImageIndex !== null && (
+              <S.ModalOverlay onClick={() => setSelectedImageIndex(null)}>
+                <S.ModalImage
+                  src={clubInfo.club_activity_images[selectedImageIndex]}
+                  alt="확대된 활동 사진"
+                />
+              </S.ModalOverlay>
+            )}
           </>
         )}
 
