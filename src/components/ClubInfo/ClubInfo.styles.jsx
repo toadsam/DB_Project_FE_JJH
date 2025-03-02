@@ -516,3 +516,19 @@ export const ModalImage = styled.img`
     max-height: 80%;
   }
 `;
+// ✅ SNS 링크 컨테이너 (가로 정렬)
+export const SocialLinksContainer = styled.div`
+  display: flex;
+  gap: 12px;
+`;
+
+// ✅ 개별 SNS 링크 스타일
+export const SocialLink = styled.a`
+  color: #555;
+  font-size: 24px;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #007aff;
+  }
+`;

@@ -6,7 +6,7 @@ import defaultImage from "../../asset/mainLogo.png";
 import ClubApply from "../ClubApply/ClubApply";
 import ClubEvent from "../ClubEvent/ClubEvent";
 import { jwtDecode } from "jwt-decode";
-import { FaInstagram } from "react-icons/fa";
+import { FaInstagram, FaYoutube, FaLink, FaGlobe } from "react-icons/fa";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
 import "swiper/css";
@@ -90,6 +90,12 @@ function ClubInfo() {
     }
     return clubInfo.club_name;
   };
+  const socialLinks = [
+    { url: clubInfo?.club_sns1, icon: <FaInstagram />, label: "Instagram" },
+    { url: clubInfo?.club_sns2, icon: <FaYoutube />, label: "YouTube" },
+    { url: clubInfo?.club_sns3, icon: <FaLink />, label: "Linktree" },
+    { url: clubInfo?.club_sns4, icon: <FaGlobe />, label: "Website" },
+  ].filter((sns) => sns.url); // 링크가 존재하는 것만 필터링
 
   // 기본 메뉴에 관리자인 경우에만 추가 메뉴를 포함
   const sidebarItems = [
@@ -156,20 +162,13 @@ function ClubInfo() {
               <S.CardInfoItem>
                 <S.ContactLabel>SNS</S.ContactLabel>
                 <S.ContactValue>
-                  {clubInfo?.club_sns1 ? (
-                    <S.Link
-                      href={clubInfo.club_sns1}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <FaInstagram
-                        size={24}
-                        style={{ verticalAlign: "middle" }}
-                      />
-                    </S.Link>
-                  ) : (
-                    "SNS 정보가 없습니다."
-                  )}
+                  <S.SocialLinksContainer>
+                    {socialLinks.map((sns, index) => (
+                      <S.SocialLink key={index} href={sns.url} target="_blank">
+                        {sns.icon}
+                      </S.SocialLink>
+                    ))}
+                  </S.SocialLinksContainer>
                 </S.ContactValue>
               </S.CardInfoItem>
             </S.CardInfoBox>
