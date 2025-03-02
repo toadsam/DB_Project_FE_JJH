@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 import * as S from "./RecruitmentPage.styles";
 
 function RecruitmentPage() {
+  const { club_id } = useParams();
+  const [clubName, setClubName] = useState("동아리 이름");
   const [title, setTitle] = useState("");
   const [type, setType] = useState("상시모집");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -12,9 +15,24 @@ function RecruitmentPage() {
   const [description, setDescription] = useState("");
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [selectedItem, setSelectedItem] = useState("모집 공고"); // 현재 선택된 항목
 
-  const API_URL = `http://43.203.79.210:5001/api/recruitments/19`;
+  const API_URL = `http://43.203.79.210:5001/api/recruitments/${club_id}`;
+  
+  useEffect(() => {
+    const fetchClubName = async () => {
+      try {
+        const response = await axios.get(`http://43.203.79.210:5001/api/clubs/${club_id}`, {
+          headers: { "Content-Type": "application/json" },
+        });
+        setClubName(response.data.club_name || "동아리 이름");
+      } catch (err) {
+        console.error("❌ [동아리 이름 조회 실패]:", err);
+        setClubName("동아리 이름");
+      }
+    };
+
+    fetchClubName();
+  }, [club_id]); // ✅ club_id만 의존성 배열에 포함
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -65,27 +83,9 @@ function RecruitmentPage() {
   return (
     <S.Container>
       <S.Content>
-        {/* ✅ 새로운 카테고리 디자인 적용 */}
-        <S.Sidebar>
-          <S.SidebarTitle>카테고리</S.SidebarTitle>
-          <S.SidebarList>
-            {["동아리 소개", "모집 공고", "행사 공고", "중앙동아리", "소학회", "모집공고", "부원관리", "신청목록"].map(
-              (item, index) => (
-                <S.SidebarItem
-                  key={index}
-                  $isSelected={selectedItem === item}
-                  onClick={() => setSelectedItem(item)}
-                >
-                  {item}
-                </S.SidebarItem>
-              )
-            )}
-          </S.SidebarList>
-        </S.Sidebar>
-
         <S.Main>
           <S.Title>
-            <S.Highlight>SWeat</S.Highlight> - 모집공고
+            <S.Highlight>{clubName}</S.Highlight> - 모집공고
           </S.Title>
           <S.Form onSubmit={handleSubmit}>
             {error && <S.ErrorMessage>{error}</S.ErrorMessage>}
@@ -149,10 +149,6 @@ function RecruitmentPage() {
               onChange={(e) => setDescription(e.target.value)}
               required
             />
-            
-            {/* 모집 내용 미리보기 – 사용자가 입력한 엔터(줄바꿈) 적용 */}
-            <S.Label>모집 내용 미리보기</S.Label>
-            <S.RecruitmentDescription>{description}</S.RecruitmentDescription>
 
             <S.SubmitButton type="submit">게시</S.SubmitButton>
           </S.Form>
