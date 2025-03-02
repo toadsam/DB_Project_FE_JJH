@@ -5,7 +5,6 @@ import logo from "../../asset/img.jpg";
 import {
   FaUniversity,
   FaUsers,
-  FaCalendarAlt,
   FaNetworkWired,
   FaUserAlt,
 } from "react-icons/fa";
@@ -21,11 +20,11 @@ const categories = [
     navigateTo: "/miniclublist",
     icon: <FaUsers />,
   },
-  {
-    title: "행사",
-    navigateTo: "/eventinfo",
-    icon: <FaCalendarAlt />,
-  },
+  // {
+  //   title: "행사",
+  //   navigateTo: "/eventinfo",
+  //   icon: <FaCalendarAlt />,
+  // },
   {
     title: "동아리연합회",
     icon: <FaNetworkWired />,
@@ -36,7 +35,7 @@ const categories = [
   },
   {
     title: "내정보",
-    navigateTo: "/mypage",
+    navigateTo: "/login",
     icon: <FaUserAlt />,
   },
 ];
@@ -64,12 +63,9 @@ function Header() {
 
   const handleCategoryClick = (category) => {
     if (category.title === "내정보") {
-      if (isMobile) {
-        setMobileMenuOpen(false);
-        navigate("/login");
-      } else {
-        alert("준비중인 서비스입니다!");
-      }
+      if (isMobile) setMobileMenuOpen(false);
+      navigate("/login");
+
       return;
     }
     if (!category.items && category.navigateTo) {
