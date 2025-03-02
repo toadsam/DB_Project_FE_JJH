@@ -103,6 +103,20 @@ function ClubList() {
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
+  // 모집 마감일 계산 함수 추가!
+  const getRecruitmentLabel = (event) => {
+    if (!event.recruitment_type) {
+      return "상시"; // 모집 정보가 없으면 "상시"
+    } else if (event.recruitment_type === "수시모집") {
+      const today = new Date();
+      const endDate = new Date(event.recruitment_end_date);
+      const diffTime = endDate - today;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      return diffDays < 0 ? "마감" : `D-${diffDays}`;
+    }
+    return "";
+  };
 
   // 🔍 검색어로 시작하는 동아리만 필터링
   const filteredEvents = events.filter((event) =>
@@ -197,13 +211,17 @@ function ClubList() {
               key={event.club_id}
               onClick={() => handleEventClick(event.club_id)}
             >
-              <S.ImageWrapper style={{ height: "180px", overflow: "hidden" }}>
+              <S.ImageWrapper
+                data-label={getRecruitmentLabel(event)}
+                style={{ height: "180px", overflow: "hidden" }}
+              >
                 <img
                   src={event.image}
                   alt={event.club_name}
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
               </S.ImageWrapper>
+
               <S.Title>{event.club_name}</S.Title>
               <S.Description>
                 {(() => {
