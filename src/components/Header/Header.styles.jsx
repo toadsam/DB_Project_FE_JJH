@@ -4,10 +4,9 @@ import { Link } from "react-router-dom";
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: 1200px; /* 디자인 기준 폭 */
-  margin: 0 auto; /* 중앙 정렬 */
-  padding: 0 20px;
+  width: 100%; /* 전체 너비 사용 */
+  margin: 0; /* 중앙 정렬 제거 */
+  padding: 0 20px; /* 필요에 따라 좌우 패딩 유지 또는 제거 */
 
   @media (max-width: 768px) {
     padding: 0; /* 모바일에서는 좌우 패딩 제거 */
@@ -117,7 +116,7 @@ export const MobileHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0px;
+  padding: 10px 15px;
   border-bottom: 1px solid #ccc;
   z-index: 1100; /* 모바일 헤더는 항상 위에 표시 */
 `;

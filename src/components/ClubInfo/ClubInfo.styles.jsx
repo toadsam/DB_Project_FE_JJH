@@ -275,15 +275,16 @@ export const Sidebar = styled.div`
 
   /* 모바일 전용 스타일 */
   @media (max-width: 768px) {
-    width: 100%;
+    width: 90%;
     margin: 0 auto 20px auto;
     position: relative;
     top: 0;
+    margin-top: 10px;
   }
 `;
 
 export const InfoContainer = styled.div`
-  width: 100%;
+  width: 90%;
   margin: 0 auto;
   padding: 20px;
   box-sizing: border-box;
@@ -293,7 +294,6 @@ export const InfoContainer = styled.div`
 
   /* 모바일 전용 스타일 */
   @media (max-width: 768px) {
-    padding: 10px;
     margin: 0;
   }
 `;
