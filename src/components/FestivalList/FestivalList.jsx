@@ -4,6 +4,8 @@ import axios from "axios";
 import defaultImage from "../../asset/mainLogo.png";
 import { useNavigate } from "react-router-dom";
 
+import { SwiperSlide } from "swiper/react";
+
 // Swiper 관련 import
 import { Swiper } from "swiper/react";
 import { Navigation, Pagination, Mousewheel } from "swiper/modules";
@@ -81,7 +83,7 @@ function FestivalList() {
           style={{ justifyContent: "flex-start" }}
         >
           {events.map((event) => (
-            <S.StyledSwiperSlide key={event.id}>
+            <SwiperSlide key={event.id} style={{ width: "180px" }}>
               <S.EventBox onClick={() => handleEventClick(event)}>
                 <S.ImageWrapper style={{ height: "180px", overflow: "hidden" }}>
                   <img
@@ -105,7 +107,7 @@ function FestivalList() {
                   {new Date(event.event_date).toLocaleDateString()}
                 </S.Date>
               </S.EventBox>
-            </S.StyledSwiperSlide>
+            </SwiperSlide>
           ))}
         </Swiper>
       </S.Container>

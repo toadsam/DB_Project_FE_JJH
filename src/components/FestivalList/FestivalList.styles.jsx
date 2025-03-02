@@ -1,13 +1,5 @@
 import styled from "styled-components";
-import { SwiperSlide } from "swiper/react";
 
-export const StyledSwiperSlide = styled(SwiperSlide)`
-  width: 180px !important;
-
-  @media (max-width: 768px) {
-    width: 180px !important;
-  }
-`;
 export const TitleRow = styled.div`
   display: flex;
   justify-content: flex-end; /* 기본적으로 오른쪽 정렬 */
@@ -50,7 +42,11 @@ export const MoreButton = styled.button`
 
 // Swiper 또는 슬라이드 컨테이너로 사용할 영역
 export const Container = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
   padding: 0 40px;
+  justify-content: flex-start;
   background-color: #f6f4f4;
 
   @media (max-width: 768px) {
@@ -72,10 +68,6 @@ export const EventBox = styled.div`
 
   &:hover {
     transform: translateY(-10px);
-  }
-
-  @media (max-width: 768px) {
-    width: 180px;
   }
 `;
 
