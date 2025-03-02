@@ -159,7 +159,7 @@ export const Title = styled.h1`
 
 export const Description = styled.p`
   font-size: 16px;
-  color: #555;
+  color: #333;
   margin-bottom: 20px;
   line-height: 1.5;
   white-space: pre-wrap; /* 기존 줄바꿈 유지 */

@@ -115,7 +115,7 @@ export const Label = styled.span`
 `;
 
 export const Value = styled.span`
-  color: #555;
+  color: #333;
 `;
 
 export const ImageContainer = styled.div`
