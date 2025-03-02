@@ -87,6 +87,11 @@ function Header() {
 
   const handleMenuIconClick = () => setMobileMenuOpen((prev) => !prev);
 
+  // 모바일일 경우, 사이드바 바깥 클릭 시 메뉴를 닫기 위한 핸들러
+  const handleOverlayClick = () => {
+    setMobileMenuOpen(false);
+  };
+
   // === 모바일 헤더 ===
   if (isMobile) {
     return (
@@ -102,37 +107,41 @@ function Header() {
           </S.MenuIcon>
         </S.MobileHeader>
         {mobileMenuOpen && (
-          <S.MobileSidebar>
-            {categories.map((category, index) => (
-              <S.MobileMenuItem key={index}>
-                <S.MobileMenuTitle
-                  onClick={() => {
-                    if (category.items) {
-                      setOpenDropdown(openDropdown === index ? null : index);
-                    } else {
-                      handleCategoryClick(category);
-                    }
-                  }}
-                >
-                  {category.icon}
-                  <span>{category.title}</span>
-                </S.MobileMenuTitle>
-                {category.items && openDropdown === index && (
-                  <S.MobileDropdown>
-                    {category.items.map((item, idx) => (
-                      <S.MobileDropdownItem
-                        key={idx}
-                        onClick={() => handleItemClick(item)}
-                      >
-                        {item.icon}
-                        <span>{item.name}</span>
-                      </S.MobileDropdownItem>
-                    ))}
-                  </S.MobileDropdown>
-                )}
-              </S.MobileMenuItem>
-            ))}
-          </S.MobileSidebar>
+          <>
+            {/* 오버레이 추가: 클릭 시 메뉴 닫기 */}
+            <S.Overlay onClick={handleOverlayClick} />
+            <S.MobileSidebar>
+              {categories.map((category, index) => (
+                <S.MobileMenuItem key={index}>
+                  <S.MobileMenuTitle
+                    onClick={() => {
+                      if (category.items) {
+                        setOpenDropdown(openDropdown === index ? null : index);
+                      } else {
+                        handleCategoryClick(category);
+                      }
+                    }}
+                  >
+                    {category.icon}
+                    <span>{category.title}</span>
+                  </S.MobileMenuTitle>
+                  {category.items && openDropdown === index && (
+                    <S.MobileDropdown>
+                      {category.items.map((item, idx) => (
+                        <S.MobileDropdownItem
+                          key={idx}
+                          onClick={() => handleItemClick(item)}
+                        >
+                          {item.icon}
+                          <span>{item.name}</span>
+                        </S.MobileDropdownItem>
+                      ))}
+                    </S.MobileDropdown>
+                  )}
+                </S.MobileMenuItem>
+              ))}
+            </S.MobileSidebar>
+          </>
         )}
       </S.MobileWrapper>
     );

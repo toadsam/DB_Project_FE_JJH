@@ -219,3 +219,12 @@ export const MobileDropdownItem = styled.div`
     background-color: #f0f0f0;
   }
 `;
+export const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 50; /* MobileSidebar 보다 낮은 z-index 값으로 설정 */
+  background: transparent;
+`;
