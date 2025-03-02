@@ -47,10 +47,14 @@ export const Error = styled.div`
 /* 최신 모집공고 이미지 */
 export const RecruitmentImage = styled.img`
   width: 60%;
-  max-width: 600px;
+  max-width: 400px;
   height: auto;
   margin: 20px 0;
-  border-radius: 8px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    max-width: 600px;
+  }
 `;
 
 /* 단일 이미지 중앙 정렬 컨테이너 */
@@ -77,10 +81,9 @@ export const LeftArrow = styled.button`
   background-color: rgba(0, 0, 0, 0.5);
   border: none;
   color: #fff;
-  font-size: 24px;
+  font-size: 20px;
   cursor: pointer;
   padding: 10px;
-  border-radius: 50%;
 `;
 
 /* 우측 화살표 버튼 */
@@ -90,10 +93,9 @@ export const RightArrow = styled.button`
   background-color: rgba(0, 0, 0, 0.5);
   border: none;
   color: #fff;
-  font-size: 24px;
+  font-size: 20px;
   cursor: pointer;
   padding: 10px;
-  border-radius: 50%;
 `;
 
 /* 전년도 모집공고 드롭다운 스타일 */
@@ -132,16 +134,16 @@ export const ApplyContainer = styled.div`
   width: 100%;
   max-width: 1200px; /* 데스크탑 기준 폭 */
   margin: 0 auto; /* 좌우 자동 여백 -> 중앙 정렬 */
-  padding: 0 20px; /* 내부 여백 */
+
   box-sizing: border-box;
-  font-family: "Arial", sans-serif;
   display: flex;
   flex-direction: column;
 
   @media (max-width: 768px) {
-    max-width: 90%; /* 모바일 폭 90% */
+    max-width: 100%; /* 모바일 폭 90% */
     padding: 0;
     text-align: center; /* 내부 텍스트 중앙 정렬 */
+    margin-left: 10px;
   }
 `;
 
@@ -157,7 +159,7 @@ export const Title = styled.h1`
 
 export const Description = styled.p`
   font-size: 16px;
-  color: #555;
+  color: #333;
   margin-bottom: 20px;
   line-height: 1.5;
   white-space: pre-wrap; /* 기존 줄바꿈 유지 */
