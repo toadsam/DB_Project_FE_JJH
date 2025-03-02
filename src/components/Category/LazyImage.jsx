@@ -7,7 +7,7 @@ const StyledImage = styled.img`
   object-fit: cover;
   /* 로딩 전에는 blur 효과 적용, 로드 후에는 효과 제거 */
   filter: ${(props) =>
-    props.loaded ? "brightness(0.7)" : "brightness(0.7) blur(15px)"};
+    props.loaded ? "brightness(0.7)" : "brightness(0.7) blur(10px)"};
   transition: filter 0.5s ease-out;
 `;
 

@@ -3,12 +3,12 @@ import { useNavigate } from "react-router-dom";
 import * as S from "./Category.styles";
 import LazyImage from "./LazyImage";
 
-import 체육 from "../../asset/체육.png";
-import 학술 from "../../asset/학술.png";
-import 종교 from "../../asset/종교.png";
-import 문화예술 from "../../asset/문화예술.png";
-import 창업 from "../../asset/창업.png";
-import 사교 from "../../asset/사교.png";
+import 체육 from "../../asset/스포츠.jpg";
+import 학술 from "../../asset/학술.jpg";
+import 종교 from "../../asset/종교.jpg";
+import 문화예술 from "../../asset/문화예술.jpg";
+import 창업 from "../../asset/창업.jpg";
+import 사교 from "../../asset/사교.jpg";
 import 봉사 from "../../asset/봉사.jpg";
 
 const categories = [
