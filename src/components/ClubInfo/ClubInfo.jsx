@@ -5,6 +5,7 @@ import * as S from "./ClubInfo.styles";
 import defaultImage from "../../asset/mainLogo.png";
 import ClubApply from "../ClubApply/ClubApply";
 import ClubEvent from "../ClubEvent/ClubEvent";
+import RecruitmentPage from "../RecruitmentPage/RecruitmentPage"; // ✅ 모집공고 작성 폼 추가
 import { jwtDecode } from "jwt-decode";
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -78,14 +79,7 @@ function ClubInfo() {
   ];
 
   const handleSidebarClick = (item) => {
-    setSelectedItem(item);
-    if (item === "모집공고 작성") {
-      navigate("/recruitment"); // ✅ 모집공고 작성 클릭 시 /recruitment 경로로 이동
-    } else if (item === "모집공고 수정") {
-      navigate(`/recruitment/edit/${club_id}`);
-    } else {
-      navigate(`/clubinfo/${club_id}`, { state: { defaultTab: item } });
-    }
+    setSelectedItem(item); // ✅ 내용만 변경하도록 수정
   };
 
   return (
@@ -106,6 +100,7 @@ function ClubInfo() {
       </S.Sidebar>
 
       <S.InfoContainer>
+        {/* ✅ 기존 동아리 정보 영역은 항상 유지 */}
         <S.Header>
           <S.ClubTitle>{clubInfo?.club_name || "동아리 이름"}</S.ClubTitle>
           <S.TitleBar />
@@ -147,6 +142,7 @@ function ClubInfo() {
           </S.CardContent>
         </S.CardContainer>
 
+        {/* ✅ 선택된 카테고리에 따라 내용 변경 */}
         {selectedItem === "동아리 소개" && (
           <>
             <S.Section>
@@ -167,18 +163,9 @@ function ClubInfo() {
         {selectedItem === "모집 공고" && <ClubApply club_id={club_id} />}
         {selectedItem === "행사 공고" && <ClubEvent club_id={club_id} />}
 
-        {/* ✅ 클럽 관리자만 접근할 수 있는 페이지 렌더링 */}
+        {/* ✅ 클럽 관리자만 접근할 수 있는 모집공고 작성 폼 */}
         {isClubAdmin && selectedItem === "모집공고 작성" && (
-          <S.AdminSection>
-            <S.SectionTitle>모집공고 작성 페이지</S.SectionTitle>
-            <S.SectionContent>여기에 모집공고 작성 폼을 넣으세요.</S.SectionContent>
-          </S.AdminSection>
-        )}
-        {isClubAdmin && selectedItem === "모집공고 수정" && (
-          <S.AdminSection>
-            <S.SectionTitle>모집공고 수정 페이지</S.SectionTitle>
-            <S.SectionContent>여기에 모집공고 수정 폼을 넣으세요.</S.SectionContent>
-          </S.AdminSection>
+          <RecruitmentPage />
         )}
       </S.InfoContainer>
     </S.PageContainer>
