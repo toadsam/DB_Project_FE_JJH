@@ -80,7 +80,7 @@ function ClubInfo() {
   const handleSidebarClick = (item) => {
     setSelectedItem(item);
     if (item === "모집공고 작성") {
-      navigate(`/recruitment/create/${club_id}`);
+      navigate("/recruitment"); // ✅ 모집공고 작성 클릭 시 /recruitment 경로로 이동
     } else if (item === "모집공고 수정") {
       navigate(`/recruitment/edit/${club_id}`);
     } else {
