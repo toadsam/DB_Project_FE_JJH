@@ -143,7 +143,6 @@ export const ApplyContainer = styled.div`
     max-width: 90%; /* 모바일 폭 90% */
     padding: 0;
     text-align: center; /* 내부 텍스트 중앙 정렬 */
-    margin-left: 10px;
   }
 `;
 
