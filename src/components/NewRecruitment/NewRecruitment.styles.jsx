@@ -89,6 +89,10 @@ export const Container = styled.div`
   padding: 0 40px;
   justify-content: flex-start;
   background-color: #f6f4f4;
+
+  @media (max-width: 768px) {
+    padding: 0 20px;
+  }
 `;
 
 export const MoreText = styled.p`

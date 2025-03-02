@@ -5,7 +5,7 @@ import defaultImage from "../../asset/mainLogo.png";
 import { useNavigate } from "react-router-dom";
 
 // Swiper 관련 import
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper } from "swiper/react";
 import { Navigation, Pagination, Mousewheel } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -81,7 +81,7 @@ function FestivalList() {
           style={{ justifyContent: "flex-start" }}
         >
           {events.map((event) => (
-            <SwiperSlide key={event.id} style={{ width: "180px" }}>
+            <S.StyledSwiperSlide key={event.id}>
               <S.EventBox onClick={() => handleEventClick(event)}>
                 <S.ImageWrapper style={{ height: "180px", overflow: "hidden" }}>
                   <img
@@ -105,7 +105,7 @@ function FestivalList() {
                   {new Date(event.event_date).toLocaleDateString()}
                 </S.Date>
               </S.EventBox>
-            </SwiperSlide>
+            </S.StyledSwiperSlide>
           ))}
         </Swiper>
       </S.Container>

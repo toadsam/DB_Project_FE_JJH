@@ -1,5 +1,13 @@
 import styled from "styled-components";
+import { SwiperSlide } from "swiper/react";
 
+export const StyledSwiperSlide = styled(SwiperSlide)`
+  width: 180px !important;
+
+  @media (max-width: 768px) {
+    width: 160px !important;
+  }
+`;
 export const TitleRow = styled.div`
   display: flex;
   justify-content: flex-end; /* 기본적으로 오른쪽 정렬 */
@@ -64,6 +72,10 @@ export const EventBox = styled.div`
 
   &:hover {
     transform: translateY(-10px);
+  }
+
+  @media (max-width: 768px) {
+    width: 160px;
   }
 `;
 
