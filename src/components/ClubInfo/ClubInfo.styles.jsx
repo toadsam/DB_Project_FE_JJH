@@ -28,7 +28,19 @@ export const SidebarItem = styled.li`
   &:hover {
     background-color: #f0f0f0;
   }
+
+  /* 모바일에서는 선택된 항목의 배경색과 글씨색을 파란색(#007aff)으로 유지 */
+  @media (max-width: 768px) {
+    transition: none;
+    &:hover {
+      background-color: transparent;
+    }
+    background-color: ${(props) =>
+      props.$isSelected ? "#e6f7ff" : "transparent"};
+    color: ${(props) => (props.$isSelected ? "#007aff" : "#333")};
+  }
 `;
+
 export const Header = styled.div`
   width: 100%;
   margin-bottom: 10px;
@@ -183,44 +195,6 @@ export const CardHashTagItem = styled(CardInfoItem)`
   color: #555;
 `;
 
-export const ActivityImagesGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 10px;
-  margin-top: 20px;
-`;
-
-export const ActivityImageItem = styled.img`
-  width: 100%;
-  height: 150px;
-  object-fit: cover;
-  border-radius: 8px;
-`;
-export const ModalOverlay = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.7);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-`;
-
-export const ModalContent = styled.div`
-  position: relative;
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  max-width: 80%;
-  max-height: 80%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
 export const CloseButton = styled.button`
   position: absolute;
   top: 10px;
@@ -242,11 +216,6 @@ export const CloseButton = styled.button`
   }
 `;
 
-export const ModalImage = styled.img`
-  max-width: 450px;
-  max-height: 450px;
-  object-fit: contain;
-`;
 export const PageContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -391,5 +360,175 @@ export const Link = styled.a`
 
   &:hover {
     text-decoration: underline;
+  }
+`;
+// 활동 사진 아이템 (썸네일)
+export const ActivityImageItem = styled.img`
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+`;
+
+// 📌 모바일용 가로 스크롤 컨테이너
+export const MobileGalleryWrapper = styled.div`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+    padding: 10px 0;
+  }
+`;
+
+export const MobileScrollContainer = styled.div`
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 10px;
+  padding-bottom: 10px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+// 모달 내부 (이미지 컨테이너)
+export const ModalContent = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  max-width: 90%;
+  max-height: 90%;
+`;
+
+// 화살표 버튼 (왼쪽)
+export const ArrowButtonLeft = styled.button`
+  position: absolute;
+  left: -40px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
+
+  @media (max-width: 768px) {
+    left: 10px;
+  }
+`;
+
+// 화살표 버튼 (오른쪽)
+export const ArrowButtonRight = styled.button`
+  position: absolute;
+  right: -40px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
+
+  @media (max-width: 768px) {
+    right: 10px;
+  }
+`;
+// 📌 데스크탑용 그리드 스타일
+export const ActivityImagesGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+
+  @media (max-width: 768px) {
+    display: none; // 모바일에서는 숨김
+  }
+`;
+
+// 📌 Swiper 컨테이너 (모바일용)
+export const MobileSwiperContainer = styled.div`
+  display: none;
+
+  @media (max-width: 768px) {
+    display: block;
+    margin-top: 10px;
+    position: relative;
+    margin-left: 10px;
+    padding-bottom: 35px; /* 👇 페이지네이션 간격 추가 */
+  }
+
+  .swiper-pagination {
+    position: absolute;
+    bottom: 5px; /* 👇 페이지네이션을 더 아래로 */
+    text-align: center;
+  }
+
+  .swiper-pagination-bullet {
+    width: 10px; /* 👈 점 크기 조정 */
+    height: 10px;
+    background: #aaa; /* 👈 점 색상 변경 */
+    opacity: 0.6;
+  }
+
+  .swiper-pagination-bullet-active {
+    background: #333; /* 👈 활성화된 점 색상 */
+    opacity: 1;
+  }
+`;
+
+// 📌 Swiper 슬라이드 내부 이미지 스타일
+export const MobileGalleryImage = styled.img`
+  width: 150px;
+  height: 100px;
+  border-radius: 8px;
+  object-fit: cover;
+  cursor: pointer;
+`;
+
+// 모달 배경 (클릭하면 닫힘)
+export const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+`;
+
+// 모달 이미지 (확대된 이미지)
+export const ModalImage = styled.img`
+  max-width: 40%;
+  max-height: 40%;
+  border-radius: 10px;
+
+  @media (max-width: 768px) {
+    max-width: 80%;
+    max-height: 80%;
+  }
+`;
+// ✅ SNS 링크 컨테이너 (가로 정렬)
+export const SocialLinksContainer = styled.div`
+  display: flex;
+  gap: 12px;
+`;
+
+// ✅ 개별 SNS 링크 스타일
+export const SocialLink = styled.a`
+  color: #555;
+  font-size: 24px;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #007aff;
   }
 `;

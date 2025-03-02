@@ -219,7 +219,7 @@ export const Sidebar = styled.div`
     margin-right: 0;
     margin-bottom: 10px;
     position: static;
-    padding: 8px 10px; /* 모바일일 때는 8px 10px으로 변경 */
+    padding: 8px 0px; /* 모바일일 때는 8px 10px으로 변경 */
   }
 `;
 
@@ -238,5 +238,102 @@ export const SidebarTitle = styled.h2`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+`;
+export const TopBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+`;
+export const SearchContainer = styled.div`
+  position: relative;
+  width: 250px; /* 필요에 따라 조정 */
+`;
+
+// 검색 인풋: 아랫줄 테두리만 표시
+export const SearchInput = styled.input`
+  width: 70%;
+  padding: 8px 40px 8px 12px; /* 오른쪽 여백은 아이콘 공간 확보 */
+  font-size: 14px;
+  border: none;
+  border-bottom: 1px solid #333; /* 진한 검정색 아랫줄 */
+  outline: none;
+
+  &::placeholder {
+    color: #555; /* placeholder 텍스트 색상 */
+  }
+`;
+
+// 검색 아이콘: 오른쪽 끝에 위치하도록 절대배치
+export const SearchIcon = styled.div`
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #333;
+  font-size: 16px;
+`;
+
+export const MobileSearchContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 10px auto;
+  padding-bottom: 5px;
+  border-bottom: 2px solid black;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+`;
+
+export const MobileSearchInput = styled.input`
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: #333;
+  background: transparent;
+  padding: 5px;
+  &::placeholder {
+    color: #555;
+  }
+`;
+
+export const MobileSearchIcon = styled.div`
+  margin-left: 5px;
+  color: #555;
+`;
+
+export const FilterContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-right: 20px;
+`;
+
+export const FilterButton = styled.button`
+  background-color: ${(props) => (props.isSelected ? "#007aff" : "#f0f0f0")};
+  color: ${(props) => (props.isSelected ? "#fff" : "#333")};
+  border: none;
+  width: 60px;
+  padding: 4px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: ${(props) => (props.isSelected ? "#005bb5" : "#e0e0e0")};
+  }
+`;
+export const MobileFilterContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-left: auto; /* 오른쪽 정렬 */
+
+  @media (min-width: 768px) {
+    display: none; /* 데스크탑에서는 숨기기 */
   }
 `;

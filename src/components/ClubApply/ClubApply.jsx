@@ -40,7 +40,6 @@ function ClubApply({ club_id }) {
   useEffect(() => {
     const fetchRecruitment = async () => {
       try {
-        console.log("Fetching recruitment info for club_id:", club_id);
         const response = await axios.get(
           `${API_URL}/api/clubs/${club_id}/recruitments`,
           {
@@ -60,7 +59,6 @@ function ClubApply({ club_id }) {
         } else if (response.data.length === 1) {
           setCurrentRecruitment(response.data[0]);
         }
-        console.log("Current:", response.data[0], "Past:", response.data[1]);
       } catch (err) {
         setError("데이터를 불러오는 중 오류가 발생했습니다.");
       } finally {

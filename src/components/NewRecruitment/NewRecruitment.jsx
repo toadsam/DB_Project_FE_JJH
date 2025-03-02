@@ -80,6 +80,7 @@ function FestivalList() {
           pagination={{ clickable: true }}
           mousewheel={true}
           modules={[Navigation, Pagination, Mousewheel]}
+          style={{ justifyContent: "flex-start" }}
         >
           {events.map((event) => (
             <SwiperSlide key={event.id} style={{ width: "180px" }}>

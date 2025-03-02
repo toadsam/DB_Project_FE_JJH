@@ -4,7 +4,7 @@ import axios from "axios";
 import defaultImage from "../../asset/mainLogo.png";
 import { useNavigate } from "react-router-dom";
 import collegesData from "../../colleges.json";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaSearch } from "react-icons/fa";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -16,6 +16,7 @@ function MiniClub() {
   const [selectedCollege, setSelectedCollege] = useState("");
   const [selectedDepartment, setSelectedDepartment] = useState("");
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
 
   // 모바일 여부 감지
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -25,8 +26,18 @@ function MiniClub() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // 검색 input onChange 핸들러
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
   // 모바일 사이드바 확장 여부
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
+
+  // 🔄 소속학과 변경 시 검색어 초기화
+  useEffect(() => {
+    setSearchTerm("");
+  }, [selectedDepartment]);
 
   useEffect(() => {
     setColleges(collegesData);
@@ -83,15 +94,33 @@ function MiniClub() {
   if (loading) return <S.PageContainer>Loading...</S.PageContainer>;
   if (error) return <S.PageContainer>Error: {error}</S.PageContainer>;
 
-  // 브레드크럼 텍스트: 기본은 "소학회 > 전체"
-  // 단과대(대학)가 선택되면 "소학회 > [대학]"
-  // 소속학과가 선택되면 "소학회 > [대학] > [학과]"
+  // 🔍 검색어로 시작하는 동아리만 필터링
+  const filteredEvents = events.filter((event) =>
+    event.club_name.toLowerCase().startsWith(searchTerm.toLowerCase())
+  );
+
+  // 브레드크럼 텍스트 설정
   const breadcrumb = `소학회 > ${selectedCollege ? selectedCollege : "전체"}${
     selectedDepartment ? " > " + selectedDepartment : ""
   }`;
 
   return (
     <S.PageContainer>
+      {/* 📌 모바일에서만 검색창 추가 */}
+      {isMobile && (
+        <S.MobileSearchContainer>
+          <S.MobileSearchInput
+            type="text"
+            placeholder="검색"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+          <S.MobileSearchIcon>
+            <FaSearch />
+          </S.MobileSearchIcon>
+        </S.MobileSearchContainer>
+      )}
+
       <S.Sidebar>
         {isMobile ? (
           <>
@@ -107,7 +136,6 @@ function MiniClub() {
                   <div key={index}>
                     <S.SidebarItem
                       onClick={() => {
-                        // 대학 선택 시: 사이드바는 그대로 열어두고, 소속학과 초기화
                         setSelectedCollege(
                           selectedCollege === college.name ? "" : college.name
                         );
@@ -123,7 +151,6 @@ function MiniClub() {
                           key={idx}
                           onClick={() => {
                             setSelectedDepartment(dept);
-                            // 소속학과 선택 시 사이드바 접기
                             setSidebarExpanded(false);
                           }}
                           isselected={selectedDepartment === dept}
@@ -171,10 +198,28 @@ function MiniClub() {
       </S.Sidebar>
 
       <S.Content>
-        <S.Title1>{breadcrumb}</S.Title1>
+        <S.TopBar>
+          <S.Title1>{breadcrumb}</S.Title1>
+
+          {/* 📌 데스크탑 검색창 유지 */}
+          {!isMobile && (
+            <S.SearchContainer>
+              <S.SearchInput
+                type="text"
+                placeholder="검색"
+                value={searchTerm}
+                onChange={handleSearchChange}
+              />
+              <S.SearchIcon>
+                <FaSearch />
+              </S.SearchIcon>
+            </S.SearchContainer>
+          )}
+        </S.TopBar>
+
         <S.TitleBar />
         <S.Container>
-          {events.map((event) => (
+          {filteredEvents.map((event) => (
             <S.EventBox
               key={event.club_id}
               onClick={() => navigate(`/clubinfo/${event.club_id}`)}
@@ -193,17 +238,9 @@ function MiniClub() {
               </S.ImageWrapper>
               <S.Title>{event.club_name}</S.Title>
               <S.Description>
-                {(() => {
-                  const desc = event.description.replace(/\\n/g, "\n");
-                  const truncated =
-                    desc.length > 25 ? desc.slice(0, 25) + "..." : desc;
-                  return truncated.split("\n").map((line, index) => (
-                    <React.Fragment key={index}>
-                      {line}
-                      {index !== truncated.split("\n").length - 1 && <br />}
-                    </React.Fragment>
-                  ));
-                })()}
+                {event.description.length > 25
+                  ? `${event.description.slice(0, 25)}...`
+                  : event.description}
               </S.Description>
             </S.EventBox>
           ))}
