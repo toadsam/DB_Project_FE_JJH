@@ -253,12 +253,12 @@ export const PageContainer = styled.div`
   margin: 0 auto;
   padding: 0 20px;
 
-  /* 모바일 전용 스타일 */
   @media (max-width: 768px) {
     flex-direction: column;
-    max-width: 90%;
-    margin: 0; /* 화면 끝까지 꽉 채우기 */
-    padding: 0; /* 불필요한 여백 제거 */
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
   }
 `;
 

@@ -6,7 +6,7 @@ import defaultImage from "../../asset/mainLogo.png";
 import ClubApply from "../ClubApply/ClubApply";
 import ClubEvent from "../ClubEvent/ClubEvent";
 import { jwtDecode } from "jwt-decode";
-
+import { FaInstagram } from "react-icons/fa";
 const API_URL = process.env.REACT_APP_API_URL;
 
 const getUserInfo = () => {
@@ -159,7 +159,10 @@ function ClubInfo() {
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      Instagram
+                      <FaInstagram
+                        size={24}
+                        style={{ verticalAlign: "middle" }}
+                      />
                     </S.Link>
                   ) : (
                     "SNS 정보가 없습니다."
