@@ -185,7 +185,7 @@ export const SidebarHeader = styled.div`
     margin-right: 0;
     margin-bottom: 10px;
     position: static;
-    padding: 8px 10px; /* 모바일일 때는 8px 10px으로 변경 */
+    padding: 8px 0px; /* 모바일일 때는 8px 10px으로 변경 */
   }
 `;
 
