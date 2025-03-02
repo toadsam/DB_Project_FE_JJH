@@ -70,6 +70,7 @@ function CategoryClubList() {
     fetchClubs();
   }, [categoryName]);
 
+  // 🔄 카테고리 변경 시 검색어 초기화
   useEffect(() => {
     setSearchTerm("");
   }, [categoryName]);
@@ -95,6 +96,21 @@ function CategoryClubList() {
 
   return (
     <S.PageContainer>
+      {/* 📌 모바일에서만 검색창 추가 */}
+      {isMobile && (
+        <S.MobileSearchContainer>
+          <S.MobileSearchInput
+            type="text"
+            placeholder="검색"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+          <S.MobileSearchIcon>
+            <FaSearch />
+          </S.MobileSearchIcon>
+        </S.MobileSearchContainer>
+      )}
+
       <S.Sidebar>
         {isMobile ? (
           <>
@@ -142,18 +158,23 @@ function CategoryClubList() {
       <S.Content>
         <S.TopBar>
           <S.Title1>{categoryName} 동아리</S.Title1>
-          <S.SearchContainer>
-            <S.SearchInput
-              type="text"
-              placeholder="검색"
-              value={searchTerm}
-              onChange={handleSearchChange}
-            />
-            <S.SearchIcon>
-              <FaSearch />
-            </S.SearchIcon>
-          </S.SearchContainer>
+
+          {/* 📌 데스크탑 검색창 유지 */}
+          {!isMobile && (
+            <S.SearchContainer>
+              <S.SearchInput
+                type="text"
+                placeholder="검색"
+                value={searchTerm}
+                onChange={handleSearchChange}
+              />
+              <S.SearchIcon>
+                <FaSearch />
+              </S.SearchIcon>
+            </S.SearchContainer>
+          )}
         </S.TopBar>
+
         <S.TitleBar />
         {loading && <div>Loading...</div>}
         {error && <div>Error: {error}</div>}

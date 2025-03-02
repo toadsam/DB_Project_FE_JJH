@@ -111,6 +111,21 @@ function ClubList() {
 
   return (
     <S.PageContainer>
+      {/* 📌 모바일에서만 검색창 추가 */}
+      {isMobile && (
+        <S.MobileSearchContainer>
+          <S.MobileSearchInput
+            type="text"
+            placeholder="검색"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+          <S.MobileSearchIcon>
+            <FaSearch />
+          </S.MobileSearchIcon>
+        </S.MobileSearchContainer>
+      )}
+
       <S.Sidebar>
         {isMobile ? (
           <>
@@ -158,18 +173,23 @@ function ClubList() {
           <S.Title1>
             중앙동아리 {">"} {selectedCategory || "전체"}
           </S.Title1>
-          <S.SearchContainer>
-            <S.SearchInput
-              type="text"
-              placeholder="검색"
-              value={searchTerm}
-              onChange={handleSearchChange}
-            />
-            <S.SearchIcon>
-              <FaSearch />
-            </S.SearchIcon>
-          </S.SearchContainer>
+
+          {/* 📌 데스크탑 검색창 (기존 그대로 유지) */}
+          {!isMobile && (
+            <S.SearchContainer>
+              <S.SearchInput
+                type="text"
+                placeholder="검색"
+                value={searchTerm}
+                onChange={handleSearchChange}
+              />
+              <S.SearchIcon>
+                <FaSearch />
+              </S.SearchIcon>
+            </S.SearchContainer>
+          )}
         </S.TopBar>
+
         <S.TitleBar />
         <S.Container>
           {filteredEvents.map((event) => (

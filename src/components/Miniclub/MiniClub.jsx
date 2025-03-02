@@ -34,8 +34,9 @@ function MiniClub() {
   // 모바일 사이드바 확장 여부
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
 
+  // 🔄 소속학과 변경 시 검색어 초기화
   useEffect(() => {
-    setSearchTerm(""); // 소속학과 변경 시 검색어 초기화
+    setSearchTerm("");
   }, [selectedDepartment]);
 
   useEffect(() => {
@@ -105,6 +106,21 @@ function MiniClub() {
 
   return (
     <S.PageContainer>
+      {/* 📌 모바일에서만 검색창 추가 */}
+      {isMobile && (
+        <S.MobileSearchContainer>
+          <S.MobileSearchInput
+            type="text"
+            placeholder="검색"
+            value={searchTerm}
+            onChange={handleSearchChange}
+          />
+          <S.MobileSearchIcon>
+            <FaSearch />
+          </S.MobileSearchIcon>
+        </S.MobileSearchContainer>
+      )}
+
       <S.Sidebar>
         {isMobile ? (
           <>
@@ -184,18 +200,23 @@ function MiniClub() {
       <S.Content>
         <S.TopBar>
           <S.Title1>{breadcrumb}</S.Title1>
-          <S.SearchContainer>
-            <S.SearchInput
-              type="text"
-              placeholder="검색"
-              value={searchTerm}
-              onChange={handleSearchChange}
-            />
-            <S.SearchIcon>
-              <FaSearch />
-            </S.SearchIcon>
-          </S.SearchContainer>
+
+          {/* 📌 데스크탑 검색창 유지 */}
+          {!isMobile && (
+            <S.SearchContainer>
+              <S.SearchInput
+                type="text"
+                placeholder="검색"
+                value={searchTerm}
+                onChange={handleSearchChange}
+              />
+              <S.SearchIcon>
+                <FaSearch />
+              </S.SearchIcon>
+            </S.SearchContainer>
+          )}
         </S.TopBar>
+
         <S.TitleBar />
         <S.Container>
           {filteredEvents.map((event) => (

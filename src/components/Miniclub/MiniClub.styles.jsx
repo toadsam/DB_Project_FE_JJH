@@ -274,3 +274,34 @@ export const SearchIcon = styled.div`
   color: #333;
   font-size: 16px;
 `;
+
+export const MobileSearchContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 10px auto;
+  padding-bottom: 5px;
+  border-bottom: 2px solid black;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+`;
+
+export const MobileSearchInput = styled.input`
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: #333;
+  background: transparent;
+  padding: 5px;
+  &::placeholder {
+    color: #555;
+  }
+`;
+
+export const MobileSearchIcon = styled.div`
+  margin-left: 5px;
+  color: #555;
+`;

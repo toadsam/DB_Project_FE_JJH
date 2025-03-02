@@ -147,7 +147,8 @@ export const SidebarHeader = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
 `;
-/* Sidebar: 데스크탑에서는 왼쪽 고정, 모바일에서는 상단 전체 너비 */ export const Sidebar = styled.div`
+
+export const Sidebar = styled.div`
   /* 데스크톱 기본 스타일 */
   width: 180px;
   background-color: #f9f9f9;
@@ -246,4 +247,34 @@ export const SearchIcon = styled.div`
   transform: translateY(-50%);
   color: #333;
   font-size: 16px;
+`;
+export const MobileSearchContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 10px auto;
+  padding-bottom: 5px;
+  border-bottom: 2px solid black;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+`;
+
+export const MobileSearchInput = styled.input`
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: #333;
+  background: transparent;
+  padding: 5px;
+  &::placeholder {
+    color: #555;
+  }
+`;
+
+export const MobileSearchIcon = styled.div`
+  margin-left: 5px;
+  color: #555;
 `;
