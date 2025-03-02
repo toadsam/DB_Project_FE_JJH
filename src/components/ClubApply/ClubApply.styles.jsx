@@ -140,10 +140,9 @@ export const ApplyContainer = styled.div`
   flex-direction: column;
 
   @media (max-width: 768px) {
-    max-width: 100%; /* 모바일 폭 90% */
+    max-width: 90%; /* 모바일 폭 90% */
     padding: 0;
     text-align: center; /* 내부 텍스트 중앙 정렬 */
-    margin-left: 10px;
   }
 `;
 

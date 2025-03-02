@@ -83,12 +83,12 @@ export const MoreButton = styled.button`
 
 /* 기존 스타일들 그대로 유지 */
 export const Container = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
   padding: 0 40px;
-  justify-content: flex-start;
   background-color: #f6f4f4;
+
+  @media (max-width: 768px) {
+    padding: 0 20px;
+  }
 `;
 
 export const MoreText = styled.p`

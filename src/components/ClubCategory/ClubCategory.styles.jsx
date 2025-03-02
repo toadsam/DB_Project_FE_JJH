@@ -123,10 +123,10 @@ export const ImageWrapper = styled.div`
     left: 10px;
     background-color: #ff4d4f;
     color: white;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: bold;
-    padding: 4px 8px;
-    border-radius: 4px;
+    padding: 4px 10px;
+    border-radius: 8px;
   }
 `;
 
@@ -185,7 +185,7 @@ export const SidebarHeader = styled.div`
     margin-right: 0;
     margin-bottom: 10px;
     position: static;
-    padding: 8px 10px; /* 모바일일 때는 8px 10px으로 변경 */
+    padding: 8px 0px; /* 모바일일 때는 8px 10px으로 변경 */
   }
 `;
 
@@ -205,4 +205,79 @@ export const SidebarTitle = styled.h2`
     overflow: hidden;
     text-overflow: ellipsis;
   }
+`;
+export const TopBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+`;
+export const SearchContainer = styled.div`
+  position: relative;
+  width: 250px; /* 필요에 따라 조정 */
+`;
+
+// 검색 인풋: 아랫줄 테두리만 표시
+export const SearchInput = styled.input`
+  width: 70%;
+  padding: 8px 40px 8px 12px; /* 오른쪽 여백은 아이콘 공간 확보 */
+  font-size: 14px;
+  border: none;
+  border-bottom: 1px solid #333; /* 진한 검정색 아랫줄 */
+  outline: none;
+
+  &::placeholder {
+    color: #555; /* placeholder 텍스트 색상 */
+  }
+`;
+
+// 검색 아이콘: 오른쪽 끝에 위치하도록 절대배치
+export const SearchIcon = styled.div`
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #333;
+  font-size: 16px;
+`;
+export const MobileSearchContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 10px auto;
+  padding-bottom: 5px;
+  border-bottom: 2px solid black;
+
+  @media (min-width: 768px) {
+    display: none;
+  }
+`;
+
+export const MobileSearchInput = styled.input`
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: #333;
+  background: transparent;
+  padding: 5px;
+  &::placeholder {
+    color: #555;
+  }
+`;
+
+export const MobileSearchIcon = styled.div`
+  margin-left: 5px;
+  color: #555;
+`;
+export const RecruitmentTag = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ff4d4f;
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 8px;
 `;
