@@ -109,41 +109,6 @@ function ClubInfo() {
       navigate(`/clubinfo/${club_id}`, { state: { defaultTab: item } });
     }
   };
-  // const handleNextImage = () => {
-  //   if (clubInfo?.club_activity_images) {
-  //     setSelectedImageIndex((prevIndex) =>
-  //       prevIndex === clubInfo.club_activity_images.length - 1
-  //         ? 0
-  //         : prevIndex + 1
-  //     );
-  //   }
-  // };
-
-  // const handlePrevImage = () => {
-  //   if (clubInfo?.club_activity_images) {
-  //     setSelectedImageIndex((prevIndex) =>
-  //       prevIndex === 0
-  //         ? clubInfo.club_activity_images.length - 1
-  //         : prevIndex - 1
-  //     );
-  //   }
-  // };
-
-  // // 터치 이벤트 (모바일 스와이프)
-  // const handleTouchStart = (e) => {
-  //   setStartX(e.touches[0].clientX);
-  // };
-
-  // const handleTouchMove = (e) => {
-  //   if (!startX) return;
-  //   const diffX = startX - e.touches[0].clientX;
-  //   if (diffX > 50) {
-  //     handleNextImage(); // 왼쪽으로 스와이프 -> 다음 이미지
-  //   } else if (diffX < -50) {
-  //     handlePrevImage(); // 오른쪽으로 스와이프 -> 이전 이미지
-  //   }
-  //   setStartX(null);
-  // };
   return (
     <S.PageContainer>
       <S.Sidebar>

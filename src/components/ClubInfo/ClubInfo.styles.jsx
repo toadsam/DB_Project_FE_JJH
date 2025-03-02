@@ -459,6 +459,7 @@ export const MobileSwiperContainer = styled.div`
     display: block;
     margin-top: 10px;
     position: relative;
+    margin-left: 10px;
     padding-bottom: 35px; /* 👇 페이지네이션 간격 추가 */
   }
 
@@ -506,12 +507,12 @@ export const ModalOverlay = styled.div`
 
 // 모달 이미지 (확대된 이미지)
 export const ModalImage = styled.img`
-  max-width: 80vw;
-  max-height: 80vh;
+  max-width: 40%;
+  max-height: 40%;
   border-radius: 10px;
 
   @media (max-width: 768px) {
-    max-width: 90vw;
-    max-height: 90vh;
+    max-width: 80%;
+    max-height: 80%;
   }
 `;
