@@ -84,6 +84,11 @@ export const Container = styled.div`
   /* 왼쪽 정렬을 위해 center 대신 start 사용 */
   justify-content: start;
   align-items: start;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: center;
+  }
 `;
 
 /* EventBox: 카드 자체는 그리드 셀의 너비에 맞춰 중앙에 배치 */
@@ -105,7 +110,6 @@ export const EventBox = styled.div`
 
   @media (max-width: 768px) {
     width: 100%;
-    padding: 10px;
   }
 `;
 
@@ -145,6 +149,7 @@ export const Title = styled.h2`
     text-align: left;
     margin: 10px 0 0 0;
     color: #000;
+    margin-left: 10px;
   }
 `;
 
