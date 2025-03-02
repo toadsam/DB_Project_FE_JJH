@@ -52,17 +52,11 @@ function NoticePopup() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    // 사이트 최초 접속 시 팝업을 보여주고,
-    // 닫은 후에는 다시 열리지 않도록 localStorage 등에 기록할 수 있음
-    const isClosed = localStorage.getItem("noticePopupClosed");
-    if (!isClosed) {
-      setVisible(true);
-    }
+    // 페이지에 진입할 때마다 팝업 표시
+    setVisible(true);
   }, []);
 
   const handleClose = () => {
-    // '닫기'를 누르면 localStorage에 기록하고 팝업을 닫음
-    localStorage.setItem("noticePopupClosed", "true");
     setVisible(false);
   };
 

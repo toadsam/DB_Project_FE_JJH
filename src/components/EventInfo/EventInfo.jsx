@@ -131,7 +131,7 @@ function MiniClub() {
               {/* club_name 추가 */}
               <S.Title>{event.title}</S.Title>
               <S.Location>장소 : {event.location}</S.Location>
-              <S.ClubName>동아리명 : {event.club_name} </S.ClubName>
+              <S.ClubName>주최 동아리 : {event.club_name} </S.ClubName>
               <S.Date>
                 날짜 : {new Date(event.event_date).toLocaleDateString()}
               </S.Date>

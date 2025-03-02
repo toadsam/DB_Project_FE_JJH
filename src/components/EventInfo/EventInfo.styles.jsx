@@ -19,7 +19,8 @@ export const Date = styled.p`
   font-weight: 500;
   color: #8e8e93;
   text-align: left;
-  margin: 5px 10px 10px 10px;
+  margin: 0 10px;
+  margin-bottom: 10px;
 `;
 
 /* PageContainer: 데스크탑에서는 사이드바와 콘텐츠를 좌우 배치, 모바일에서는 세로 배치 */
