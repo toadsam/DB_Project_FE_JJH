@@ -107,7 +107,7 @@ function MiniClub() {
                   <div key={index}>
                     <S.SidebarItem
                       onClick={() => {
-                        // 대학 선택 시 소속학과 초기화
+                        // 대학 선택 시: 사이드바는 그대로 열어두고, 소속학과 초기화
                         setSelectedCollege(
                           selectedCollege === college.name ? "" : college.name
                         );
@@ -121,7 +121,11 @@ function MiniClub() {
                       college.departments.map((dept, idx) => (
                         <S.SidebarSubItem
                           key={idx}
-                          onClick={() => setSelectedDepartment(dept)}
+                          onClick={() => {
+                            setSelectedDepartment(dept);
+                            // 소속학과 선택 시 사이드바 접기
+                            setSidebarExpanded(false);
+                          }}
                           isselected={selectedDepartment === dept}
                         >
                           {dept}
@@ -189,9 +193,17 @@ function MiniClub() {
               </S.ImageWrapper>
               <S.Title>{event.club_name}</S.Title>
               <S.Description>
-                {event.description.length > 25
-                  ? `${event.description.slice(0, 25)}...`
-                  : event.description}
+                {(() => {
+                  const desc = event.description.replace(/\\n/g, "\n");
+                  const truncated =
+                    desc.length > 25 ? desc.slice(0, 25) + "..." : desc;
+                  return truncated.split("\n").map((line, index) => (
+                    <React.Fragment key={index}>
+                      {line}
+                      {index !== truncated.split("\n").length - 1 && <br />}
+                    </React.Fragment>
+                  ));
+                })()}
               </S.Description>
             </S.EventBox>
           ))}

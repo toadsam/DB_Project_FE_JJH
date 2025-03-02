@@ -2,7 +2,7 @@
   "name": "my_app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://rryunn.github.io/DB_Project_FE",
+  "homepage": "https://ajouclub.co.kr",
   "dependencies": {
     "@react-oauth/google": "^0.12.1",
     "@testing-library/jest-dom": "^5.17.0",

@@ -1,25 +1,35 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-/* === 데스크탑 헤더 스타일 === */
-export const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
+/* === 1. 헤더 전체를 감싸는 래퍼: 화면 전체 폭 사용 === */
+export const OuterWrapper = styled.header`
   width: 100%;
-  max-width: 1200px; /* 디자인 기준 폭 */
-  margin: 0 auto; /* 중앙 정렬 */
-  padding: 0 20px;
+  background-color: #fff;
 `;
 
-export const TopBar = styled.div`
+/* 
+  === 2. TopBarBlock, ContainerBlock ===
+  - 각각 전체 폭을 가지며 border-bottom을 적용해
+    수평선이 화면 끝에서 끝까지 이어지도록 함
+*/
+
+/* 상단 작은 헤더 영역 (전체 폭) */
+export const TopBarBlock = styled.div`
+  width: 100%;
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #ccc; /* 화면 전체로 줄 표시 */
+`;
+
+/* TopBar 내부 컨테이너: 중앙 정렬, max-width 적용 */
+export const TopBarInner = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  background-color: #f9f9f9;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 5px 20px;
   font-size: 12px;
   color: #666;
-  border-bottom: 1px solid #ccc;
 `;
 
 export const TopBarItem = styled.span`
@@ -30,13 +40,22 @@ export const TopBarItem = styled.span`
   }
 `;
 
-export const Container = styled.div`
-  display: flex;
-  align-items: center;
-  padding: 15px 40px;
-  border-bottom: 1px solid #ccc;
+/* 메인 헤더 영역 (전체 폭) */
+export const ContainerBlock = styled.div`
+  width: 100%;
+  border-bottom: 1px solid #ccc; /* 화면 전체로 줄 표시 */
 `;
 
+/* Container 내부 컨테이너: 중앙 정렬, max-width 적용 */
+export const ContainerInner = styled.div`
+  display: flex;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 15px 40px;
+`;
+
+/* 로고, 메뉴 영역 등은 기존과 동일하게 구성 */
 export const LogoLink = styled(Link)`
   text-decoration: none;
   display: flex;
@@ -84,9 +103,8 @@ export const Dropdown = styled.div`
   border-radius: 4px;
   padding: 10px 15px;
   z-index: 10;
-  display: flex;
   flex-direction: column;
-  align-items: center; /* 중앙 정렬 */
+  align-items: center;
 `;
 
 export const DropdownItem = styled.div`
@@ -96,7 +114,7 @@ export const DropdownItem = styled.div`
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center; /* 중앙 정렬 */
+  justify-content: center;
   gap: 8px;
   &:hover {
     background-color: #f0f0f0;
@@ -114,9 +132,9 @@ export const MobileHeader = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
+  padding: 10px 15px;
   border-bottom: 1px solid #ccc;
-  z-index: 1100; /* 모바일 헤더는 항상 위에 표시 */
+  z-index: 1100;
 `;
 
 export const LogoLinkMobile = styled(Link)`
@@ -145,10 +163,10 @@ export const Bar = styled.div`
   border-radius: 2px;
 `;
 
-/* 모바일 사이드바 - 메뉴들을 가운데 정렬 */
+/* 모바일 사이드바 */
 export const MobileSidebar = styled.div`
   position: fixed;
-  top: 60px; /* 헤더 높이만큼 띄움 */
+  top: 60px;
   right: 0;
   width: 150px;
   height: 100%;
@@ -160,14 +178,12 @@ export const MobileSidebar = styled.div`
   flex-direction: column;
 `;
 
-/* 모바일 메뉴 아이템 */
 export const MobileMenuItem = styled.div`
   margin-top: 20px;
   width: 100%;
   text-align: center;
 `;
 
-/* 모바일 메뉴 제목: 아이콘과 텍스트를 가운데 정렬 */
 export const MobileMenuTitle = styled.div`
   font-size: 15px;
   font-weight: 700;
@@ -179,7 +195,6 @@ export const MobileMenuTitle = styled.div`
   gap: 8px;
 `;
 
-/* 모바일 드롭다운: 아코디언 형식 */
 export const MobileDropdown = styled.div`
   margin-top: 10px;
   display: flex;
@@ -187,7 +202,6 @@ export const MobileDropdown = styled.div`
   align-items: left;
 `;
 
-/* 모바일 드롭다운 항목 */
 export const MobileDropdownItem = styled.div`
   font-size: 14px;
   font-weight: 400;
@@ -204,4 +218,13 @@ export const MobileDropdownItem = styled.div`
   &:hover {
     background-color: #f0f0f0;
   }
+`;
+export const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 50; /* MobileSidebar 보다 낮은 z-index 값으로 설정 */
+  background: transparent;
 `;

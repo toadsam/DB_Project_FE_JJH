@@ -1,14 +1,5 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  padding: 0 40px;
-  justify-content: flex-start;
-  background-color: #f6f4f4;
-`;
-
 /* ✅ 모집공고 목록 페이지로 이동하는 제목 */
 export const TitleLink = styled.h1`
   width: 100%;
@@ -26,7 +17,6 @@ export const TitleLink = styled.h1`
     color: #0056b3;
   }
 `;
-
 export const EventBox = styled.div`
   width: 180px;
   background-color: #ffffff;
@@ -51,7 +41,56 @@ export const MoreBox = styled(EventBox)`
   align-items: center;
 `;
 
-/* ✅ "더보기" 텍스트 스타일 */
+export const TitleRow = styled.div`
+  display: flex;
+  justify-content: flex-end; /* 기본적으로 오른쪽 정렬 */
+  align-items: center;
+  position: relative;
+  width: 100%;
+  padding: 20px 40px;
+  box-sizing: border-box;
+  background-color: #f6f4f4;
+
+  @media (max-width: 768px) {
+    padding: 10px 20px;
+  }
+`;
+
+export const TitleText = styled.h1`
+  font-size: 14px;
+  font-weight: 700;
+  color: #1d1d1f;
+  margin: 0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+`;
+
+export const MoreButton = styled.button`
+  font-size: 14px;
+  color: black;
+  background-color: #f6f4f4;
+  border: 1px solid rgb(164, 164, 164);
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: rgb(132, 142, 160);
+  }
+`;
+
+/* 기존 스타일들 그대로 유지 */
+export const Container = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 0 40px;
+  justify-content: flex-start;
+  background-color: #f6f4f4;
+`;
+
 export const MoreText = styled.p`
   font-size: 16px;
   font-weight: bold;

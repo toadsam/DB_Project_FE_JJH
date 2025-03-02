@@ -5,13 +5,12 @@ import * as S from "./ClubInfo.styles";
 import defaultImage from "../../asset/mainLogo.png";
 import ClubApply from "../ClubApply/ClubApply";
 import ClubEvent from "../ClubEvent/ClubEvent";
-import RecruitmentPage from "../RecruitmentPage/RecruitmentPage"; // ✅ 모집공고 작성 폼 추가
 import { jwtDecode } from "jwt-decode";
-
+import { FaInstagram } from "react-icons/fa";
 const API_URL = process.env.REACT_APP_API_URL;
 
 const getUserInfo = () => {
-  const token = localStorage.getItem("accessToken");
+  const token = localStorage.getItem("accessToken"); // 최신 accessToken 가져오기
   if (!token) return null;
   try {
     return jwtDecode(token);
@@ -29,30 +28,24 @@ function ClubInfo() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // getUserInfo를 useMemo로 호출해 한 번만 계산되도록 함
   const userInfo = useMemo(() => getUserInfo(), []);
 
-  // ✅ 현재 로그인한 사용자가 관리자인지 확인하는 로직 추가
-  const isClubAdmin = userInfo?.club_ids?.includes(Number(club_id));
+  // JWT 토큰에 clubAdmin 속성이 true라면 해당 사용자는 클럽 관리자라고 가정
+  const isClubAdmin = userInfo && userInfo.clubAdmin;
 
+  // 관리자인 경우에만 추가 메뉴를 보여줌
   const [selectedItem, setSelectedItem] = useState(
     location.state?.defaultTab || "동아리 소개"
   );
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    if (!token) {
-      alert("로그인이 필요합니다!");
-      navigate("/login");
-      return;
-    }
-
     const fetchClubData = async () => {
       setLoading(true);
       try {
         const response = await axios.get(`${API_URL}/api/clubs/${club_id}`, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // ✅ accessToken 포함
             "ngrok-skip-browser-warning": "69420",
           },
         });
@@ -66,20 +59,51 @@ function ClubInfo() {
     };
 
     fetchClubData();
-  }, [club_id, navigate]);
+  }, [club_id]);
+
+  // 전화번호 포맷 함수 (예: 010-xxxx-xxxx)
+  const formatPhoneNumber = (phoneNumber) => {
+    const cleaned = ("" + phoneNumber).replace(/\D/g, "");
+    if (cleaned.length === 11 && cleaned.startsWith("010")) {
+      return cleaned.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+    }
+    return phoneNumber;
+  };
 
   if (loading) return <S.Loading>Loading...</S.Loading>;
   if (error) return <S.Error>{error}</S.Error>;
 
+  const getFormattedClubTitle = () => {
+    if (!clubInfo) return "동아리 이름";
+    if (clubInfo.club_type === "중앙동아리") {
+      return `중앙동아리 > ${clubInfo.detail_category_1 || "분과 없음"} > ${
+        clubInfo.club_name
+      }`;
+    } else if (clubInfo.club_type === "소학회") {
+      return `소학회 > ${clubInfo.college_name || "단과대"} > ${
+        clubInfo.department_name || "소속학과"
+      } > ${clubInfo.club_name}`;
+    }
+    return clubInfo.club_name;
+  };
+
+  // 기본 메뉴에 관리자인 경우에만 추가 메뉴를 포함
   const sidebarItems = [
     "동아리 소개",
     "모집 공고",
     "행사 공고",
-    ...(isClubAdmin ? ["모집공고 작성", "모집공고 수정"] : []), // ✅ 클럽 관리자만 볼 수 있는 페이지 추가
+    ...(isClubAdmin ? ["모집공고 작성", "모집공고 수정"] : []),
   ];
 
   const handleSidebarClick = (item) => {
-    setSelectedItem(item); // ✅ 내용만 변경하도록 수정
+    setSelectedItem(item);
+    if (item === "모집공고 작성") {
+      navigate(`/recruitment/create/${club_id}`);
+    } else if (item === "모집공고 수정") {
+      navigate(`/recruitment/edit/${club_id}`);
+    } else {
+      navigate(`/clubinfo/${club_id}`, { state: { defaultTab: item } });
+    }
   };
 
   return (
@@ -100,9 +124,8 @@ function ClubInfo() {
       </S.Sidebar>
 
       <S.InfoContainer>
-        {/* ✅ 기존 동아리 정보 영역은 항상 유지 */}
         <S.Header>
-          <S.ClubTitle>{clubInfo?.club_name || "동아리 이름"}</S.ClubTitle>
+          <S.ClubTitle>{getFormattedClubTitle()}</S.ClubTitle>
           <S.TitleBar />
         </S.Header>
         <S.CardContainer>
@@ -122,39 +145,66 @@ function ClubInfo() {
               <S.CardInfoItem>
                 <S.ContactLabel>연락처</S.ContactLabel>
                 <S.ContactValue>
-                  {clubInfo?.club_contact_phone_number ||
-                    "연락처 정보가 없습니다."}
+                  {clubInfo?.club_contact_phone_number
+                    ? formatPhoneNumber(clubInfo.club_contact_phone_number)
+                    : "연락처 정보가 없습니다."}
                 </S.ContactValue>
               </S.CardInfoItem>
               <S.CardInfoItem>
                 <S.ContactLabel>SNS</S.ContactLabel>
                 <S.ContactValue>
-                  <a
-                    href={clubInfo?.club_sns1 || "#"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {clubInfo?.club_sns1 || "SNS 정보가 없습니다."}
-                  </a>
+                  {clubInfo?.club_sns1 ? (
+                    <S.Link
+                      href={clubInfo.club_sns1}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <FaInstagram
+                        size={24}
+                        style={{ verticalAlign: "middle" }}
+                      />
+                    </S.Link>
+                  ) : (
+                    "SNS 정보가 없습니다."
+                  )}
                 </S.ContactValue>
               </S.CardInfoItem>
             </S.CardInfoBox>
           </S.CardContent>
         </S.CardContainer>
 
-        {/* ✅ 선택된 카테고리에 따라 내용 변경 */}
         {selectedItem === "동아리 소개" && (
           <>
             <S.Section>
               <S.SectionTitle>동아리 설명</S.SectionTitle>
               <S.SectionContent>
-                {clubInfo?.club_description || "동아리 설명이 없습니다."}
+                {clubInfo?.club_description
+                  ? clubInfo.club_description
+                      .replace(/\\n/g, "\n")
+                      .split("\n")
+                      .map((line, index) => (
+                        <React.Fragment key={index}>
+                          {line}
+                          <br />
+                        </React.Fragment>
+                      ))
+                  : "동아리 설명이 없습니다."}
               </S.SectionContent>
             </S.Section>
             <S.Section>
               <S.SectionTitle>주요 활동</S.SectionTitle>
               <S.SectionContent>
-                {clubInfo?.club_main_activities || "주요 활동 설명이 없습니다."}
+                {clubInfo?.club_main_activities
+                  ? clubInfo.club_main_activities
+                      .replace(/\\n/g, "\n")
+                      .split("\n")
+                      .map((line, index) => (
+                        <React.Fragment key={index}>
+                          {line}
+                          <br />
+                        </React.Fragment>
+                      ))
+                  : "주요 활동 설명이 없습니다."}
               </S.SectionContent>
             </S.Section>
           </>
@@ -162,11 +212,6 @@ function ClubInfo() {
 
         {selectedItem === "모집 공고" && <ClubApply club_id={club_id} />}
         {selectedItem === "행사 공고" && <ClubEvent club_id={club_id} />}
-
-        {/* ✅ 클럽 관리자만 접근할 수 있는 모집공고 작성 폼 */}
-        {isClubAdmin && selectedItem === "모집공고 작성" && (
-          <RecruitmentPage />
-        )}
       </S.InfoContainer>
     </S.PageContainer>
   );

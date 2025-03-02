@@ -4,7 +4,6 @@ import axios from "axios";
 import * as S from "./ClubCategory.styles"; // 수정된 스타일 적용
 import defaultImage from "../../asset/mainLogo.png";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa"; // 기존 FaChevronRight 대신 FaChevronUp 사용
-
 const API_URL = process.env.REACT_APP_API_URL;
 
 const categories = [
@@ -75,6 +74,10 @@ function CategoryClubList() {
 
   const handleCategoryClick = (cat) => {
     navigate(`/category/${encodeURIComponent(cat)}`);
+    // 모바일에서 항목 클릭 시 사이드바 접기
+    if (isMobile) {
+      setSidebarExpanded(false);
+    }
   };
 
   return (
@@ -141,7 +144,7 @@ function CategoryClubList() {
               >
                 <img
                   src={club.image}
-                  alt={club.title}
+                  alt={club.club_name}
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
               </S.ImageWrapper>

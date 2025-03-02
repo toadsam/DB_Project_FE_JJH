@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const ApplyContainer = styled.div`
   box-sizing: border-box;
-  font-family: "Arial", sans-serif;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -116,7 +115,7 @@ export const Label = styled.span`
 `;
 
 export const Value = styled.span`
-  color: #555;
+  color: #333;
 `;
 
 export const ImageContainer = styled.div`

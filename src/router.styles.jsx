@@ -15,7 +15,6 @@ export const RowContainer = styled.div`
   gap: 20px;
   width: 100%;
   box-sizing: border-box;
-  margin-bottom: 20px;
   margin-top: 20px;
 
   /* 화면이 모바일 사이즈일 때 컬럼으로 변경 */

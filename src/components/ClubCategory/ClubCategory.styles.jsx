@@ -20,34 +20,6 @@ export const PageContainer = styled.div`
   }
 `;
 
-/* Sidebar: 데스크탑에서는 왼쪽 고정, 모바일에서는 상단 전체 너비 */
-export const Sidebar = styled.div`
-  width: 180px;
-  background-color: #f9f9f9;
-  border-radius: 10px;
-  margin-right: 30px;
-  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
-  position: sticky;
-  top: 20px;
-  height: fit-content;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    margin-right: 0;
-    margin-bottom: 10px;
-    position: static;
-  }
-`;
-
-export const SidebarTitle = styled.h2`
-  font-size: 16px; /* 폰트 크기 감소 */
-  font-weight: 600; /* 두께를 약간 낮춤 */
-  color: #1d1d1f;
-  margin: 0; /* 여백 제거 */
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
 export const SidebarList = styled.ul`
   list-style: none;
   padding: 0;
@@ -96,17 +68,25 @@ export const TitleBar = styled.div`
 
 export const Container = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, max-content));
   gap: 20px;
   width: 100%;
   margin: 0 auto;
-  overflow-x: hidden; /* 추가: 그리드 내 오버플로우 방지 */
-  justify-content: center;
-  justify-items: center;
+
+  /* 왼쪽 정렬을 위해 center 대신 start 사용 */
+  justify-content: start;
+  align-items: start;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    justify-content: center;
+  }
 `;
 
-/* EventBox: 모바일에서도 데스크탑과 동일한 카드 형태를 유지 */
+/* EventBox: 카드 자체는 그리드 셀의 너비에 맞춰 중앙에 배치 */
 export const EventBox = styled.div`
+  width: 100%;
+  max-width: 180px;
   background-color: #ffffff;
   border: 0.2px solid rgb(213, 213, 213);
   overflow: hidden;
@@ -114,15 +94,14 @@ export const EventBox = styled.div`
   flex-direction: column;
   transition: transform 0.3s ease;
   cursor: pointer;
+  margin: 0 auto; /* 그리드 셀 내에서 중앙 정렬 */
 
   &:hover {
     transform: translateY(-8px);
   }
 
   @media (max-width: 768px) {
-    /* 모바일에서도 카드형식을 유지하며, 필요 시 카드 크기를 조정 */
     width: 100%;
-    padding: 10px;
   }
 `;
 
@@ -162,6 +141,7 @@ export const Title = styled.h2`
     text-align: left;
     margin: 10px 0 0 0;
     color: #000;
+    margin-left: 10px;
   }
 `;
 
@@ -186,4 +166,43 @@ export const SidebarHeader = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+`;
+/* Sidebar: 데스크탑에서는 왼쪽 고정, 모바일에서는 상단 전체 너비 */ export const Sidebar = styled.div`
+  /* 데스크톱 기본 스타일 */
+  width: 160px;
+  background-color: #f9f9f9;
+  padding: 20px; /* 데스크톱일 때는 20px 패딩 */
+  border-radius: 10px;
+  margin-right: 30px;
+  box-shadow: 0px 3px 3px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 20px;
+  height: fit-content;
+
+  /* 모바일(768px 이하)에서 덮어쓰기 */
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-right: 0;
+    margin-bottom: 10px;
+    position: static;
+    padding: 8px 10px; /* 모바일일 때는 8px 10px으로 변경 */
+  }
+`;
+
+export const SidebarTitle = styled.h2`
+  /* 데스크톱 기본 스타일 */
+  font-size: 18px; /* 데스크톱에서 18px */
+  font-weight: 700; /* 데스크톱에서 700 */
+  color: #1d1d1f;
+  margin-bottom: 10px;
+
+  /* 모바일(768px 이하)에서 덮어쓰기 */
+  @media (max-width: 768px) {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `;

@@ -9,11 +9,10 @@ export const PanelContainer = styled.div`
   padding: 20px;
   background: white;
   box-sizing: border-box;
-  overflow-x: auto; /* 수평 스크롤 활성화 */
   scroll-behavior: smooth; /* 부드러운 스크롤 */
-    @media (max-width: 768px) {
-  width:  100vw;
-  min-width: 300px;
+  @media (max-width: 768px) {
+    width: 100vw;
+    min-width: 300px;
   }
 `;
 
@@ -53,7 +52,7 @@ export const NoticeItem = styled.div`
 export const Title = styled.span`
   font-size: 16px;
   color: #333;
-  font-weight: 500;
+  font-weight: 400;
 `;
 
 export const Date = styled.span`

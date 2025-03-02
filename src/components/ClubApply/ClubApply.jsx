@@ -123,21 +123,22 @@ function ClubApply({ club_id }) {
             <S.Title>
               {currentRecruitment.recruitment_title || "모집 공고 제목"}
             </S.Title>
-            {currentRecruitment.recruitment_end_date && (
-              <S.DaysLeftBadge>
-                {calculateDaysLeft(currentRecruitment.recruitment_end_date)}
-              </S.DaysLeftBadge>
-            )}
-            {/* 신청하기 버튼 */}
-            {currentRecruitment.application_url && (
-              <S.ApplyButton
-                href={currentRecruitment.application_url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                신청하기
-              </S.ApplyButton>
-            )}
+            <S.ActionContainer>
+              {currentRecruitment.recruitment_end_date && (
+                <S.DaysLeftBadge>
+                  {calculateDaysLeft(currentRecruitment.recruitment_end_date)}
+                </S.DaysLeftBadge>
+              )}
+              {currentRecruitment.application_url && (
+                <S.ApplyButton
+                  href={currentRecruitment.application_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  신청하기
+                </S.ApplyButton>
+              )}
+            </S.ActionContainer>
           </S.TitleContainer>
 
           {/* 이미지 렌더링 */}
