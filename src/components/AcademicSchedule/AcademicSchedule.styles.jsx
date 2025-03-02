@@ -9,8 +9,8 @@ export const ScheduleContainer = styled.div`
   box-sizing: border-box;
 
   @media (max-width: 768px) {
-  width:  100vw;
-  min-width: 300px;
+    width: 100vw;
+    min-width: 300px;
   }
 `;
 
@@ -57,7 +57,7 @@ export const ScheduleItem = styled.li`
 export const Title = styled.span`
   font-size: 16px;
   color: #333;
-  font-weight: 500;
+  font-weight: 400;
   flex: 1;
 `;
 
@@ -67,12 +67,11 @@ export const Date = styled.span`
   text-align: right;
 `;
 
-
 export const NoSchedule = styled.div`
   text-align: center;
   color: #999;
   font-size: 16px;
-  padding: 20px; 
+  padding: 20px;
   width: 100%;
 
   @media (max-width: 768px) {

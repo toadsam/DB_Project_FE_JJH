@@ -15,7 +15,6 @@ export const PanelContainer = styled.div`
     width: 100vw;
     min-width: 300px;
   }
-  font-family: "Arial", sans-serif;
 `;
 
 export const TabMenu = styled.div`
@@ -54,7 +53,7 @@ export const NoticeItem = styled.div`
 export const Title = styled.span`
   font-size: 16px;
   color: #333;
-  font-weight: 500;
+  font-weight: 400;
 `;
 
 export const Date = styled.span`
