@@ -36,7 +36,7 @@ export const Header = styled.div`
 `;
 
 export const ClubTitle = styled.h1`
-  font-size: 22px;
+  font-size: 20px;
   color: black;
   margin: 0;
 `;

@@ -50,6 +50,11 @@ export const RecruitmentImage = styled.img`
   max-width: 400px;
   height: auto;
   margin: 20px 0;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    max-width: 600px;
+  }
 `;
 
 /* 단일 이미지 중앙 정렬 컨테이너 */
@@ -136,9 +141,10 @@ export const ApplyContainer = styled.div`
   flex-direction: column;
 
   @media (max-width: 768px) {
-    max-width: 90%; /* 모바일 폭 90% */
+    max-width: 100%; /* 모바일 폭 90% */
     padding: 0;
     text-align: center; /* 내부 텍스트 중앙 정렬 */
+    margin-left: 10px;
   }
 `;
 
