@@ -332,7 +332,6 @@ export const ContactValue = styled.span`
 export const ClubLogo = styled.img`
   width: 120px;
   height: 120px;
-  border-radius: 10px;
   object-fit: cover;
 
   @media (max-width: 768px) {
