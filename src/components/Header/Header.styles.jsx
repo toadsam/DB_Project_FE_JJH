@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 export const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%; /* 전체 너비 사용 */
-  margin: 0; /* 중앙 정렬 제거 */
-  padding: 0 20px; /* 필요에 따라 좌우 패딩 유지 또는 제거 */
-
+  width: 100%;
+  max-width: 1200px; /* 디자인 기준 폭 */
+  margin: 0 auto; /* 중앙 정렬 */
+  padding: 0 20px;
   @media (max-width: 768px) {
     padding: 0; /* 모바일에서는 좌우 패딩 제거 */
   }
