@@ -220,7 +220,7 @@ export const SidebarHeader = styled.div`
 `;
 export const Sidebar = styled.div`
   /* 데스크톱 기본 스타일 */
-  width: 190px;
+  width: 160px;
   background-color: #f9f9f9;
   padding: 20px; /* 데스크톱일 때는 20px 패딩 */
   border-radius: 10px;

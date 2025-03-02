@@ -62,7 +62,7 @@ export const CategoryBox = styled.div`
   span {
     position: absolute;
     font-size: 14px;
-    font-weight: 700;
+    font-weight: 500;
     color: white;
     z-index: 2;
     text-align: center;

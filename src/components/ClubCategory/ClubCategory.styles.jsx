@@ -164,7 +164,7 @@ export const SidebarHeader = styled.div`
 `;
 /* Sidebar: 데스크탑에서는 왼쪽 고정, 모바일에서는 상단 전체 너비 */ export const Sidebar = styled.div`
   /* 데스크톱 기본 스타일 */
-  width: 180px;
+  width: 160px;
   background-color: #f9f9f9;
   padding: 20px; /* 데스크톱일 때는 20px 패딩 */
   border-radius: 10px;
