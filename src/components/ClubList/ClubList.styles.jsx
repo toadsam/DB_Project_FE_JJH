@@ -21,34 +21,6 @@ export const PageContainer = styled.div`
   }
 `;
 
-export const SidebarList = styled.ul`
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: ${(props) => (props.expanded ? "block" : "none")};
-
-  @media (min-width: 768px) {
-    display: block; /* 데스크탑에서는 항상 보이도록 */
-  }
-`;
-
-export const SidebarItem = styled.li`
-  font-size: 14px;
-  font-weight: ${(props) => (props.isSelected ? "700" : "400")};
-  color: ${(props) => (props.isSelected ? "#007aff" : "#333")};
-  margin-bottom: 10px;
-  cursor: pointer;
-  padding: 5px 10px;
-  border-radius: 5px;
-  background-color: ${(props) =>
-    props.isSelected ? "#e6f7ff" : "transparent"};
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #f0f0f0;
-  }
-`;
-
 export const Content = styled.div`
   flex-grow: 1;
   display: flex;
@@ -211,5 +183,33 @@ export const SidebarTitle = styled.h2`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+  }
+`;
+
+export const SidebarList = styled.ul`
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: ${(props) => (props.expanded ? "block" : "none")};
+
+  @media (min-width: 768px) {
+    display: block; /* 데스크탑에서는 항상 보이도록 */
+  }
+`;
+
+export const SidebarItem = styled.li`
+  font-size: 14px;
+  font-weight: ${(props) => (props.isSelected ? "700" : "400")};
+  color: ${(props) => (props.isSelected ? "#007aff" : "#333")};
+  margin-bottom: 10px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: ${(props) =>
+    props.isSelected ? "#e6f7ff" : "transparent"};
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #f0f0f0;
   }
 `;

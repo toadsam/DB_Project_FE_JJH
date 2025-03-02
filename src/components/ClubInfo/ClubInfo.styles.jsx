@@ -28,7 +28,19 @@ export const SidebarItem = styled.li`
   &:hover {
     background-color: #f0f0f0;
   }
+
+  /* 모바일에서는 선택된 항목의 배경색과 글씨색을 파란색(#007aff)으로 유지 */
+  @media (max-width: 768px) {
+    transition: none;
+    &:hover {
+      background-color: transparent;
+    }
+    background-color: ${(props) =>
+      props.$isSelected ? "#e6f7ff" : "transparent"};
+    color: ${(props) => (props.$isSelected ? "#007aff" : "#333")};
+  }
 `;
+
 export const Header = styled.div`
   width: 100%;
   margin-bottom: 10px;
