@@ -213,3 +213,37 @@ export const SidebarItem = styled.li`
     background-color: #f0f0f0;
   }
 `;
+export const TopBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+`;
+export const SearchContainer = styled.div`
+  position: relative;
+  width: 250px; /* 필요에 따라 조정 */
+`;
+
+// 검색 인풋: 아랫줄 테두리만 표시
+export const SearchInput = styled.input`
+  width: 70%;
+  padding: 8px 40px 8px 12px; /* 오른쪽 여백은 아이콘 공간 확보 */
+  font-size: 14px;
+  border: none;
+  border-bottom: 1px solid #333; /* 진한 검정색 아랫줄 */
+  outline: none;
+
+  &::placeholder {
+    color: #555; /* placeholder 텍스트 색상 */
+  }
+`;
+
+// 검색 아이콘: 오른쪽 끝에 위치하도록 절대배치
+export const SearchIcon = styled.div`
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #333;
+  font-size: 16px;
+`;

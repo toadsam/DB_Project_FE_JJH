@@ -3,7 +3,7 @@ import * as S from "./ClubList.styles";
 import axios from "axios";
 import defaultImage from "../../asset/mainLogo.png";
 import { useNavigate } from "react-router-dom";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaChevronDown, FaChevronUp, FaSearch } from "react-icons/fa";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -29,6 +29,7 @@ function ClubList() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
   // 모바일 여부 감지
@@ -46,6 +47,12 @@ function ClubList() {
       setSidebarExpanded(false);
     }
   }, [selectedCategory, isMobile]);
+
+  // 🔄 카테고리 변경 시 검색어 리셋
+  useEffect(() => {
+    setSearchTerm(""); // 카테고리 변경 시 검색어 초기화
+  }, [selectedCategory]);
+
   useEffect(() => {
     const fetchEvents = async () => {
       setLoading(true);
@@ -92,19 +99,15 @@ function ClubList() {
     navigate(`/clubinfo/${id}`);
   };
 
-  // 모집 타입에 따라 빨간 박스에 들어갈 내용을 계산하는 함수
-  const getRecruitmentLabel = (event) => {
-    if (event.recruitment_type === null) {
-      return "상시";
-    } else if (event.recruitment_type === "수시모집") {
-      const today = new Date();
-      const endDate = new Date(event.recruitment_end_date);
-      const diffTime = endDate - today;
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      return diffDays < 0 ? "마감" : `D-${diffDays}`;
-    }
-    return "";
+  // 검색 input onChange 핸들러
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
   };
+
+  // 🔍 검색어로 시작하는 동아리만 필터링
+  const filteredEvents = events.filter((event) =>
+    event.club_name.toLowerCase().startsWith(searchTerm.toLowerCase())
+  );
 
   return (
     <S.PageContainer>
@@ -123,7 +126,7 @@ function ClubList() {
                   key={index}
                   onClick={() => {
                     setSelectedCategory(item);
-                    setSidebarExpanded(false); // 항목 클릭 후 사이드바 닫기
+                    setSidebarExpanded(false);
                   }}
                   isSelected={selectedCategory === item}
                 >
@@ -151,21 +154,30 @@ function ClubList() {
       </S.Sidebar>
 
       <S.Content>
-        <S.Title1>
-          중앙동아리 {">"} {selectedCategory || "전체"}
-        </S.Title1>
+        <S.TopBar>
+          <S.Title1>
+            중앙동아리 {">"} {selectedCategory || "전체"}
+          </S.Title1>
+          <S.SearchContainer>
+            <S.SearchInput
+              type="text"
+              placeholder="검색"
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
+            <S.SearchIcon>
+              <FaSearch />
+            </S.SearchIcon>
+          </S.SearchContainer>
+        </S.TopBar>
         <S.TitleBar />
         <S.Container>
-          {events.map((event) => (
+          {filteredEvents.map((event) => (
             <S.EventBox
               key={event.club_id}
               onClick={() => handleEventClick(event.club_id)}
-              bg={event.image}
             >
-              <S.ImageWrapper
-                data-label={getRecruitmentLabel(event)}
-                style={{ height: "180px", overflow: "hidden" }}
-              >
+              <S.ImageWrapper style={{ height: "180px", overflow: "hidden" }}>
                 <img
                   src={event.image}
                   alt={event.club_name}
