@@ -31,8 +31,8 @@ export const ScrollWrapper = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
-  -ms-overflow-style: none; /* Internet Explorer 10+ */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 `;
 
 export const CategoryBox = styled.div`
@@ -50,13 +50,6 @@ export const CategoryBox = styled.div`
 
   &:hover {
     transform: scale(1.05);
-  }
-
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(0.7); /* 이미지 어둡게 처리 */
   }
 
   span {

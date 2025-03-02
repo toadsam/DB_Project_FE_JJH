@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import * as S from "./Category.styles";
+import LazyImage from "./LazyImage";
 
 import 체육 from "../../asset/체육.png";
 import 학술 from "../../asset/학술.png";
@@ -36,11 +37,11 @@ const CategoryList = () => {
 
   // 마우스 움직일 때
   const handleMouseMove = (e) => {
-    if (!isDragging.current) return; // 드래그 상태가 아닐 경우 중단
-    e.preventDefault(); // 기본 동작 방지
-    const x = e.pageX - scrollRef.current.offsetLeft; // 현재 마우스 위치
-    const walk = x - startX.current; // 드래그 거리 계산
-    scrollRef.current.scrollLeft = scrollLeft.current - walk; // 스크롤 위치 업데이트
+    if (!isDragging.current) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current.offsetLeft;
+    const walk = x - startX.current;
+    scrollRef.current.scrollLeft = scrollLeft.current - walk;
   };
 
   // 마우스 떼었을 때
@@ -49,26 +50,25 @@ const CategoryList = () => {
   };
 
   const handleCategoryClick = (categoryName) => {
-    // categoryName은 "문화/예술"이지만, encodeURIComponent()를 사용하면 URL에는 "문화%2F예술"로 인코딩됨.
     navigate(`/category/${encodeURIComponent(categoryName)}`);
   };
 
   return (
     <S.CategoryContainer>
       <S.ScrollWrapper
-        ref={scrollRef} // 스크롤 참조
-        onMouseDown={handleMouseDown} // 마우스 눌렀을 때
-        onMouseMove={handleMouseMove} // 마우스 움직일 때
-        onMouseUp={handleMouseUp} // 마우스 떼었을 때
-        onMouseLeave={handleMouseUp} // 마우스가 영역을 떠났을 때도 처리
+        ref={scrollRef}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
       >
         {categories.map((category, index) => (
           <S.CategoryBox
             key={index}
             onClick={() => handleCategoryClick(category.name)}
-            style={{ cursor: "pointer" }} // 클릭 가능하다는 표시
+            style={{ cursor: "pointer" }}
           >
-            <img src={category.image} alt={category.name} />
+            <LazyImage src={category.image} alt={category.name} />
             <span>{category.name}</span>
           </S.CategoryBox>
         ))}
