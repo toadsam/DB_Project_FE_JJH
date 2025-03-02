@@ -9,7 +9,6 @@ export const PanelContainer = styled.div`
   padding: 20px;
   background: white;
   box-sizing: border-box;
-  overflow-x: auto; /* 수평 스크롤 활성화 */
   scroll-behavior: smooth; /* 부드러운 스크롤 */
   @media (max-width: 768px) {
     width: 100vw;

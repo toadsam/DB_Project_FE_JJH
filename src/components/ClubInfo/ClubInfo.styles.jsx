@@ -85,7 +85,7 @@ export const ClubInfoWrapper = styled.div`
 export const ClubName = styled.h1`
   font-size: 28px;
   font-weight: bold;
-  color: black;
+  color: #046cc4;
   margin-bottom: 10px;
 `;
 
@@ -128,7 +128,6 @@ export const CardContainer = styled.div`
   margin: 20px auto;
   background-color: #f6f4f4; /* 카드 배경색 */
   border: 1px solid #ddd; /* 테두리 */
-  border-radius: 5px; /* 모서리 둥글게 */
   justify-content: space-between;
   margin-bottom: 30px;
   margin-top: 30px;
@@ -263,13 +262,13 @@ export const PageContainer = styled.div`
 `;
 
 export const Sidebar = styled.div`
-  width: 180px;
+  width: 140px;
   background-color: #f9f9f9;
   padding: 20px;
   border-radius: 10px;
   margin-right: 30px;
   margin-left: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.1);
   position: sticky;
   margin-top: 50px;
 
@@ -300,7 +299,7 @@ export const InfoContainer = styled.div`
 /* 연락처, SNS 등 텍스트 요소 overflow 방지를 위한 스타일 */
 export const ContactLabel = styled.span`
   font-weight: bold;
-  color: #333;
+  color: #black;
   min-width: 80px;
 
   @media (max-width: 768px) {
@@ -311,7 +310,7 @@ export const ContactLabel = styled.span`
 `;
 
 export const ContactValue = styled.span`
-  color: #555;
+  color: #333;
   word-wrap: break-word;
   overflow-wrap: break-word;
 
@@ -370,8 +369,8 @@ export const SectionTitle = styled.h2`
 export const SectionContent = styled.p`
   white-space: pre-wrap;
   font-size: 16px;
-  color: #555;
-  line-height: 1.5;
+  color: #333;
+  line-height: 1.6;
   text-align: left; /* 기본 왼쪽 정렬 */
 
   @media (max-width: 768px) {
