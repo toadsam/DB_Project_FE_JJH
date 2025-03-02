@@ -47,10 +47,9 @@ export const Error = styled.div`
 /* 최신 모집공고 이미지 */
 export const RecruitmentImage = styled.img`
   width: 60%;
-  max-width: 600px;
+  max-width: 400px;
   height: auto;
   margin: 20px 0;
-  border-radius: 8px;
 `;
 
 /* 단일 이미지 중앙 정렬 컨테이너 */
@@ -77,10 +76,9 @@ export const LeftArrow = styled.button`
   background-color: rgba(0, 0, 0, 0.5);
   border: none;
   color: #fff;
-  font-size: 24px;
+  font-size: 20px;
   cursor: pointer;
   padding: 10px;
-  border-radius: 50%;
 `;
 
 /* 우측 화살표 버튼 */
@@ -90,10 +88,9 @@ export const RightArrow = styled.button`
   background-color: rgba(0, 0, 0, 0.5);
   border: none;
   color: #fff;
-  font-size: 24px;
+  font-size: 20px;
   cursor: pointer;
   padding: 10px;
-  border-radius: 50%;
 `;
 
 /* 전년도 모집공고 드롭다운 스타일 */
