@@ -15,21 +15,20 @@ export const SidebarList = styled.ul`
 
 export const SidebarItem = styled.li`
   font-size: 14px;
-  font-weight: ${(props) => (props.isSelected ? "700" : "400")};
-  color: ${(props) => (props.isSelected ? "#007aff" : "#333")};
+  font-weight: ${(props) => (props.$isSelected ? "700" : "400")};
+  color: ${(props) => (props.$isSelected ? "#007aff" : "#333")};
   margin-bottom: 10px;
   cursor: pointer;
   padding: 5px 10px;
   border-radius: 5px;
   background-color: ${(props) =>
-    props.isSelected ? "#e6f7ff" : "transparent"};
+    props.$isSelected ? "#e6f7ff" : "transparent"};
   transition: background-color 0.3s ease;
 
   &:hover {
     background-color: #f0f0f0;
   }
 `;
-
 export const Header = styled.div`
   width: 100%;
   margin-bottom: 10px;
