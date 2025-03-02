@@ -42,11 +42,7 @@ export const MoreButton = styled.button`
 
 // Swiper 또는 슬라이드 컨테이너로 사용할 영역
 export const Container = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
   padding: 0 40px;
-  justify-content: flex-start;
   background-color: #f6f4f4;
 
   @media (max-width: 768px) {
