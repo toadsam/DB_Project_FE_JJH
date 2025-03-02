@@ -15,24 +15,27 @@ export const SidebarList = styled.ul`
 
 export const SidebarItem = styled.li`
   font-size: 14px;
-  font-weight: ${(props) => (props.isSelected ? "700" : "400")};
-  color: ${(props) => (props.isSelected ? "#007aff" : "#333")};
+  font-weight: ${(props) => (props.$isSelected ? "700" : "400")};
+  color: ${(props) => (props.$isSelected ? "#007aff" : "#333")};
   margin-bottom: 10px;
   cursor: pointer;
   padding: 5px 10px;
   border-radius: 5px;
   background-color: ${(props) =>
-    props.isSelected ? "#e6f7ff" : "transparent"};
+    props.$isSelected ? "#e6f7ff" : "transparent"};
   transition: background-color 0.3s ease;
 
   &:hover {
     background-color: #f0f0f0;
   }
 `;
-
 export const Header = styled.div`
   width: 100%;
   margin-bottom: 10px;
+  @media (max-width: 768px) {
+    margin: 0;
+    width: 100%;
+  }
 `;
 
 export const ClubTitle = styled.h1`
@@ -114,6 +117,9 @@ export const HashTag = styled.span`
 
 export const Section = styled.div`
   margin-bottom: 10px;
+  @media (max-width: 768px) {
+    width: 90%;
+  }
 `;
 
 export const ButtonWrapper = styled.div`
@@ -135,7 +141,7 @@ export const CardContainer = styled.div`
   /* 모바일 전용 스타일 */
   @media (max-width: 768px) {
     flex-direction: column; /* 카드 내 요소들을 세로 정렬 */
-    width: 100%;
+    width: 90%;
     padding: 15px;
     align-items: center; /* 자식 요소들을 가운데 정렬 */
   }
@@ -283,7 +289,7 @@ export const Sidebar = styled.div`
 `;
 
 export const InfoContainer = styled.div`
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
   padding: 20px;
   box-sizing: border-box;
