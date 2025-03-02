@@ -5,7 +5,7 @@ export const StyledSwiperSlide = styled(SwiperSlide)`
   width: 180px !important;
 
   @media (max-width: 768px) {
-    width: 160px !important;
+    width: 180px !important;
   }
 `;
 export const TitleRow = styled.div`
@@ -75,7 +75,7 @@ export const EventBox = styled.div`
   }
 
   @media (max-width: 768px) {
-    width: 160px;
+    width: 180px;
   }
 `;
 
