@@ -134,7 +134,7 @@ export const ApplyContainer = styled.div`
   width: 100%;
   max-width: 1200px; /* 데스크탑 기준 폭 */
   margin: 0 auto; /* 좌우 자동 여백 -> 중앙 정렬 */
-  padding: 0 20px; /* 내부 여백 */
+
   box-sizing: border-box;
   font-family: "Arial", sans-serif;
   display: flex;
