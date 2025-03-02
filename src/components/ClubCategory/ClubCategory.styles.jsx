@@ -123,10 +123,10 @@ export const ImageWrapper = styled.div`
     left: 10px;
     background-color: #ff4d4f;
     color: white;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: bold;
-    padding: 4px 8px;
-    border-radius: 4px;
+    padding: 4px 10px;
+    border-radius: 8px;
   }
 `;
 
@@ -269,4 +269,15 @@ export const MobileSearchInput = styled.input`
 export const MobileSearchIcon = styled.div`
   margin-left: 5px;
   color: #555;
+`;
+export const RecruitmentTag = styled.div`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #ff4d4f;
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 8px;
 `;

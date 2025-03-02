@@ -223,6 +223,7 @@ export const TopBar = styled.div`
 export const SearchContainer = styled.div`
   position: relative;
   width: 250px; /* 필요에 따라 조정 */
+  margin-right: 10px;
 `;
 
 // 검색 인풋: 아랫줄 테두리만 표시
@@ -290,7 +291,7 @@ export const FilterButton = styled.button`
   border: none;
   width: 60px;
   padding: 4px 16px;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
   font-size: 14px;
   font-weight: bold;

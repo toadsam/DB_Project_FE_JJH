@@ -6,7 +6,7 @@ import NewRecruitment from "./components/NewRecruitment/NewRecruitment";
 import ClubInfo from "./components/ClubInfo/ClubInfo";
 import MemberInfo from "./components/MemberInfo/MemberInfo";
 import EventInfo from "./components/EventInfo/EventInfo";
-import FestivalList from "./components/FestivalList/FestivalList";
+//import FestivalList from "./components/FestivalList/FestivalList";
 import MiniClub from "./components/Miniclub/MiniClub";
 import Category from "./components/Category/Category";
 import AcademicSchedule from "./components/AcademicSchedule/AcademicSchedule";

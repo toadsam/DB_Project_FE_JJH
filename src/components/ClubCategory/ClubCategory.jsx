@@ -187,14 +187,22 @@ function CategoryClubList() {
             >
               <S.ImageWrapper
                 data-label={club.club_type}
-                style={{ height: "180px", overflow: "hidden" }}
+                style={{
+                  height: "180px",
+                  overflow: "hidden",
+                  position: "relative",
+                }}
               >
                 <img
                   src={club.image}
                   alt={club.club_name}
                   style={{ width: "100%", height: "100%", objectFit: "cover" }}
                 />
+                {club.recruitment_scope && (
+                  <S.RecruitmentTag>{club.recruitment_scope}</S.RecruitmentTag>
+                )}
               </S.ImageWrapper>
+
               <S.Title>{club.club_name}</S.Title>
               <S.Description>
                 {club.description.length > 35
