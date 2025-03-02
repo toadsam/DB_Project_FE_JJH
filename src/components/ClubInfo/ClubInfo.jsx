@@ -31,14 +31,15 @@ function ClubInfo() {
   const userInfo = useMemo(() => getUserInfo(), []);
 
   // ✅ 현재 로그인한 사용자가 관리자인지 확인하는 로직 추가
-  const isClubAdmin = userInfo?.club_ids?.includes(Number(club_id)); // 클럽 ID 배열에서 현재 클럽 ID 포함 여부 확인
+  const isClubAdmin = userInfo?.club_ids?.includes(Number(club_id));
 
   const [selectedItem, setSelectedItem] = useState(
     location.state?.defaultTab || "동아리 소개"
   );
 
   useEffect(() => {
-    if (!localStorage.getItem("accessToken")) {
+    const token = localStorage.getItem("accessToken");
+    if (!token) {
       alert("로그인이 필요합니다!");
       navigate("/login");
       return;
@@ -50,6 +51,7 @@ function ClubInfo() {
         const response = await axios.get(`${API_URL}/api/clubs/${club_id}`, {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // ✅ accessToken 포함
             "ngrok-skip-browser-warning": "69420",
           },
         });
