@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import * as S from "./ClubInfo.styles";
 import defaultImage from "../../asset/mainLogo.png";
@@ -9,13 +9,16 @@ import { jwtDecode } from "jwt-decode";
 import { FaInstagram, FaYoutube, FaLink, FaGlobe } from "react-icons/fa";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
+import RecruitmentPage from "../RecruitmentPage/RecruitmentPage"; // ✅ 추가
+import EditRecruitmentPage from "../EditRecruitmentPage/EditRecruitmentPage"; // ✅ 추가
+
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 const API_URL = process.env.REACT_APP_API_URL;
 
 const getUserInfo = () => {
-  const token = localStorage.getItem("accessToken"); // 최신 accessToken 가져오기
+  const token = localStorage.getItem("accessToken");
   if (!token) return null;
   try {
     return jwtDecode(token);
@@ -28,29 +31,36 @@ const getUserInfo = () => {
 function ClubInfo() {
   const { club_id } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
   const [clubInfo, setClubInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const [selectedTab, setSelectedTab] = useState("동아리 소개");
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
 
   const userInfo = useMemo(() => getUserInfo(), []);
-
-  const isClubAdmin = userInfo && userInfo.clubAdmin;
-
-  const [selectedItem, setSelectedItem] = useState(
-    location.state?.defaultTab || "동아리 소개"
-  );
+  const isClubAdmin = userInfo?.club_ids?.includes(Number(club_id));
+  useEffect(() => {
+    if (!userInfo) {
+      alert("로그인이 필요합니다!");
+      navigate("/login");
+    }
+  }, [userInfo, navigate]);
 
   useEffect(() => {
     const fetchClubData = async () => {
       setLoading(true);
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        setError("로그인이 필요합니다.");
+        setLoading(false);
+        return;
+      }
       try {
         const response = await axios.get(`${API_URL}/api/clubs/${club_id}`, {
           headers: {
             "Content-Type": "application/json",
             "ngrok-skip-browser-warning": "69420",
+            Authorization: `Bearer ${token}`,
           },
         });
         setClubInfo(response.data);
@@ -106,14 +116,7 @@ function ClubInfo() {
   ];
 
   const handleSidebarClick = (item) => {
-    setSelectedItem(item);
-    if (item === "모집공고 작성") {
-      navigate(`/recruitment/create/${club_id}`);
-    } else if (item === "모집공고 수정") {
-      navigate(`/recruitment/edit/${club_id}`);
-    } else {
-      navigate(`/clubinfo/${club_id}`, { state: { defaultTab: item } });
-    }
+    setSelectedTab(item); // ✅ navigate를 사용하지 않고, 상태값만 변경
   };
   return (
     <S.PageContainer>
@@ -123,7 +126,7 @@ function ClubInfo() {
           {sidebarItems.map((item, index) => (
             <S.SidebarItem
               key={index}
-              $isSelected={selectedItem === item}
+              $isSelected={selectedTab === item}
               onClick={() => handleSidebarClick(item)}
             >
               {item}
@@ -174,8 +177,7 @@ function ClubInfo() {
             </S.CardInfoBox>
           </S.CardContent>
         </S.CardContainer>
-
-        {selectedItem === "동아리 소개" && (
+        {selectedTab === "동아리 소개" && (
           <>
             <S.Section>
               <S.SectionTitle>동아리 설명</S.SectionTitle>
@@ -262,9 +264,12 @@ function ClubInfo() {
             )}
           </>
         )}
-
-        {selectedItem === "모집 공고" && <ClubApply club_id={club_id} />}
-        {selectedItem === "행사 공고" && <ClubEvent club_id={club_id} />}
+        {selectedTab === "모집 공고" && <ClubApply club_id={club_id} />}
+        {selectedTab === "행사 공고" && <ClubEvent club_id={club_id} />}
+        {selectedTab === "모집공고 작성" && <RecruitmentPage />}{" "}
+        {/* ✅ 모집공고 작성 */}
+        {selectedTab === "모집공고 수정" && <EditRecruitmentPage />}{" "}
+        {/* ✅ 모집공고 수정 */}
       </S.InfoContainer>
     </S.PageContainer>
   );

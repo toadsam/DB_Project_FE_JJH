@@ -164,14 +164,7 @@ function LoginPage() {
                       setToken(accessToken);
                       setUser(decodedToken);
 
-                      alert(
-                        `환영합니다, ${
-                          decodedToken.user_name ||
-                          decodedToken.name ||
-                          decodedToken.nickname ||
-                          decodedToken.email
-                        }!`
-                      );
+                      alert(`환영합니다, ${decodedToken.user_name}님!`);
                       navigate("/");
                     } catch (err) {
                       console.error(
@@ -195,7 +188,7 @@ function LoginPage() {
                     user?.name ||
                     user?.nickname ||
                     user?.email}
-                  님! (역할: {user?.role})
+                  님!
                 </S.UserInfo>
                 <S.Button className="logout" onClick={handleLogout}>
                   로그아웃
