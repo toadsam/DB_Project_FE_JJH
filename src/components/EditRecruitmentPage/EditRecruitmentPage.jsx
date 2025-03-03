@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import * as S from "./RecruitmentPage.styles";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import * as S from "./EditRecruitmentPage.styles"; // 스타일 파일 추가
 
-function RecruitmentPage() {
+const API_BASE_URL = "http://43.203.79.210:5001/api";
+
+function EditRecruitmentPage() {
   const { club_id } = useParams();
+  const navigate = useNavigate();
   const [clubName, setClubName] = useState("동아리 이름");
   const [title, setTitle] = useState("");
   const [type, setType] = useState("상시모집");
@@ -16,31 +19,37 @@ function RecruitmentPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const API_URL = `http://43.203.79.210:5001/api/recruitments/${club_id}`;
+  const API_URL = `${API_BASE_URL}/recruitments/${club_id}`;
+
   useEffect(() => {
-    const fetchClubName = async () => {
+    const fetchClubInfo = async () => {
       try {
-        const response = await axios.get(
-          `http://43.203.79.210:5001/api/clubs/${club_id}`,
-          {
-            headers: { "Content-Type": "application/json" },
-          }
+        const clubResponse = await axios.get(
+          `${API_BASE_URL}/clubs/${club_id}`
         );
-        setClubName(response.data.club_name || "동아리 이름");
+        setClubName(clubResponse.data.club_name || "동아리 이름");
+
+        const recruitmentResponse = await axios.get(API_URL);
+        const data = recruitmentResponse.data;
+
+        setTitle(data.recruitment_title || "");
+        setType(data.recruitment_type || "상시모집");
+        setPhoneNumber(data.recruitment_phone_number || "");
+        setEmail(data.recruitment_email || "");
+        setStartDate(data.recruitment_start_date || "");
+        setEndDate(data.recruitment_end_date || "");
+        setDescription(data.recruitment_description || "");
       } catch (err) {
-        console.error("❌ [동아리 이름 조회 실패]:", err);
-        setClubName("동아리 이름");
+        console.error("❌ 데이터 불러오기 실패:", err);
+        setError("데이터를 불러오는 중 오류가 발생했습니다.");
       }
     };
 
-    fetchClubName();
-  }, [club_id]); // ✅ club_id만 의존성 배열에 포함
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    fetchClubInfo();
+  }, [club_id, API_URL]); // ✅ API_URL 포함하여 경고 해결
 
-    const recruitmentStartDate =
-      type === "상시모집" ? new Date().toISOString().split("T")[0] : startDate;
-    const recruitmentEndDate = type === "상시모집" ? "2099-12-31" : endDate;
+  const handleUpdate = async (e) => {
+    e.preventDefault();
 
     if (
       !title ||
@@ -54,40 +63,28 @@ function RecruitmentPage() {
       return;
     }
 
-    const requestData = {
+    const updatedData = {
       recruitment_title: title,
       recruitment_type: type,
       recruitment_phone_number: phoneNumber || null,
       recruitment_email: email || null,
-      recruitment_start_date: recruitmentStartDate,
-      recruitment_end_date: recruitmentEndDate,
+      recruitment_start_date:
+        type === "상시모집"
+          ? new Date().toISOString().split("T")[0]
+          : startDate,
+      recruitment_end_date: type === "상시모집" ? "2099-12-31" : endDate,
       recruitment_description: description,
     };
 
     try {
-      console.log("🔹 [API 요청 데이터]:", requestData);
-
-      const response = await axios.post(API_URL, requestData, {
+      await axios.put(API_URL, updatedData, {
         headers: { "Content-Type": "application/json" },
       });
-
-      if (response.status === 201) {
-        setSuccess("모집공고가 성공적으로 등록되었습니다.");
-        setTitle("");
-        setType("상시모집");
-        setPhoneNumber("");
-        setEmail("");
-        setStartDate("");
-        setEndDate("");
-        setDescription("");
-        setError("");
-      }
+      setSuccess("모집공고가 성공적으로 수정되었습니다.");
+      setTimeout(() => navigate(`/clubinfo/${club_id}`), 2000); // 2초 후 동아리 정보 페이지로 이동
     } catch (err) {
-      console.error(
-        "❌ [API 요청 실패]:",
-        err.response ? err.response.data : err
-      );
-      setError("서버 오류가 발생했습니다. 다시 시도해주세요.");
+      console.error("❌ 수정 실패:", err);
+      setError("수정 중 오류가 발생했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -96,16 +93,15 @@ function RecruitmentPage() {
       <S.Content>
         <S.Main>
           <S.Title>
-            <S.Highlight>{clubName}</S.Highlight> - 모집공고
+            <S.Highlight>{clubName}</S.Highlight> - 모집공고 수정
           </S.Title>
-          <S.Form onSubmit={handleSubmit}>
+          <S.Form onSubmit={handleUpdate}>
             {error && <S.ErrorMessage>{error}</S.ErrorMessage>}
             {success && <S.SuccessMessage>{success}</S.SuccessMessage>}
 
             <S.Label>제목</S.Label>
             <S.Input
               type="text"
-              placeholder="2025-1 신입부원 모집"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
@@ -120,7 +116,6 @@ function RecruitmentPage() {
             <S.Label>연락처 (선택 입력)</S.Label>
             <S.Input
               type="text"
-              placeholder="010-0000-0000"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
             />
@@ -128,7 +123,6 @@ function RecruitmentPage() {
             <S.Label>이메일 (선택 입력)</S.Label>
             <S.Input
               type="email"
-              placeholder="example@ajou.ac.kr"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -140,7 +134,7 @@ function RecruitmentPage() {
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  required={type === "수시모집"}
+                  required
                 />
 
                 <S.Label>모집 종료일</S.Label>
@@ -148,19 +142,19 @@ function RecruitmentPage() {
                   type="date"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  required={type === "수시모집"}
+                  required
                 />
               </>
             )}
 
             <S.Label>모집 내용</S.Label>
             <S.TextArea
-              placeholder="모집에 대한 상세 설명을 입력하세요. (엔터키를 사용해 줄바꿈 가능합니다.)"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required
             />
-            <S.SubmitButton type="submit">게시</S.SubmitButton>
+
+            <S.SubmitButton type="submit">수정 완료</S.SubmitButton>
           </S.Form>
         </S.Main>
       </S.Content>
@@ -168,4 +162,4 @@ function RecruitmentPage() {
   );
 }
 
-export default RecruitmentPage;
+export default EditRecruitmentPage;

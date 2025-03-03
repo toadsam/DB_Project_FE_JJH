@@ -166,6 +166,10 @@ export const CardContent = styled.div`
   flex: 1;
   text-align: left; /* 텍스트 왼쪽 정렬 */
   align-items: center;
+
+  @media (max-width: 768px) {
+    align-items: flex-start;
+  }
 `;
 
 export const CardInfoItem = styled.div`
@@ -335,8 +339,8 @@ export const SectionTitle = styled.h2`
 
   @media (max-width: 768px) {
     width: 100%;
-    text-align: center; /* 모바일에서는 중앙 정렬 */
-    margin-left: 20px;
+    text-align: left; /* 모바일에서는 중앙 정렬 */
+    margin-left: 30px;
   }
 `;
 
@@ -348,8 +352,8 @@ export const SectionContent = styled.p`
   text-align: left; /* 기본 왼쪽 정렬 */
 
   @media (max-width: 768px) {
-    text-align: center; /* 모바일에서는 중앙 정렬 */
-    margin-left: 20px;
+    text-align: left; /* 모바일에서는 중앙 정렬 */
+    margin-left: 30px;
   }
 `;
 export const Link = styled.a`

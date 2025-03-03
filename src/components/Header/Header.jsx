@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import * as S from "./Header.styles";
 import logo from "../../asset/img.jpg";
 import {
@@ -20,11 +20,6 @@ const categories = [
     navigateTo: "/miniclublist",
     icon: <FaUsers />,
   },
-  // {
-  //   title: "행사",
-  //   navigateTo: "/eventinfo",
-  //   icon: <FaCalendarAlt />,
-  // },
   {
     title: "동아리연합회",
     icon: <FaNetworkWired />,
@@ -46,6 +41,7 @@ function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -53,42 +49,62 @@ function Header() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleMouseEnter = (index) => {
-    setActiveCategory(index);
-  };
-
-  const handleMouseLeave = () => {
-    setActiveCategory(null);
-  };
+  const handleMouseEnter = (index) => setActiveCategory(index);
+  const handleMouseLeave = () => setActiveCategory(null);
 
   const handleCategoryClick = (category) => {
     if (category.title === "내정보") {
-      if (isMobile) setMobileMenuOpen(false);
+      if (isMobile) {
+        setMobileMenuOpen(false);
+        setOpenDropdown(null);
+      }
       navigate("/login");
-
       return;
     }
     if (!category.items && category.navigateTo) {
-      if (isMobile) setMobileMenuOpen(false);
+      if (isMobile) {
+        setMobileMenuOpen(false);
+        setOpenDropdown(null);
+      }
       navigate(category.navigateTo);
     }
   };
 
   const handleItemClick = (item) => {
     if (item.navigateTo) {
-      if (isMobile) setMobileMenuOpen(false);
+      if (isMobile) {
+        setMobileMenuOpen(false);
+        setOpenDropdown(null);
+      }
       navigate(item.navigateTo);
     }
   };
 
-  const handleMenuIconClick = () => setMobileMenuOpen((prev) => !prev);
-
-  // 모바일일 경우, 사이드바 바깥 클릭 시 메뉴를 닫기 위한 핸들러
-  const handleOverlayClick = () => {
-    setMobileMenuOpen(false);
+  const handleMenuIconClick = () => {
+    if (mobileMenuOpen) {
+      setOpenDropdown(null);
+    }
+    setMobileMenuOpen((prev) => !prev);
   };
 
-  // === 모바일 헤더 ===
+  const handleOverlayClick = () => {
+    setMobileMenuOpen(false);
+    setOpenDropdown(null);
+  };
+
+  // 모바일 로그인 페이지 전용 헤더
+  if (isMobile && location.pathname === "/login") {
+    return (
+      <S.MobileWrapper>
+        <S.MobileHeaderCustom>
+          <S.BackButton onClick={() => navigate("/")}>&lt;</S.BackButton>
+          <S.MobileTitle>로그인</S.MobileTitle>
+        </S.MobileHeaderCustom>
+      </S.MobileWrapper>
+    );
+  }
+
+  // 모바일 기본 헤더
   if (isMobile) {
     return (
       <S.MobileWrapper>
@@ -104,11 +120,16 @@ function Header() {
         </S.MobileHeader>
         {mobileMenuOpen && (
           <>
-            {/* 오버레이 추가: 클릭 시 메뉴 닫기 */}
             <S.Overlay onClick={handleOverlayClick} />
-            <S.MobileSidebar>
+            <S.MobileSidebar open={mobileMenuOpen}>
+              <S.MobileCloseButton onClick={handleOverlayClick}>
+                &times;
+              </S.MobileCloseButton>
               {categories.map((category, index) => (
-                <S.MobileMenuItem key={index}>
+                <S.MobileMenuItem
+                  key={index}
+                  first={category.title === "중앙동아리"}
+                >
                   <S.MobileMenuTitle
                     onClick={() => {
                       if (category.items) {
@@ -118,7 +139,7 @@ function Header() {
                       }
                     }}
                   >
-                    {category.icon}
+                    <S.IconWrapper>{category.icon}</S.IconWrapper>
                     <span>{category.title}</span>
                   </S.MobileMenuTitle>
                   {category.items && openDropdown === index && (
@@ -128,7 +149,7 @@ function Header() {
                           key={idx}
                           onClick={() => handleItemClick(item)}
                         >
-                          {item.icon}
+                          <S.IconWrapper>{item.icon}</S.IconWrapper>
                           <span>{item.name}</span>
                         </S.MobileDropdownItem>
                       ))}
@@ -143,20 +164,17 @@ function Header() {
     );
   }
 
-  // === 데스크탑 헤더 ===
+  // 데스크탑 헤더
   return (
     <S.OuterWrapper>
-      {/* TopBarBlock: 전체 폭으로 줄을 긋고, 내부는 중앙 정렬 */}
       <S.TopBarBlock>
         <S.TopBarInner>
-          <S.TopBarItem>HOME</S.TopBarItem>
           <S.TopBarItem onClick={() => navigate("/login")}>LOGIN</S.TopBarItem>
+          <S.TopBarItem>HOME</S.TopBarItem>
           <S.TopBarItem>PORTAL</S.TopBarItem>
           <S.TopBarItem>LANGUAGE ▼</S.TopBarItem>
         </S.TopBarInner>
       </S.TopBarBlock>
-
-      {/* ContainerBlock: 전체 폭으로 줄을 긋고, 내부는 중앙 정렬 */}
       <S.ContainerBlock>
         <S.ContainerInner>
           <S.LogoLink to="/">

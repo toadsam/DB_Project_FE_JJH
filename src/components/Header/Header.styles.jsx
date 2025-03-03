@@ -1,26 +1,21 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-/* === 1. 헤더 전체를 감싸는 래퍼: 화면 전체 폭 사용 === */
+/* 데스크탑 헤더 스타일 */
+
+/* 1. 전체 헤더 영역 */
 export const OuterWrapper = styled.header`
   width: 100%;
   background-color: #fff;
 `;
 
-/* 
-  === 2. TopBarBlock, ContainerBlock ===
-  - 각각 전체 폭을 가지며 border-bottom을 적용해
-    수평선이 화면 끝에서 끝까지 이어지도록 함
-*/
-
-/* 상단 작은 헤더 영역 (전체 폭) */
+/* 상단 헤더 (TopBar) */
 export const TopBarBlock = styled.div`
   width: 100%;
   background-color: #f9f9f9;
-  border-bottom: 1px solid #ccc; /* 화면 전체로 줄 표시 */
+  border-bottom: 1px solid #ccc;
 `;
 
-/* TopBar 내부 컨테이너: 중앙 정렬, max-width 적용 */
 export const TopBarInner = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -40,13 +35,12 @@ export const TopBarItem = styled.span`
   }
 `;
 
-/* 메인 헤더 영역 (전체 폭) */
+/* 메인 헤더 영역 (Container) */
 export const ContainerBlock = styled.div`
   width: 100%;
-  border-bottom: 1px solid #ccc; /* 화면 전체로 줄 표시 */
+  border-bottom: 1px solid #ccc;
 `;
 
-/* Container 내부 컨테이너: 중앙 정렬, max-width 적용 */
 export const ContainerInner = styled.div`
   display: flex;
   align-items: center;
@@ -55,7 +49,6 @@ export const ContainerInner = styled.div`
   padding: 15px 40px;
 `;
 
-/* 로고, 메뉴 영역 등은 기존과 동일하게 구성 */
 export const LogoLink = styled(Link)`
   text-decoration: none;
   display: flex;
@@ -74,14 +67,19 @@ export const Menu = styled.div`
   flex-grow: 1;
 `;
 
+/* 데스크탑 메뉴 항목 */
 export const MenuItem = styled.div`
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 10px 20px;
+  /* 데스크탑은 여백 및 밑줄 제거 */
+  &:first-child {
+    margin-top: 0;
+  }
+  border-bottom: none;
   cursor: pointer;
+
   &:hover > div {
-    display: block;
+    display: flex;
   }
 `;
 
@@ -89,7 +87,6 @@ export const Text = styled.span`
   font-size: 15px;
   color: ${(props) => props.color || "#000"};
 `;
-
 export const Dropdown = styled.div`
   display: none;
   position: absolute;
@@ -116,115 +113,171 @@ export const DropdownItem = styled.div`
   align-items: center;
   justify-content: center;
   gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
   &:hover {
     background-color: #f0f0f0;
     color: #007aff;
   }
 `;
 
-/* === 모바일 헤더 스타일 === */
+/* 모바일 전체 wrapper */
 export const MobileWrapper = styled.div`
   position: relative;
-  width: 100%;
 `;
 
+/* 모바일 헤더 (상단바) */
 export const MobileHeader = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 10px 15px;
-  border-bottom: 1px solid #ccc;
-  z-index: 1100;
-`;
-
-export const LogoLinkMobile = styled(Link)`
-  text-decoration: none;
-`;
-
-export const LogoMobile = styled.img`
-  width: 100px;
-  height: auto;
-`;
-
-/* 햄버거 아이콘 */
-export const MenuIcon = styled.div`
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
   justify-content: space-between;
-  width: 25px;
-  height: 20px;
-  z-index: 1100;
+  padding: 10px 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
-export const Bar = styled.div`
-  height: 3px;
-  background-color: #000;
-  border-radius: 2px;
+/* 로그인 페이지용 모바일 헤더 */
+export const MobileHeaderCustom = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+/* 모바일 백 버튼 */
+export const BackButton = styled.button`
+  position: absolute;
+  left: 20px;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+  font-size: 20px;
+  font-weight: 600;
+  color: #0056b3;
+  cursor: pointer;
+  &:hover {
+    text-decoration: none;
+  }
+`;
+
+/* 모바일 타이틀 (로그인 등) */
+export const MobileTitle = styled.h1`
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+  text-align: center;
 `;
 
 /* 모바일 사이드바 */
 export const MobileSidebar = styled.div`
   position: fixed;
-  top: 60px;
-  right: 0;
-  width: 150px;
+  top: 0;
+  right: ${({ open }) => (open ? "0" : "-20%")};
+  width: 40%;
   height: 100%;
-  background-color: #fff;
-  box-shadow: -4px 0 8px rgba(0, 0, 0, 0.1);
+  background-color: rgb(248, 248, 248);
+  border-bottom: 1px solid #ddd;
   z-index: 1000;
+  transition: right 0.3s ease-in-out;
   padding: 20px;
-  display: flex;
-  flex-direction: column;
+  overflow-y: auto;
 `;
 
-export const MobileMenuItem = styled.div`
-  margin-top: 20px;
-  width: 100%;
-  text-align: center;
-`;
-
-export const MobileMenuTitle = styled.div`
-  font-size: 15px;
-  font-weight: 700;
-  color: #1d1d1f;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-`;
-
-export const MobileDropdown = styled.div`
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-`;
-
-export const MobileDropdownItem = styled.div`
-  font-size: 14px;
-  font-weight: 400;
+/* 모바일 사이드바 닫기 버튼 */
+export const MobileCloseButton = styled.button`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  font-weight: bold;
   color: #333;
-  margin-bottom: 10px;
   cursor: pointer;
-  padding: 5px 10px;
-  border-radius: 5px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
   &:hover {
-    background-color: #f0f0f0;
+    color: #0056b3;
   }
 `;
+
+/* 오버레이 */
 export const Overlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 50; /* MobileSidebar 보다 낮은 z-index 값으로 설정 */
   background: transparent;
+  z-index: 900;
+`;
+
+/* 모바일 메뉴 항목 */
+export const MobileMenuItem = styled.div`
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  margin-top: ${(props) => (props.first ? "40px" : "10px")};
+`;
+
+/* 모바일 메뉴 타이틀 */
+export const MobileMenuTitle = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 15px;
+  font-weight: bold;
+  cursor: pointer;
+`;
+
+/* 모바일 드롭다운 (하위 메뉴) */
+export const MobileDropdown = styled.div`
+  margin-top: 5px;
+  padding-left: 30px;
+  display: flex;
+  flex-direction: column;
+`;
+
+/* 모바일 드롭다운 항목 */
+export const MobileDropdownItem = styled.div`
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  border-bottom: none;
+`;
+
+/* 아이콘 래퍼 (동그란 배경) */
+export const IconWrapper = styled.div`
+  background-color: #e0e0e0;
+  border-radius: 50%;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+/* 모바일 로고 링크 및 이미지 */
+export const LogoLinkMobile = styled(Link)`
+  text-decoration: none;
+`;
+
+export const LogoMobile = styled.img`
+  width: 120px;
+`;
+
+/* 모바일 메뉴 아이콘 (햄버거) */
+export const MenuIcon = styled.div`
+  cursor: pointer;
+`;
+
+/* 모바일 메뉴 아이콘의 바 */
+export const Bar = styled.div`
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+  margin: 4px 0;
 `;

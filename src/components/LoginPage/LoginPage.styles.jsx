@@ -5,33 +5,57 @@ export const LoginContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  background-color: #f0f2f5; /* 아주대 통합인증 페이지처럼 연한 배경 */
+  max-height: 100%; /* 화면 전체 높이 확보 */
+  background-color: #f0f2f5;
 `;
 
+/* 흰 박스 전체 */
 export const LoginWrapper = styled.div`
   display: flex;
-  width: 900px;
-  height: 550px;
+  flex-direction: column; /* 세로 배치로 변경 */
+  width: 700px;
+  height: 420px;
   background: white;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   overflow: hidden;
+  margin: 20px;
+`;
+
+/* 이미지와 로그인 폼을 가로로 배치하는 영역 */
+export const ContentRow = styled.div`
+  flex: 1; /* 남은 공간 모두 사용 */
+  display: flex; /* 가로 배치 */
+`;
+
+/* 흰 박스 내부 하단 푸터 */
+export const BoxFooter = styled.footer`
+  width: 90%;
+  margin: 0 auto; /* Footer 자체를 화면 가운데로 */
+  border-top: 1px solid #ddd;
+  padding: 10px 10px;
+  display: flex; /* Flexbox 사용 */
+  justify-content: space-between; /* 내부 텍스트를 양쪽 끝에 배치 */
+  align-items: center; /* 수직 중앙 정렬 */
+  color: #666;
+  font-size: 12px;
 `;
 
 export const ImageSection = styled.div`
   flex: 1;
-  background-color: #eef4ff;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 768px) {
+    display: none; /* 모바일에서는 이미지 영역 숨김 */
+  }
 `;
 
 export const MascotImage = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* ✅ 이미지가 컨테이너를 채우도록 설정 */
-  border-radius: 10px; /* 둥근 모서리 유지 */
+  width: 90%;
+  height: 90%;
+  object-fit: cover;
 `;
 
 export const LoginFormSection = styled.div`
@@ -43,16 +67,29 @@ export const LoginFormSection = styled.div`
   justify-content: center;
 `;
 
+export const AuthBox = styled.div`
+  position: relative;
+  padding-left: 50px;
+  padding-right: 50px;
+  margin: 0px;
+  border-left: 1px solid black;
+  margin-left: 15px;
+  @media (max-width: 768px) {
+    border-left: none; /* 모바일에서는 border-left 제거 */
+    padding: 0px; /* 필요에 따라 패딩 조정 */
+  }
+`;
+
 export const Logo = styled.img`
-  width: 200px;
-  margin-bottom: 20px;
+  width: 180px;
 `;
 
 export const Title = styled.h2`
-  font-size: 22px;
-  font-weight: bold;
-  color: #1d1d1f;
-  margin-bottom: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: rgb(12, 84, 148);
+  margin-bottom: 25px;
+  text-align: center;
 `;
 
 export const SubText = styled.p`
@@ -69,14 +106,14 @@ export const GoogleLoginWrapper = styled.div`
 `;
 
 export const Button = styled.button`
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 8px 16px;
+  font-size: 14px;
   background-color: #0056b3;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  margin-top: 20px;
+  margin-top: 10px;
   transition: background-color 0.3s ease-in-out;
 
   &:hover {
@@ -85,7 +122,6 @@ export const Button = styled.button`
 
   &.logout {
     background-color: #ff3366;
-
     &:hover {
       background-color: #cc0022;
     }
@@ -96,11 +132,10 @@ export const UserSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
 `;
 
 export const UserInfo = styled.p`
-  font-size: 1rem;
+  font-size: 15px;
   color: #333;
 `;
 
