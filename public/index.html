@@ -43,8 +43,9 @@
       dataLayer.push(arguments);
     }
     gtag("js", new Date());
-
-    gtag("config", "G-2RXF8BE1MK");
+    gtag("config", "G-2RXF8BE1MK", {
+      cookie_flags: "max-age=7200;secure;samesite=none",
+    });
   </script>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
