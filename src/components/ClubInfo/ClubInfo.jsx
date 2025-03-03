@@ -164,7 +164,7 @@ function ClubInfo() {
 
         {selectedTab === "모집공고 작성" && <RecruitmentPage />} {/* ✅ 모집공고 작성 */}
         
-        {selectedTab === "모집공고 수정" && <EditRecruitmentPage />} {/* ✅ 모집공고 작성 */}
+        {selectedTab === "모집공고 수정" && <EditRecruitmentPage />} {/* ✅ 모집공고 수정 */}
         
       </S.InfoContainer>
     </S.PageContainer>
