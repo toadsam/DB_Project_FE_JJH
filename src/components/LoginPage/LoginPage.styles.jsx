@@ -81,13 +81,14 @@ export const AuthBox = styled.div`
 
 export const Logo = styled.img`
   width: 180px;
+  margin-left: 10px;
 `;
 
 export const Title = styled.h2`
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 500;
   color: rgb(12, 84, 148);
-  margin-bottom: 20px;
+  margin-bottom: 25px;
   text-align: center;
 `;
 
@@ -112,7 +113,7 @@ export const Button = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  margin-top: 20px;
+  margin-top: 10px;
   transition: background-color 0.3s ease-in-out;
 
   &:hover {

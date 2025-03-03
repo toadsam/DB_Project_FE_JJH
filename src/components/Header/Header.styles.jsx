@@ -250,7 +250,7 @@ export const BackButton = styled.button`
   color: #0056b3;
   cursor: pointer;
   &:hover {
-    text-decoration: underline;
+    text-decoration: none;
   }
 `;
 
