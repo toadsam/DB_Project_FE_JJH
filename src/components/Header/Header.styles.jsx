@@ -128,15 +128,6 @@ export const MobileWrapper = styled.div`
   width: 100%;
 `;
 
-export const MobileHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 15px;
-  border-bottom: 1px solid #ccc;
-  z-index: 1100;
-`;
-
 export const LogoLinkMobile = styled(Link)`
   text-decoration: none;
 `;
@@ -227,4 +218,47 @@ export const Overlay = styled.div`
   height: 100%;
   z-index: 50; /* MobileSidebar 보다 낮은 z-index 값으로 설정 */
   background: transparent;
+`;
+export const MobileHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+// 로그인 페이지용 모바일 헤더
+export const MobileHeaderCustom = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 가운데 정렬 */
+  padding: 10px 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+`;
+
+// 백 버튼: 왼쪽에 위치, 로그인 제목은 중앙
+export const BackButton = styled.button`
+  position: absolute;
+  left: 20px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  font-weight: 600;
+  color: #0056b3;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+// 중앙에 배치될 로그인 제목
+export const MobileTitle = styled.h1`
+  font-size: 18px;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+  text-align: center;
 `;

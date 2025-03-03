@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import * as S from "./Header.styles";
 import logo from "../../asset/img.jpg";
 import {
@@ -20,11 +20,6 @@ const categories = [
     navigateTo: "/miniclublist",
     icon: <FaUsers />,
   },
-  // {
-  //   title: "행사",
-  //   navigateTo: "/eventinfo",
-  //   icon: <FaCalendarAlt />,
-  // },
   {
     title: "동아리연합회",
     icon: <FaNetworkWired />,
@@ -46,6 +41,7 @@ function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -53,19 +49,13 @@ function Header() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleMouseEnter = (index) => {
-    setActiveCategory(index);
-  };
-
-  const handleMouseLeave = () => {
-    setActiveCategory(null);
-  };
+  const handleMouseEnter = (index) => setActiveCategory(index);
+  const handleMouseLeave = () => setActiveCategory(null);
 
   const handleCategoryClick = (category) => {
     if (category.title === "내정보") {
       if (isMobile) setMobileMenuOpen(false);
       navigate("/login");
-
       return;
     }
     if (!category.items && category.navigateTo) {
@@ -82,13 +72,21 @@ function Header() {
   };
 
   const handleMenuIconClick = () => setMobileMenuOpen((prev) => !prev);
+  const handleOverlayClick = () => setMobileMenuOpen(false);
 
-  // 모바일일 경우, 사이드바 바깥 클릭 시 메뉴를 닫기 위한 핸들러
-  const handleOverlayClick = () => {
-    setMobileMenuOpen(false);
-  };
+  // 모바일일 때, 경로가 "/login"이면 로그인 전용 헤더 렌더링
+  if (isMobile && location.pathname === "/login") {
+    return (
+      <S.MobileWrapper>
+        <S.MobileHeaderCustom>
+          <S.BackButton onClick={() => navigate("/")}>&lt;</S.BackButton>
+          <S.MobileTitle>로그인</S.MobileTitle>
+        </S.MobileHeaderCustom>
+      </S.MobileWrapper>
+    );
+  }
 
-  // === 모바일 헤더 ===
+  // 모바일 기본 헤더
   if (isMobile) {
     return (
       <S.MobileWrapper>
@@ -104,7 +102,6 @@ function Header() {
         </S.MobileHeader>
         {mobileMenuOpen && (
           <>
-            {/* 오버레이 추가: 클릭 시 메뉴 닫기 */}
             <S.Overlay onClick={handleOverlayClick} />
             <S.MobileSidebar>
               {categories.map((category, index) => (
@@ -143,10 +140,9 @@ function Header() {
     );
   }
 
-  // === 데스크탑 헤더 ===
+  // 데스크탑 헤더
   return (
     <S.OuterWrapper>
-      {/* TopBarBlock: 전체 폭으로 줄을 긋고, 내부는 중앙 정렬 */}
       <S.TopBarBlock>
         <S.TopBarInner>
           <S.TopBarItem>HOME</S.TopBarItem>
@@ -155,8 +151,6 @@ function Header() {
           <S.TopBarItem>LANGUAGE ▼</S.TopBarItem>
         </S.TopBarInner>
       </S.TopBarBlock>
-
-      {/* ContainerBlock: 전체 폭으로 줄을 긋고, 내부는 중앙 정렬 */}
       <S.ContainerBlock>
         <S.ContainerInner>
           <S.LogoLink to="/">
