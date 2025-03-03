@@ -14,7 +14,7 @@ export const LoginWrapper = styled.div`
   display: flex;
   flex-direction: column; /* 세로 배치로 변경 */
   width: 700px;
-  height: 400px;
+  height: 420px;
   background: white;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
@@ -69,23 +69,23 @@ export const LoginFormSection = styled.div`
 
 export const AuthBox = styled.div`
   position: relative;
-  padding: 50px;
+  padding-left: 50px;
+  padding-right: 50px;
   margin: 0px;
   border-left: 1px solid black;
-
+  margin-left: 15px;
   @media (max-width: 768px) {
     border-left: none; /* 모바일에서는 border-left 제거 */
-    padding: 30px; /* 필요에 따라 패딩 조정 */
+    padding: 0px; /* 필요에 따라 패딩 조정 */
   }
 `;
 
 export const Logo = styled.img`
   width: 180px;
-  margin-left: 10px;
 `;
 
 export const Title = styled.h2`
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   color: rgb(12, 84, 148);
   margin-bottom: 25px;
@@ -106,8 +106,8 @@ export const GoogleLoginWrapper = styled.div`
 `;
 
 export const Button = styled.button`
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 8px 16px;
+  font-size: 14px;
   background-color: #0056b3;
   color: white;
   border: none;
@@ -132,11 +132,10 @@ export const UserSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
 `;
 
 export const UserInfo = styled.p`
-  font-size: 1rem;
+  font-size: 15px;
   color: #333;
 `;
 

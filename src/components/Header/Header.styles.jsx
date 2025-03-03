@@ -125,9 +125,11 @@ export const BackButton = styled.button`
   position: absolute;
   left: 20px;
   padding: 0;
+  margin: 0; /* 추가: 기본 margin 제거 */
   background: none;
   border: none;
   font-size: 20px;
+  line-height: 1; /* 추가: 줄 높이 조정 */
   font-weight: 600;
   color: #0056b3;
   cursor: pointer;
