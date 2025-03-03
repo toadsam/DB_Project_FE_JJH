@@ -54,27 +54,45 @@ function Header() {
 
   const handleCategoryClick = (category) => {
     if (category.title === "내정보") {
-      if (isMobile) setMobileMenuOpen(false);
+      if (isMobile) {
+        setMobileMenuOpen(false);
+        setOpenDropdown(null);
+      }
       navigate("/login");
       return;
     }
     if (!category.items && category.navigateTo) {
-      if (isMobile) setMobileMenuOpen(false);
+      if (isMobile) {
+        setMobileMenuOpen(false);
+        setOpenDropdown(null);
+      }
       navigate(category.navigateTo);
     }
   };
 
   const handleItemClick = (item) => {
     if (item.navigateTo) {
-      if (isMobile) setMobileMenuOpen(false);
+      if (isMobile) {
+        setMobileMenuOpen(false);
+        setOpenDropdown(null);
+      }
       navigate(item.navigateTo);
     }
   };
 
-  const handleMenuIconClick = () => setMobileMenuOpen((prev) => !prev);
-  const handleOverlayClick = () => setMobileMenuOpen(false);
+  const handleMenuIconClick = () => {
+    if (mobileMenuOpen) {
+      setOpenDropdown(null);
+    }
+    setMobileMenuOpen((prev) => !prev);
+  };
 
-  // 모바일일 때, 경로가 "/login"이면 로그인 전용 헤더 렌더링
+  const handleOverlayClick = () => {
+    setMobileMenuOpen(false);
+    setOpenDropdown(null);
+  };
+
+  // 모바일 로그인 페이지 전용 헤더
   if (isMobile && location.pathname === "/login") {
     return (
       <S.MobileWrapper>
@@ -103,9 +121,15 @@ function Header() {
         {mobileMenuOpen && (
           <>
             <S.Overlay onClick={handleOverlayClick} />
-            <S.MobileSidebar>
+            <S.MobileSidebar open={mobileMenuOpen}>
+              <S.MobileCloseButton onClick={handleOverlayClick}>
+                &times;
+              </S.MobileCloseButton>
               {categories.map((category, index) => (
-                <S.MobileMenuItem key={index}>
+                <S.MobileMenuItem
+                  key={index}
+                  first={category.title === "중앙동아리"}
+                >
                   <S.MobileMenuTitle
                     onClick={() => {
                       if (category.items) {
@@ -115,7 +139,7 @@ function Header() {
                       }
                     }}
                   >
-                    {category.icon}
+                    <S.IconWrapper>{category.icon}</S.IconWrapper>
                     <span>{category.title}</span>
                   </S.MobileMenuTitle>
                   {category.items && openDropdown === index && (
@@ -125,7 +149,7 @@ function Header() {
                           key={idx}
                           onClick={() => handleItemClick(item)}
                         >
-                          {item.icon}
+                          <S.IconWrapper>{item.icon}</S.IconWrapper>
                           <span>{item.name}</span>
                         </S.MobileDropdownItem>
                       ))}
