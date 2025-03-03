@@ -7,10 +7,12 @@ import ClubApply from "../ClubApply/ClubApply";
 import ClubEvent from "../ClubEvent/ClubEvent";
 import { jwtDecode } from "jwt-decode";
 import { FaInstagram } from "react-icons/fa";
+
 const API_URL = process.env.REACT_APP_API_URL;
 
 const getUserInfo = () => {
   const token = localStorage.getItem("accessToken"); // 최신 accessToken 가져오기
+  console.log("🔹 accessToken:", token); // ✅ 콘솔에 accessToken 출력
   if (!token) return null;
   try {
     return jwtDecode(token);
@@ -31,8 +33,17 @@ function ClubInfo() {
   // getUserInfo를 useMemo로 호출해 한 번만 계산되도록 함
   const userInfo = useMemo(() => getUserInfo(), []);
 
+  // ✅ 로그인 여부 체크 후 로그인 페이지로 리디렉트
+  useEffect(() => {
+    if (!userInfo) {
+      alert("로그인이 필요합니다!");
+      navigate("/login"); // ✅ 로그인 페이지로 이동
+    }
+  }, [userInfo, navigate]);
+
   // JWT 토큰에 clubAdmin 속성이 true라면 해당 사용자는 클럽 관리자라고 가정
   const isClubAdmin = userInfo && userInfo.clubAdmin;
+  console.log("🔹 isClubAdmin:", isClubAdmin); // ✅ 콘솔에 관리자 여부 출력
 
   // 관리자인 경우에만 추가 메뉴를 보여줌
   const [selectedItem, setSelectedItem] = useState(
@@ -42,10 +53,19 @@ function ClubInfo() {
   useEffect(() => {
     const fetchClubData = async () => {
       setLoading(true);
+      const token = localStorage.getItem("accessToken"); // ✅ 토큰 가져오기
+      if (!token) {
+        setError("로그인이 필요합니다.");
+        setLoading(false);
+        return;
+      }
+
       try {
+        console.log("🔹 API 요청 헤더:", { Authorization: `Bearer ${token}` }); // ✅ 콘솔에 헤더 정보 출력
         const response = await axios.get(`${API_URL}/api/clubs/${club_id}`, {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // ✅ accessToken 포함
             "ngrok-skip-browser-warning": "69420",
           },
         });
@@ -87,7 +107,7 @@ function ClubInfo() {
     return clubInfo.club_name;
   };
 
-  // 기본 메뉴에 관리자인 경우에만 추가 메뉴를 포함
+  // ✅ 기본 메뉴 + 관리자 전용 메뉴 (isClubAdmin이 true일 때만 보이도록 설정)
   const sidebarItems = [
     "동아리 소개",
     "모집 공고",
@@ -174,40 +194,12 @@ function ClubInfo() {
         </S.CardContainer>
 
         {selectedItem === "동아리 소개" && (
-          <>
-            <S.Section>
-              <S.SectionTitle>동아리 설명</S.SectionTitle>
-              <S.SectionContent>
-                {clubInfo?.club_description
-                  ? clubInfo.club_description
-                      .replace(/\\n/g, "\n")
-                      .split("\n")
-                      .map((line, index) => (
-                        <React.Fragment key={index}>
-                          {line}
-                          <br />
-                        </React.Fragment>
-                      ))
-                  : "동아리 설명이 없습니다."}
-              </S.SectionContent>
-            </S.Section>
-            <S.Section>
-              <S.SectionTitle>주요 활동</S.SectionTitle>
-              <S.SectionContent>
-                {clubInfo?.club_main_activities
-                  ? clubInfo.club_main_activities
-                      .replace(/\\n/g, "\n")
-                      .split("\n")
-                      .map((line, index) => (
-                        <React.Fragment key={index}>
-                          {line}
-                          <br />
-                        </React.Fragment>
-                      ))
-                  : "주요 활동 설명이 없습니다."}
-              </S.SectionContent>
-            </S.Section>
-          </>
+          <S.Section>
+            <S.SectionTitle>동아리 설명</S.SectionTitle>
+            <S.SectionContent>
+              {clubInfo?.club_description || "동아리 설명이 없습니다."}
+            </S.SectionContent>
+          </S.Section>
         )}
 
         {selectedItem === "모집 공고" && <ClubApply club_id={club_id} />}
