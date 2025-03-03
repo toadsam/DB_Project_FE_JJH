@@ -165,7 +165,11 @@ export const CardContent = styled.div`
   gap: 10px; /* 각 항목 간 간격 */
   flex: 1;
   text-align: left; /* 텍스트 왼쪽 정렬 */
-  align-items: left;
+  align-items: center;
+
+  @media (max-width: 768px) {
+    align-items: flex-start;
+  }
 `;
 
 export const CardInfoItem = styled.div`
