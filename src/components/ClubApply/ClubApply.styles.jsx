@@ -164,7 +164,7 @@ export const Description = styled.p`
   white-space: pre-wrap; /* 기존 줄바꿈 유지 */
 
   @media (max-width: 768px) {
-    text-align: center;
+    text-align: left;
     word-break: break-word; /* 길어지면 자동 줄바꿈 */
   }
 `;
