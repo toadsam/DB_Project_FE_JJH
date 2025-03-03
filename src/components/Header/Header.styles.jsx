@@ -2,11 +2,14 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 /* 데스크탑 헤더 스타일 */
+
+/* 1. 전체 헤더 영역 */
 export const OuterWrapper = styled.header`
   width: 100%;
   background-color: #fff;
 `;
 
+/* 상단 헤더 (TopBar) */
 export const TopBarBlock = styled.div`
   width: 100%;
   background-color: #f9f9f9;
@@ -32,6 +35,7 @@ export const TopBarItem = styled.span`
   }
 `;
 
+/* 메인 헤더 영역 (Container) */
 export const ContainerBlock = styled.div`
   width: 100%;
   border-bottom: 1px solid #ccc;
@@ -63,45 +67,66 @@ export const Menu = styled.div`
   flex-grow: 1;
 `;
 
+/* 데스크탑 메뉴 항목 */
+export const MenuItem = styled.div`
+  position: relative;
+  padding: 10px 20px;
+  /* 데스크탑은 여백 및 밑줄 제거 */
+  &:first-child {
+    margin-top: 0;
+  }
+  border-bottom: none;
+  cursor: pointer;
+
+  &:hover > div {
+    display: flex;
+  }
+`;
+
 export const Text = styled.span`
   font-size: 15px;
   color: ${(props) => props.color || "#000"};
 `;
-
-export const MenuItem = styled.div`
-  position: relative;
-  padding: 10px 20px;
-  /* 첫 번째 메뉴 항목(중앙동아리) 추가 여백 */
-  &:first-child {
-    margin-top: 15px;
-  }
-  border-bottom: 1px solid #ddd;
-`;
-
 export const Dropdown = styled.div`
+  display: none;
   position: absolute;
   top: 100%;
-  left: 0;
+  left: 50%;
+  width: 150px;
+  text-align: center;
+  transform: translateX(-50%);
   background-color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  padding: 10px 15px;
   z-index: 10;
+  flex-direction: column;
+  align-items: center;
 `;
 
 export const DropdownItem = styled.div`
-  padding: 8px 20px;
-  /* 동아리연합회 하위 항목은 밑줄 없이 */
-  border-bottom: none;
+  font-size: 14px;
+  padding: 5px 10px;
+  color: #333;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
   &:hover {
     background-color: #f0f0f0;
+    color: #007aff;
   }
 `;
 
-/* 모바일 헤더 스타일 */
+/* 모바일 전체 wrapper */
 export const MobileWrapper = styled.div`
   position: relative;
 `;
 
+/* 모바일 헤더 (상단바) */
 export const MobileHeader = styled.div`
   display: flex;
   align-items: center;
@@ -111,6 +136,7 @@ export const MobileHeader = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
+/* 로그인 페이지용 모바일 헤더 */
 export const MobileHeaderCustom = styled.div`
   position: relative;
   display: flex;
@@ -121,15 +147,15 @@ export const MobileHeaderCustom = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
+/* 모바일 백 버튼 */
 export const BackButton = styled.button`
   position: absolute;
   left: 20px;
   padding: 0;
-  margin: 0; /* 추가: 기본 margin 제거 */
+  margin: 0;
   background: none;
   border: none;
   font-size: 20px;
-  line-height: 1; /* 추가: 줄 높이 조정 */
   font-weight: 600;
   color: #0056b3;
   cursor: pointer;
@@ -138,6 +164,7 @@ export const BackButton = styled.button`
   }
 `;
 
+/* 모바일 타이틀 (로그인 등) */
 export const MobileTitle = styled.h1`
   font-size: 18px;
   font-weight: 700;
@@ -146,23 +173,22 @@ export const MobileTitle = styled.h1`
   text-align: center;
 `;
 
-/* 사이드바 (모바일) */
+/* 모바일 사이드바 */
 export const MobileSidebar = styled.div`
   position: fixed;
   top: 0;
-  right: ${({ open }) =>
-    open ? "0" : "-20%"}; /* 줄어든 width에 맞춰 슬라이드 위치 */
-  width: 40%; /* 기존 40%의 절반 */
+  right: ${({ open }) => (open ? "0" : "-20%")};
+  width: 40%;
   height: 100%;
   background-color: rgb(248, 248, 248);
-  border-bottom: 1px solid #ddd; /* 전체 테두리 대신 밑줄만 */
+  border-bottom: 1px solid #ddd;
   z-index: 1000;
   transition: right 0.3s ease-in-out;
   padding: 20px;
   overflow-y: auto;
 `;
 
-/* X 버튼 */
+/* 모바일 사이드바 닫기 버튼 */
 export const MobileCloseButton = styled.button`
   position: absolute;
   top: 10px;
@@ -189,13 +215,14 @@ export const Overlay = styled.div`
   z-index: 900;
 `;
 
-/* 모바일 사이드바 내부 메뉴 항목 */
+/* 모바일 메뉴 항목 */
 export const MobileMenuItem = styled.div`
   padding: 10px 0;
   border-bottom: 1px solid #ddd;
   margin-top: ${(props) => (props.first ? "40px" : "10px")};
 `;
 
+/* 모바일 메뉴 타이틀 */
 export const MobileMenuTitle = styled.div`
   display: flex;
   align-items: center;
@@ -205,24 +232,25 @@ export const MobileMenuTitle = styled.div`
   cursor: pointer;
 `;
 
+/* 모바일 드롭다운 (하위 메뉴) */
 export const MobileDropdown = styled.div`
   margin-top: 5px;
-  padding-left: 30px; /* 상위 항목보다 안쪽 */
+  padding-left: 30px;
   display: flex;
   flex-direction: column;
 `;
 
+/* 모바일 드롭다운 항목 */
 export const MobileDropdownItem = styled.div`
   padding: 8px 0;
   display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  /* 동아리연합회 하위 항목은 밑줄 없이 */
   border-bottom: none;
 `;
 
-/* 아이콘 래퍼: 동그란 배경 */
+/* 아이콘 래퍼 (동그란 배경) */
 export const IconWrapper = styled.div`
   background-color: #e0e0e0;
   border-radius: 50%;
@@ -234,17 +262,19 @@ export const IconWrapper = styled.div`
 
 /* 모바일 로고 링크 및 이미지 */
 export const LogoLinkMobile = styled(Link)`
-  /* 기존 스타일 유지 */
+  text-decoration: none;
 `;
 
 export const LogoMobile = styled.img`
   width: 120px;
 `;
 
+/* 모바일 메뉴 아이콘 (햄버거) */
 export const MenuIcon = styled.div`
   cursor: pointer;
 `;
 
+/* 모바일 메뉴 아이콘의 바 */
 export const Bar = styled.div`
   width: 25px;
   height: 3px;

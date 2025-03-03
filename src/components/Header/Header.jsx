@@ -169,8 +169,8 @@ function Header() {
     <S.OuterWrapper>
       <S.TopBarBlock>
         <S.TopBarInner>
-          <S.TopBarItem>HOME</S.TopBarItem>
           <S.TopBarItem onClick={() => navigate("/login")}>LOGIN</S.TopBarItem>
+          <S.TopBarItem>HOME</S.TopBarItem>
           <S.TopBarItem>PORTAL</S.TopBarItem>
           <S.TopBarItem>LANGUAGE ▼</S.TopBarItem>
         </S.TopBarInner>
