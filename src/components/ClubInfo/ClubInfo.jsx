@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { useParams, useNavigate } from "react-router-dom"; // ✅ location 제거
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import * as S from "./ClubInfo.styles";
 import defaultImage from "../../asset/mainLogo.png";
 import ClubApply from "../ClubApply/ClubApply";
 import ClubEvent from "../ClubEvent/ClubEvent";
+import RecruitmentPage from "../RecruitmentPage/RecruitmentPage"; // ✅ 추가
+import EditRecruitmentPage from "../EditRecruitmentPage/EditRecruitmentPage"; // ✅ 추가
 import { jwtDecode } from "jwt-decode";
 import { FaInstagram } from "react-icons/fa";
 
@@ -12,7 +14,6 @@ const API_URL = process.env.REACT_APP_API_URL;
 
 const getUserInfo = () => {
   const token = localStorage.getItem("accessToken");
-  console.log("🔹 accessToken:", token);
   if (!token) return null;
   try {
     return jwtDecode(token);
@@ -29,15 +30,11 @@ function ClubInfo() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  // ✅ selectedItem 상태 추가
-  const [selectedItem, setSelectedItem] = useState("동아리 소개");
+  // ✅ 클릭하면 하단 내용만 바뀌도록 selectedTab 추가
+  const [selectedTab, setSelectedTab] = useState("동아리 소개");
 
   const userInfo = useMemo(() => getUserInfo(), []);
-
-  const isClubAdmin = userInfo?.club_ids?.includes(Number(club_id)); 
-  console.log("🔹 현재 클럽 ID:", club_id);
-  console.log("🔹 관리자 클럽 목록:", userInfo?.club_ids);
-  console.log("🔹 isClubAdmin:", isClubAdmin);
+  const isClubAdmin = userInfo?.club_ids?.includes(Number(club_id));
 
   useEffect(() => {
     if (!userInfo) {
@@ -57,12 +54,10 @@ function ClubInfo() {
       }
 
       try {
-        console.log("🔹 API 요청 헤더:", { Authorization: `Bearer ${token}` });
         const response = await axios.get(`${API_URL}/api/clubs/${club_id}`, {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
-            "ngrok-skip-browser-warning": "69420",
           },
         });
         setClubInfo(response.data);
@@ -88,14 +83,7 @@ function ClubInfo() {
   ];
 
   const handleSidebarClick = (item) => {
-    setSelectedItem(item);
-    if (item === "모집공고 작성") {
-      navigate(`/recruitment/create/${club_id}`);
-    } else if (item === "모집공고 수정") {
-      navigate(`/recruitment/edit/${club_id}`);
-    } else {
-      navigate(`/clubinfo/${club_id}`, { state: { defaultTab: item } });
-    }
+    setSelectedTab(item); // ✅ navigate를 사용하지 않고, 상태값만 변경
   };
 
   return (
@@ -106,7 +94,7 @@ function ClubInfo() {
           {sidebarItems.map((item, index) => (
             <S.SidebarItem
               key={index}
-              $isSelected={selectedItem === item}
+              $isSelected={selectedTab === item}
               onClick={() => handleSidebarClick(item)}
             >
               {item}
@@ -116,6 +104,7 @@ function ClubInfo() {
       </S.Sidebar>
 
       <S.InfoContainer>
+        {/* ✅ 동아리 정보 (고정) */}
         <S.Header>
           <S.ClubTitle>{clubInfo?.club_name || "동아리 이름"}</S.ClubTitle>
           <S.TitleBar />
@@ -160,7 +149,8 @@ function ClubInfo() {
           </S.CardContent>
         </S.CardContainer>
 
-        {selectedItem === "동아리 소개" && (
+        {/* ✅ 클릭한 메뉴에 따라 하단 내용만 변경 */}
+        {selectedTab === "동아리 소개" && (
           <S.Section>
             <S.SectionTitle>동아리 설명</S.SectionTitle>
             <S.SectionContent>
@@ -169,8 +159,13 @@ function ClubInfo() {
           </S.Section>
         )}
 
-        {selectedItem === "모집 공고" && <ClubApply club_id={club_id} />}
-        {selectedItem === "행사 공고" && <ClubEvent club_id={club_id} />}
+        {selectedTab === "모집 공고" && <ClubApply club_id={club_id} />}
+        {selectedTab === "행사 공고" && <ClubEvent club_id={club_id} />}
+
+        {selectedTab === "모집공고 작성" && <RecruitmentPage />} {/* ✅ 모집공고 작성 */}
+        
+        {selectedTab === "모집공고 수정" && <EditRecruitmentPage />} {/* ✅ 모집공고 작성 */}
+        
       </S.InfoContainer>
     </S.PageContainer>
   );

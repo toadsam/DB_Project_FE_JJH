@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
-import * as S from "./RecruitmentPage.styles";
+import * as S from "./EditRecruitmentPage.styles"; // 스타일 파일 추가
+
+const API_BASE_URL = "http://43.203.79.210:5001/api";
 
 function EditRecruitmentPage() {
   const { club_id } = useParams();
@@ -17,12 +19,12 @@ function EditRecruitmentPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const API_URL = `http://43.203.79.210:5001/api/recruitments/${club_id}`;
-  
+  const API_URL = `${API_BASE_URL}/recruitments/${club_id}`;
+
   useEffect(() => {
     const fetchClubInfo = async () => {
       try {
-        const clubResponse = await axios.get(`http://43.203.79.210:5001/api/clubs/${club_id}`);
+        const clubResponse = await axios.get(`${API_BASE_URL}/clubs/${club_id}`);
         setClubName(clubResponse.data.club_name || "동아리 이름");
 
         const recruitmentResponse = await axios.get(API_URL);
@@ -42,7 +44,7 @@ function EditRecruitmentPage() {
     };
 
     fetchClubInfo();
-  }, [club_id]);
+  }, [club_id, API_URL]); // ✅ API_URL 포함하여 경고 해결
 
   const handleUpdate = async (e) => {
     e.preventDefault();
