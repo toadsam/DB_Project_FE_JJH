@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const ScheduleContainer = styled.div`
   display: flex;
@@ -18,7 +18,7 @@ export const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 `;
 
 export const ArrowButton = styled.button`
