@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import * as S from "./NoticePage.styles";
-import axios from "axios";
+import React, { useState, useEffect } from 'react';
+import * as S from './NoticePage.styles';
+import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -15,15 +15,15 @@ function NoticeList() {
       try {
         const response = await axios.get(`${API_URL}/api/home/notice`, {
           headers: {
-            "Content-Type": "application/json",
-            "ngrok-skip-browser-warning": "69420",
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': '69420',
           },
         });
         // ID 내림차순 정렬 (최신순)
         const sortedData = response.data.sort((a, b) => a.id - b.id);
         setNotices(sortedData);
       } catch (err) {
-        setError("데이터를 불러오는 중 오류가 발생했습니다.");
+        setError('데이터를 불러오는 중 오류가 발생했습니다.');
       } finally {
         setLoading(false);
       }

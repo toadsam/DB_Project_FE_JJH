@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Container = styled.div`
   width: 80%; /* 전체 컨테이너 너비 설정 */
@@ -14,7 +14,7 @@ export const Title = styled.h1`
   font-size: 22px;
   color: #333;
   margin-bottom: 15px;
-  margin-top: 20px;
+  margin-top: 30px;
 `;
 
 export const TitleBar = styled.div`
@@ -36,14 +36,14 @@ export const TabItem = styled.div`
   line-height: 40px; /* 텍스트를 수직 중앙 정렬 */
   font-size: 13px;
   text-align: center; /* 텍스트를 가로 중앙 정렬 */
-  color: ${(props) => (props.active ? "white" : "black")};
-  background-color: ${(props) => (props.active ? "#046CC4" : "white")};
+  color: ${(props) => (props.active ? 'white' : 'black')};
+  background-color: ${(props) => (props.active ? '#046CC4' : 'white')};
   border: 1px solid gray;
   cursor: pointer;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: ${(props) => (props.active ? "#005bb5" : "#f0f8ff")};
+    background-color: ${(props) => (props.active ? '#005bb5' : '#f0f8ff')};
   }
 `;
 
@@ -51,6 +51,7 @@ export const List = styled.div`
   width: 100%; /* 리스트가 컨테이너에 맞도록 설정 */
   margin-top: 20px;
   border-top: 1px solid #ccc;
+  margin-bottom: 30px;
 `;
 
 export const ListHeader = styled.div`
