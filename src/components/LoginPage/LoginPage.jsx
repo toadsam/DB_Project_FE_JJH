@@ -154,7 +154,7 @@ function LoginPage() {
                     <S.Button onClick={handleOpenExternalBrowser}>
                       외부 브라우저에서 열기
                     </S.Button>
-                    <p style={{ fontSize: '0.8rem', marginTop: '8px' }}>
+                    <p style={{ fontSize: '0.8rem', marginTop: '16px' }}>
                       * 자동 이동이 되지 않으면, 브라우저 우측 상단 메뉴에서
                       "외부 브라우저에서 열기"를 선택해 주세요.
                     </p>
