@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   FooterContainer,
   ContentWrapper,
@@ -11,10 +11,10 @@ import {
   EmailLink,
   IconSection,
   IconLink,
-} from "./FootBar.styles";
-import { FaInstagram, FaYoutube, FaFacebook } from "react-icons/fa";
-import { SiNaver } from "react-icons/si";
-import footLogo2 from "../../asset/footLogo2.png";
+} from './FootBar.styles';
+import { FaInstagram, FaYoutube, FaFacebook } from 'react-icons/fa';
+import { SiNaver } from 'react-icons/si';
+import footLogo2 from '../../asset/footLogo2.png';
 
 const Footer = () => {
   return (
@@ -29,7 +29,7 @@ const Footer = () => {
           <Copyright>
             Copyright © 2020 Ajou University. All Rights Reserved.
           </Copyright>
-          <EmailLink>관리자메일보내기</EmailLink>
+          <EmailLink href="chlgudals65@gmail.com">관리자메일보내기</EmailLink>
         </TextSection>
         <IconSection>
           <IconLink href="https://www.instagram.com/ajou_university/">
