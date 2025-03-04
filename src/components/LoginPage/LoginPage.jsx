@@ -108,9 +108,19 @@ function LoginPage() {
     return () => clearInterval(interval);
   }, [checkTokenExpiration]);
 
-  // 외부 브라우저에서 현재 페이지 열기 (새 탭)
+  // 외부 브라우저에서 현재 페이지 열기 (Android는 intent:// 사용)
   const handleOpenExternalBrowser = () => {
-    window.open(window.location.href, '_blank');
+    const url = window.location.href;
+    const ua = navigator.userAgent.toLowerCase();
+    if (ua.includes('android')) {
+      // Android Chrome 강제 오픈 (단, 모든 상황에서 동작 보장되진 않음)
+      window.location.href = `intent://${url.replace(
+        /^https?:\/\//,
+        ''
+      )}#Intent;scheme=https;package=com.android.chrome;end`;
+    } else {
+      window.open(url, '_blank');
+    }
   };
 
   return (
@@ -126,96 +136,93 @@ function LoginPage() {
 
             {/* 오른쪽: 로그인 폼 */}
             <S.LoginFormSection>
-              <S.AuthBox>
-                <S.Logo src={ajouLogo} alt="아주대학교 로고" />
-                <S.Title>아주대학교 계정만 이용 가능합니다.</S.Title>
-                {!token ? (
-                  // 인앱 브라우저일 경우 외부 브라우저 유도 안내 메시지 표시
-                  inAppBrowser ? (
-                    <div style={{ textAlign: 'center', margin: '16px 0' }}>
-                      <p style={{ color: '#ff4f4f', fontWeight: 'bold' }}>
-                        인앱 브라우저에서는 구글 로그인이 원활하지 않을 수
-                        있습니다.
-                      </p>
-                      <p>외부 브라우저(Chrome/Safari)에서 로그인 해주세요.</p>
-                      <S.Button onClick={handleOpenExternalBrowser}>
-                        외부 브라우저에서 열기
-                      </S.Button>
-                      <p style={{ fontSize: '0.9rem', marginTop: '8px' }}>
-                        * 자동 이동이 되지 않으면, 브라우저 우측 상단 메뉴에서
-                        "기본 브라우저로 열기"를 선택해 주세요.
-                      </p>
-                    </div>
-                  ) : (
-                    // 인앱 브라우저가 아닐 경우 정상적으로 GoogleLogin 컴포넌트 렌더링
-                    <GoogleLogin
-                      onSuccess={async (credentialResponse) => {
-                        try {
-                          console.log(
-                            '✅ Google OAuth 성공:',
-                            credentialResponse
-                          );
-                          const decodedGoogleToken = jwtDecode(
-                            credentialResponse.credential
-                          );
-                          console.log(
-                            '🔹 현재 로그인한 Google 이메일:',
-                            decodedGoogleToken.email
-                          );
-                          const authResponse = await axios.post(
-                            `${API_URL}/api/auth/google`,
-                            { token: credentialResponse.credential }
-                          );
-                          const { accessToken, refreshToken } =
-                            authResponse.data;
-                          const decodedToken = decodeToken(accessToken);
-                          console.log(
-                            '✅ 디코딩된 Access Token:',
-                            decodedToken
-                          );
-                          localStorage.setItem('accessToken', accessToken);
-                          localStorage.setItem('refreshToken', refreshToken);
-                          localStorage.setItem(
-                            'userInfo',
-                            JSON.stringify(decodedToken)
-                          );
-                          axios.defaults.headers.common[
-                            'Authorization'
-                          ] = `Bearer ${accessToken}`;
-                          setToken(accessToken);
-                          setUser(decodedToken);
-                          alert(`환영합니다, ${decodedToken.user_name}님!`);
-                          navigate('/');
-                        } catch (err) {
-                          console.error(
-                            '🚨 Google 로그인 실패:',
-                            err.response || err
-                          );
-                          alert('Google 로그인 중 오류가 발생했습니다.');
-                        }
-                      }}
-                      onError={() => alert('Google 로그인 실패!')}
-                      auto_select={false}
-                      useOneTap={false}
-                      prompt="select_account"
-                    />
-                  )
-                ) : (
-                  <S.UserSection>
-                    <S.UserInfo>
-                      환영합니다,{' '}
-                      {user?.user_name ||
-                        user?.name ||
-                        user?.nickname ||
-                        user?.email}{' '}
-                      님!
-                    </S.UserInfo>
-                    <S.Button className="logout" onClick={handleLogout}>
-                      로그아웃
+              {/* 로고는 인앱 브라우저 안내 메시지가 있을 경우에만 중앙 정렬 */}
+              <S.Logo
+                src={ajouLogo}
+                alt="아주대학교 로고"
+                center={inAppBrowser ? 1 : 0}
+              />
+              <S.Title>아주대학교 계정만 이용 가능합니다.</S.Title>
+              {!token ? (
+                inAppBrowser ? (
+                  <div style={{ textAlign: 'center', margin: '16px 0' }}>
+                    <p style={{ color: '#ff4f4f', fontWeight: 'bold' }}>
+                      인앱 브라우저에서는 구글 로그인이 원활하지 않을 수
+                      있습니다.
+                    </p>
+                    <p>외부 브라우저(Chrome/Safari)에서 로그인 해주세요.</p>
+                    <S.Button onClick={handleOpenExternalBrowser}>
+                      외부 브라우저에서 열기
                     </S.Button>
-                  </S.UserSection>
-                )}
-              </S.AuthBox>
+                    <p style={{ fontSize: '0.9rem', marginTop: '8px' }}>
+                      * 자동 이동이 되지 않으면, 브라우저 우측 상단 메뉴에서
+                      "기본 브라우저로 열기"를 선택해 주세요.
+                    </p>
+                  </div>
+                ) : (
+                  <GoogleLogin
+                    onSuccess={async (credentialResponse) => {
+                      try {
+                        console.log(
+                          '✅ Google OAuth 성공:',
+                          credentialResponse
+                        );
+                        const decodedGoogleToken = jwtDecode(
+                          credentialResponse.credential
+                        );
+                        console.log(
+                          '🔹 현재 로그인한 Google 이메일:',
+                          decodedGoogleToken.email
+                        );
+                        const authResponse = await axios.post(
+                          `${API_URL}/api/auth/google`,
+                          { token: credentialResponse.credential }
+                        );
+                        const { accessToken, refreshToken } = authResponse.data;
+                        const decodedToken = decodeToken(accessToken);
+                        console.log('✅ 디코딩된 Access Token:', decodedToken);
+                        localStorage.setItem('accessToken', accessToken);
+                        localStorage.setItem('refreshToken', refreshToken);
+                        localStorage.setItem(
+                          'userInfo',
+                          JSON.stringify(decodedToken)
+                        );
+                        axios.defaults.headers.common[
+                          'Authorization'
+                        ] = `Bearer ${accessToken}`;
+                        setToken(accessToken);
+                        setUser(decodedToken);
+                        alert(`환영합니다, ${decodedToken.user_name}님!`);
+                        navigate('/');
+                      } catch (err) {
+                        console.error(
+                          '🚨 Google 로그인 실패:',
+                          err.response || err
+                        );
+                        alert('Google 로그인 중 오류가 발생했습니다.');
+                      }
+                    }}
+                    onError={() => alert('Google 로그인 실패!')}
+                    auto_select={false}
+                    useOneTap={false}
+                    prompt="select_account"
+                  />
+                )
+              ) : (
+                <S.UserSection>
+                  <S.UserInfo>
+                    환영합니다,{' '}
+                    {user?.user_name ||
+                      user?.name ||
+                      user?.nickname ||
+                      user?.email}{' '}
+                    님!
+                  </S.UserInfo>
+                  <S.Button className="logout" onClick={handleLogout}>
+                    로그아웃
+                  </S.Button>
+                </S.UserSection>
+              )}
             </S.LoginFormSection>
           </S.ContentRow>
           <S.BoxFooter>

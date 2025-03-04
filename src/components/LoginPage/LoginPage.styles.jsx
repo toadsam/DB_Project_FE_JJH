@@ -1,18 +1,17 @@
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 export const LoginContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  max-height: 100%; /* 화면 전체 높이 확보 */
+  max-height: 100%;
   background-color: #f0f2f5;
 `;
 
-/* 흰 박스 전체 */
 export const LoginWrapper = styled.div`
   display: flex;
-  flex-direction: column; /* 세로 배치로 변경 */
+  flex-direction: column;
   width: 700px;
   height: 420px;
   background: white;
@@ -22,21 +21,19 @@ export const LoginWrapper = styled.div`
   margin: 20px;
 `;
 
-/* 이미지와 로그인 폼을 가로로 배치하는 영역 */
 export const ContentRow = styled.div`
-  flex: 1; /* 남은 공간 모두 사용 */
-  display: flex; /* 가로 배치 */
+  flex: 1;
+  display: flex;
 `;
 
-/* 흰 박스 내부 하단 푸터 */
 export const BoxFooter = styled.footer`
   width: 90%;
-  margin: 0 auto; /* Footer 자체를 화면 가운데로 */
+  margin: 0 auto;
   border-top: 1px solid #ddd;
   padding: 10px 10px;
-  display: flex; /* Flexbox 사용 */
-  justify-content: space-between; /* 내부 텍스트를 양쪽 끝에 배치 */
-  align-items: center; /* 수직 중앙 정렬 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   color: #666;
   font-size: 12px;
 `;
@@ -48,7 +45,7 @@ export const ImageSection = styled.div`
   justify-content: center;
 
   @media (max-width: 768px) {
-    display: none; /* 모바일에서는 이미지 영역 숨김 */
+    display: none;
   }
 `;
 
@@ -75,13 +72,20 @@ export const AuthBox = styled.div`
   border-left: 1px solid black;
   margin-left: 15px;
   @media (max-width: 768px) {
-    border-left: none; /* 모바일에서는 border-left 제거 */
-    padding: 0px; /* 필요에 따라 패딩 조정 */
+    border-left: none;
+    padding: 0px;
   }
 `;
 
+// 로고에 선택적 prop(center)이 true면 중앙 정렬 적용
 export const Logo = styled.img`
   width: 180px;
+  ${({ center }) =>
+    center &&
+    `
+    display: block;
+    margin: 0 auto;
+  `}
 `;
 
 export const Title = styled.h2`
