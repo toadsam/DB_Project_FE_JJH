@@ -16,12 +16,29 @@ const hardcodedNoticeData = {
   ],
 };
 
+// 윈도우 너비를 감지하는 커스텀 훅
+function useWindowWidth() {
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return width;
+}
+
 function NoticePanel() {
   const [activeTab, setActiveTab] = useState('공지사항');
   const [noticeData, setNoticeData] = useState(hardcodedNoticeData);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  const width = useWindowWidth();
+  const isMobile = width <= 768; // 모바일 기준 (예: 너비 768px 이하)
+  const truncationLimit = isMobile ? 25 : 30;
 
   useEffect(() => {
     const fetchNotices = async () => {
@@ -91,8 +108,8 @@ function NoticePanel() {
             onClick={() => handleNoticeClick(notice)}
           >
             <S.Title>
-              {notice.title.length > 25
-                ? `${notice.title.substring(0, 25)}...`
+              {notice.title.length > truncationLimit
+                ? `${notice.title.substring(0, truncationLimit)}...`
                 : notice.title}
             </S.Title>
             <S.Date>{notice.date}</S.Date>
