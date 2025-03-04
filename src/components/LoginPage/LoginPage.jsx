@@ -22,7 +22,12 @@ const decodeToken = (token) => {
 // 인앱 브라우저(Instagram, Facebook 등) 판별 함수
 function isInAppBrowser() {
   const ua = navigator.userAgent.toLowerCase();
-  return ua.includes('instagram') || ua.includes('fbav') || ua.includes('fban');
+  return (
+    ua.includes('instagram') ||
+    ua.includes('fbav') ||
+    ua.includes('fban') ||
+    ua.includes('everytime')
+  );
 }
 
 function LoginPage() {
