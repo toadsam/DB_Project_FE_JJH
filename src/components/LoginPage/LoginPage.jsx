@@ -145,18 +145,18 @@ function LoginPage() {
               <S.Title>아주대학교 계정만 이용 가능합니다.</S.Title>
               {!token ? (
                 inAppBrowser ? (
-                  <div style={{ textAlign: 'center', margin: '16px 0' }}>
+                  <div style={{ textAlign: 'center', margin: '0 0 16px 0' }}>
                     <p style={{ color: '#ff4f4f', fontWeight: 'bold' }}>
                       인앱 브라우저에서는 구글 로그인이 원활하지 않을 수
                       있습니다.
                     </p>
-                    <p>외부 브라우저(Chrome/Safari)에서 로그인 해주세요.</p>
+                    {/* <p >외부 브라우저(Chrome/Safari)에서 로그인 해주세요.</p> */}
                     <S.Button onClick={handleOpenExternalBrowser}>
                       외부 브라우저에서 열기
                     </S.Button>
-                    <p style={{ fontSize: '0.9rem', marginTop: '8px' }}>
+                    <p style={{ fontSize: '0.8rem', marginTop: '8px' }}>
                       * 자동 이동이 되지 않으면, 브라우저 우측 상단 메뉴에서
-                      "기본 브라우저로 열기"를 선택해 주세요.
+                      "외부 브라우저에서 열기"를 선택해 주세요.
                     </p>
                   </div>
                 ) : (
