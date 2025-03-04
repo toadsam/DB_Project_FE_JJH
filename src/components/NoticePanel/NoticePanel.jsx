@@ -91,7 +91,7 @@ function NoticePanel() {
             onClick={() => handleNoticeClick(notice)}
           >
             <S.Title>
-              {notice.title.length > 30
+              {notice.title.length > 25
                 ? `${notice.title.substring(0, 25)}...`
                 : notice.title}
             </S.Title>
