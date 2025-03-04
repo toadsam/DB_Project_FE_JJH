@@ -26,7 +26,8 @@ function isInAppBrowser() {
     ua.includes('instagram') ||
     ua.includes('fbav') ||
     ua.includes('fban') ||
-    ua.includes('everytime')
+    ua.includes('everytime') ||
+    ua.includes('kakao')
   );
 }
 
