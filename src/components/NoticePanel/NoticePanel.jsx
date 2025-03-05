@@ -1,37 +1,54 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import * as S from "./NoticePanel.styles";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import * as S from './NoticePanel.styles';
 
 const API_URL = process.env.REACT_APP_API_URL;
 const hardcodedNoticeData = {
   공지사항: [],
-  "제휴 업체": [
+  '제휴 업체': [
     {
       id: 3,
-      title: "[제휴업체 2번째 혜택] 트리플 스페이스",
-      date: "2025.02.13",
+      title: '[제휴업체 2번째 혜택] 트리플 스페이스',
+      date: '2025.02.13',
     },
-    { id: 1, title: "[제휴업체 1번째 혜택] 정원 볼링센터", date: "2025.02.13" },
+    { id: 1, title: '[제휴업체 1번째 혜택] 정원 볼링센터', date: '2025.02.13' },
   ],
 };
 
+// 윈도우 너비를 감지하는 커스텀 훅
+function useWindowWidth() {
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return width;
+}
+
 function NoticePanel() {
-  const [activeTab, setActiveTab] = useState("공지사항");
+  const [activeTab, setActiveTab] = useState('공지사항');
   const [noticeData, setNoticeData] = useState(hardcodedNoticeData);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
 
+  const width = useWindowWidth();
+  const isMobile = width <= 768; // 모바일 기준 (예: 너비 768px 이하)
+  const truncationLimit = isMobile ? 25 : 30;
+
   useEffect(() => {
     const fetchNotices = async () => {
-      if (activeTab === "공지사항") {
+      if (activeTab === '공지사항') {
         setLoading(true);
         try {
           const response = await axios.get(`${API_URL}/api/home/notice`, {
             headers: {
-              "Content-Type": "application/json",
-              "ngrok-skip-browser-warning": "69420",
+              'Content-Type': 'application/json',
+              'ngrok-skip-browser-warning': '69420',
             },
           });
           setNoticeData((prevData) => ({
@@ -39,7 +56,7 @@ function NoticePanel() {
             공지사항: response.data,
           }));
         } catch (err) {
-          setError("공지사항 데이터를 불러오는 중 오류가 발생했습니다.");
+          setError('공지사항 데이터를 불러오는 중 오류가 발생했습니다.');
         } finally {
           setLoading(false);
         }
@@ -59,7 +76,7 @@ function NoticePanel() {
 
   const handleNoticeClick = (notice) => {
     if (notice.link) {
-      window.open(notice.link, "_blank");
+      window.open(notice.link, '_blank');
     }
   };
 
@@ -91,8 +108,8 @@ function NoticePanel() {
             onClick={() => handleNoticeClick(notice)}
           >
             <S.Title>
-              {notice.title.length > 30
-                ? `${notice.title.substring(0, 30)}...`
+              {notice.title.length > truncationLimit
+                ? `${notice.title.substring(0, truncationLimit)}...`
                 : notice.title}
             </S.Title>
             <S.Date>{notice.date}</S.Date>

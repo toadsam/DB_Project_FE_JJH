@@ -31,8 +31,15 @@ function NoticeLayout() {
         </S.TabItem>
       </S.TabContainer>
 
-      {/* Outlet에 따라 아래 내용이 변경됩니다 */}
-      <Outlet />
+      {activeTab === '제휴업체' ? (
+        // 기존 Outlet 내용은 주석 처리:
+        // <Outlet />
+        <S.PreparingMessage>
+          🚀빠른 시일 내에 제공될 서비스입니다.
+        </S.PreparingMessage>
+      ) : (
+        <Outlet />
+      )}
     </S.Container>
   );
 }

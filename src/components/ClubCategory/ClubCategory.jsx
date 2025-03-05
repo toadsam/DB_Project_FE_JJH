@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
-import * as S from "./ClubCategory.styles"; // ClubList 스타일 적용
-import defaultImage from "../../asset/mainLogo.png";
-import { FaChevronDown, FaChevronUp, FaSearch } from "react-icons/fa";
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import * as S from './ClubCategory.styles'; // ClubList 스타일 적용
+import defaultImage from '../../asset/mainLogo.png';
+import { FaChevronDown, FaChevronUp, FaSearch } from 'react-icons/fa';
 
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 const API_URL = process.env.REACT_APP_API_URL;
 
 const categories = [
-  { name: "스포츠" },
-  { name: "학술" },
-  { name: "종교" },
-  { name: "문화/예술" },
-  { name: "창업" },
-  { name: "사교" },
-  { name: "봉사" },
+  { name: '스포츠' },
+  { name: '학술' },
+  { name: '종교' },
+  { name: '문화/예술' },
+  { name: '창업' },
+  { name: '사교' },
+  { name: '봉사' },
 ];
 
 function CategoryClubList() {
@@ -23,14 +24,14 @@ function CategoryClubList() {
   const [clubs, setClubs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
 
   // 모바일 여부 감지
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // 모바일 사이드바 확장 여부 상태
@@ -44,8 +45,8 @@ function CategoryClubList() {
           `${API_URL}/api/clubs?category=${encodeURIComponent(categoryName)}`,
           {
             headers: {
-              "Content-Type": "application/json",
-              "ngrok-skip-browser-warning": "69420",
+              'Content-Type': 'application/json',
+              'ngrok-skip-browser-warning': '69420',
             },
           }
         );
@@ -55,7 +56,7 @@ function CategoryClubList() {
                 ...club,
                 image: club.logo_url || defaultImage,
                 description:
-                  club.club_description || "설명이 제공되지 않았습니다.",
+                  club.club_description || '설명이 제공되지 않았습니다.',
               }))
             : []
         );
@@ -72,7 +73,7 @@ function CategoryClubList() {
 
   // 🔄 카테고리 변경 시 검색어 초기화
   useEffect(() => {
-    setSearchTerm("");
+    setSearchTerm('');
   }, [categoryName]);
 
   const handleClubClick = (clubId) => {
@@ -128,7 +129,7 @@ function CategoryClubList() {
                     key={index}
                     onClick={() => handleCategoryClick(cat.name)}
                     isSelected={cat.name === categoryName}
-                    style={{ cursor: "pointer" }}
+                    style={{ cursor: 'pointer' }}
                   >
                     {cat.name}
                   </S.SidebarItem>
@@ -145,7 +146,7 @@ function CategoryClubList() {
                   key={index}
                   onClick={() => handleCategoryClick(cat.name)}
                   isSelected={cat.name === categoryName}
-                  style={{ cursor: "pointer" }}
+                  style={{ cursor: 'pointer' }}
                 >
                   {cat.name}
                 </S.SidebarItem>
@@ -188,15 +189,16 @@ function CategoryClubList() {
               <S.ImageWrapper
                 data-label={club.club_type}
                 style={{
-                  height: "180px",
-                  overflow: "hidden",
-                  position: "relative",
+                  height: '180px',
+                  overflow: 'hidden',
+                  position: 'relative',
                 }}
               >
-                <img
+                <LazyLoadImage
                   src={club.image}
                   alt={club.club_name}
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  effect="blur"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
                 {club.recruitment_scope && (
                   <S.RecruitmentTag>{club.recruitment_scope}</S.RecruitmentTag>

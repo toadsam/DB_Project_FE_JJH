@@ -1,36 +1,41 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import * as S from "./Header.styles";
-import logo from "../../asset/img.jpg";
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import * as S from './Header.styles';
+import logo from '../../asset/img.jpg';
 import {
   FaUniversity,
   FaUsers,
   FaNetworkWired,
   FaUserAlt,
-} from "react-icons/fa";
+} from 'react-icons/fa';
 
 const categories = [
   {
-    title: "중앙동아리",
-    navigateTo: "/clublist",
+    title: '중앙동아리',
+    navigateTo: '/clublist',
     icon: <FaUniversity />,
   },
   {
-    title: "소학회",
-    navigateTo: "/miniclublist",
+    title: '소학회',
+    navigateTo: '/miniclublist',
     icon: <FaUsers />,
   },
+  // {
+  //   title: "동아리연합회",
+  //   icon: <FaNetworkWired />,
+  //   items: [
+  //     { name: "소개글", navigateTo: "/introduce", icon: <FaNetworkWired /> },
+  //     { name: "공지사항", navigateTo: "/notice", icon: <FaNetworkWired /> },
+  //   ],
+  // },
   {
-    title: "동아리연합회",
+    title: '공지사항',
+    navigateTo: '/notice',
     icon: <FaNetworkWired />,
-    items: [
-      { name: "소개글", navigateTo: "/introduce", icon: <FaNetworkWired /> },
-      { name: "공지사항", navigateTo: "/notice", icon: <FaNetworkWired /> },
-    ],
   },
   {
-    title: "내정보",
-    navigateTo: "/login",
+    title: '내정보',
+    navigateTo: '/login',
     icon: <FaUserAlt />,
   },
 ];
@@ -45,20 +50,20 @@ function Header() {
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const handleMouseEnter = (index) => setActiveCategory(index);
   const handleMouseLeave = () => setActiveCategory(null);
 
   const handleCategoryClick = (category) => {
-    if (category.title === "내정보") {
+    if (category.title === '내정보') {
       if (isMobile) {
         setMobileMenuOpen(false);
         setOpenDropdown(null);
       }
-      navigate("/login");
+      navigate('/login');
       return;
     }
     if (!category.items && category.navigateTo) {
@@ -93,11 +98,11 @@ function Header() {
   };
 
   // 모바일 로그인 페이지 전용 헤더
-  if (isMobile && location.pathname === "/login") {
+  if (isMobile && location.pathname === '/login') {
     return (
       <S.MobileWrapper>
         <S.MobileHeaderCustom>
-          <S.BackButton onClick={() => navigate("/")}>&lt;</S.BackButton>
+          <S.BackButton onClick={() => navigate('/')}>&lt;</S.BackButton>
           <S.MobileTitle>로그인</S.MobileTitle>
         </S.MobileHeaderCustom>
       </S.MobileWrapper>
@@ -128,7 +133,7 @@ function Header() {
               {categories.map((category, index) => (
                 <S.MobileMenuItem
                   key={index}
-                  first={category.title === "중앙동아리"}
+                  first={category.title === '중앙동아리'}
                 >
                   <S.MobileMenuTitle
                     onClick={() => {
@@ -169,9 +174,15 @@ function Header() {
     <S.OuterWrapper>
       <S.TopBarBlock>
         <S.TopBarInner>
-          <S.TopBarItem onClick={() => navigate("/login")}>LOGIN</S.TopBarItem>
-          <S.TopBarItem>HOME</S.TopBarItem>
-          <S.TopBarItem>PORTAL</S.TopBarItem>
+          <S.TopBarItem onClick={() => navigate('/login')}>LOGIN</S.TopBarItem>
+          <S.TopBarItem onClick={() => navigate('/')}>HOME</S.TopBarItem>
+          <S.TopBarItem
+            onClick={() =>
+              (window.location.href = 'https://mportal.ajou.ac.kr/main.do')
+            }
+          >
+            PORTAL
+          </S.TopBarItem>
           <S.TopBarItem>LANGUAGE ▼</S.TopBarItem>
         </S.TopBarInner>
       </S.TopBarBlock>
