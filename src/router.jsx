@@ -68,7 +68,7 @@ function AppRouter() {
   return (
     <Router basename="/">
       <PageLayout>
-        <Header />
+        {/* <Header /> */}
         <MainContent>
           {/* Suspense로 lazy-loaded 컴포넌트들의 로딩 상태를 처리 */}
           <Suspense fallback={<div>Loading...</div>}>
@@ -135,7 +135,7 @@ function AppRouter() {
             </Routes>
           </Suspense>
         </MainContent>
-        <FootBar />
+        {/* <FootBar /> */}
       </PageLayout>
     </Router>
   );
