@@ -56,7 +56,10 @@ function LoginPage() {
         `${API_URL}/api/auth/logout`,
         {},
         { withCredentials: true }
-      );
+      ); // ✅ 쿠키 삭제
+      alert('✅ 로그아웃 되었습니다.');
+      localStorage.clear();
+      sessionStorage.clear();
       alert('✅ 로그아웃 되었습니다.');
       localStorage.clear();
       sessionStorage.clear();
@@ -73,15 +76,11 @@ function LoginPage() {
 
   const refreshAccessToken = useCallback(async () => {
     try {
-      const refreshToken = localStorage.getItem('refreshToken');
-      if (!refreshToken) {
-        console.warn('🚨 Refresh Token이 없습니다. 로그아웃 처리!');
-        handleLogout();
-        return;
-      }
-      const response = await axios.post(`${API_URL}/api/auth/refresh`, {
-        refreshToken,
-      });
+      const response = await axios.post(
+        `${API_URL}/api/auth/refresh`,
+        {},
+        { withCredentials: true } // ✅ 서버에서 쿠키에 저장된 refreshToken 사용
+      );
       const { accessToken } = response.data;
       localStorage.setItem('accessToken', accessToken);
       axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
@@ -182,13 +181,13 @@ function LoginPage() {
                         );
                         const authResponse = await axios.post(
                           `${API_URL}/api/auth/google`,
-                          { token: credentialResponse.credential }
+                          { token: credentialResponse.credential },
+                          { withCredentials: true }
                         );
-                        const { accessToken, refreshToken } = authResponse.data;
+                        const { accessToken } = authResponse.data;
                         const decodedToken = decodeToken(accessToken);
                         console.log('✅ 디코딩된 Access Token:', decodedToken);
                         localStorage.setItem('accessToken', accessToken);
-                        localStorage.setItem('refreshToken', refreshToken);
                         localStorage.setItem(
                           'userInfo',
                           JSON.stringify(decodedToken)
