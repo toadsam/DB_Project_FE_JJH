@@ -1,11 +1,11 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Header from './components/Header/Header';
+// import Header from './components/Header/Header';
 // import Category from './components/Category/Category';
 // import AcademicSchedule from './components/AcademicSchedule/AcademicSchedule';
 // import NoticePanel from './components/NoticePanel/NoticePanel';
 // import NewRecruitment from './components/NewRecruitment/NewRecruitment';
-import FootBar from './components/FooterBar/FootBar';
+// import FootBar from './components/FooterBar/FootBar';
 import styled from 'styled-components';
 import * as S from './router.styles.jsx';
 
