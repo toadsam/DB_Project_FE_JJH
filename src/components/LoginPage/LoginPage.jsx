@@ -49,47 +49,64 @@ function LoginPage() {
     try {
       const refreshToken = localStorage.getItem("refreshToken");
       if (!refreshToken) {
-        console.warn("🚨 Refresh Token이 없습니다. 로그아웃 처리!");
+        console.warn("🚨 Refresh Token 없음 → 로그인 필요");
         handleLogout();
         return;
       }
+
       const response = await axios.post(`${API_URL}/api/auth/refresh`, {
         refreshToken,
       });
+
       const { accessToken } = response.data;
+      if (!accessToken) {
+        console.warn("🚨 Access Token 재발급 실패 → 로그인 필요");
+        handleLogout();
+        return;
+      }
+
       localStorage.setItem("accessToken", accessToken);
       axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
       setToken(accessToken);
       console.log("✅ Access Token이 갱신되었습니다.");
     } catch (error) {
-      console.error("🚨 Access Token 갱신 실패:", error);
+      console.error("🚨 Refresh Token 만료됨 → 재로그인 필요!", error);
       handleLogout();
     }
   }, [handleLogout]);
 
   const checkTokenExpiration = useCallback(() => {
     const storedToken = localStorage.getItem("accessToken");
-    if (!storedToken) return;
-    const decodedToken = decodeToken(storedToken);
-    if (!decodedToken) {
-      console.warn("🚨 유효하지 않은 토큰입니다. 로그아웃 처리!");
-      handleLogout();
+
+    if (!storedToken) {
+      console.warn("🚨 Access Token 없음 → Refresh Token 확인");
+      refreshAccessToken();
       return;
     }
+
+    const decodedToken = decodeToken(storedToken);
+    if (!decodedToken) {
+      console.warn("🚨 유효하지 않은 Access Token → Refresh Token 확인");
+      refreshAccessToken();
+      return;
+    }
+
     const now = Date.now() / 1000;
     if (decodedToken.exp < now) {
-      console.warn("🔄 Access Token이 만료되었습니다. 갱신 시도 중...");
+      console.warn("🔄 Access Token 만료됨 → Refresh Token으로 재발급 시도");
       refreshAccessToken();
     }
-  }, [refreshAccessToken, handleLogout]);
+  }, [refreshAccessToken]);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("accessToken");
     const storedUser = localStorage.getItem("userInfo");
+
     if (storedToken && storedUser) {
       setToken(storedToken);
       setUser(JSON.parse(storedUser));
     }
+
     const interval = setInterval(checkTokenExpiration, 60000);
     return () => clearInterval(interval);
   }, [checkTokenExpiration]);
