@@ -73,24 +73,27 @@ function AppRouter() {
           {/* Suspense로 lazy-loaded 컴포넌트들의 로딩 상태를 처리 */}
           <Suspense fallback={<div>Loading...</div>}>
             <Routes>
-              {/* 메인 페이지는 코드 스플리팅 없이 바로 렌더링 */}
+              {/* 메인 페이지 내용 주석 처리 후, 재정비 중입니다 문구 출력 */}
               <Route
                 path="/"
                 element={
-                  <>
-                    <S.MainContainer>
-                      <Category />
-                      <S.RowContainer>
-                        <S.PanelWrapper>
-                          <AcademicSchedule />
-                        </S.PanelWrapper>
-                        <S.PanelWrapper>
-                          <NoticePanel />
-                        </S.PanelWrapper>
-                      </S.RowContainer>
-                      <NewRecruitment />
-                    </S.MainContainer>
-                  </>
+                  <S.MainContainer>
+                    {/*
+                    <Category />
+                    <S.RowContainer>
+                      <S.PanelWrapper>
+                        <AcademicSchedule />
+                      </S.PanelWrapper>
+                      <S.PanelWrapper>
+                        <NoticePanel />
+                      </S.PanelWrapper>
+                    </S.RowContainer>
+                    <NewRecruitment />
+                    */}
+                    <div style={{ textAlign: 'center', padding: '2rem' }}>
+                      재정비 중입니다.
+                    </div>
+                  </S.MainContainer>
                 }
               />
               {/* 나머지 라우트들은 lazy 로딩 */}
