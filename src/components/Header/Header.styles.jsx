@@ -21,7 +21,7 @@ export const LogoSection = styled.div`
 `;
 
 export const LogoText = styled.span`
-  font-size: 1.5rem;
+  font-size: 18px;
   font-weight: bold;
 `;
 
