@@ -127,7 +127,8 @@ function LoginPage() {
           <S.LoginFormSection>
             {/* ✅ ACM 텍스트 로고 적용 */}
             <S.ACMText>ACM</S.ACMText>
-            <S.Title>ACM 회원만 이용 가능합니다.</S.Title>
+            <S.Title>구글 로그인으로
+            시작하기</S.Title>
             {!token ? (
               inAppBrowser ? (
                 <div style={{ textAlign: 'center', margin: '0 0 16px 0' }}>
@@ -146,7 +147,7 @@ function LoginPage() {
                 <GoogleLogin
                   onSuccess={async (credentialResponse) => {
                     try {
-                      console.log('✅ Google OAuth 성공:', credentialResponse);
+                      //console.log('✅ Google OAuth 성공:', credentialResponse);
                       const decodedGoogleToken = jwtDecode(
                         credentialResponse.credential
                       );
@@ -161,7 +162,7 @@ function LoginPage() {
                       );
                       const { accessToken } = authResponse.data;
                       const decodedToken = decodeToken(accessToken);
-                      console.log('✅ 디코딩된 Access Token:', decodedToken);
+                      //console.log('✅ 디코딩된 Access Token:', decodedToken);
                       localStorage.setItem('accessToken', accessToken);
                       localStorage.setItem(
                         'userInfo',
@@ -206,7 +207,7 @@ function LoginPage() {
           </S.LoginFormSection>
           <S.BoxFooter>
             <span>개인정보처리방침</span>
-            <span>© 2024 ACM</span>
+            <span>© 2025 ACM</span>
           </S.BoxFooter>
         </S.LoginWrapper>
       </S.LoginContainer>
