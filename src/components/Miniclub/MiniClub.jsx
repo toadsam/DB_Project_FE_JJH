@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
-import * as S from "./MiniClub.styles";
-import axios from "axios";
-import defaultImage from "../../asset/mainLogo.png";
-import { useNavigate } from "react-router-dom";
-import collegesData from "../../colleges.json";
-import { FaChevronDown, FaChevronUp, FaSearch } from "react-icons/fa";
+import React, { useState, useEffect } from 'react';
+import * as S from './MiniClub.styles';
+import axios from 'axios';
+import defaultImage from '../../asset/mainLogo.png';
+import { useNavigate } from 'react-router-dom';
+import collegesData from '../../colleges.json';
+import { FaChevronDown, FaChevronUp, FaSearch } from 'react-icons/fa';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -13,17 +14,17 @@ function MiniClub() {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [selectedCollege, setSelectedCollege] = useState("");
-  const [selectedDepartment, setSelectedDepartment] = useState("");
+  const [selectedCollege, setSelectedCollege] = useState('');
+  const [selectedDepartment, setSelectedDepartment] = useState('');
   const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
 
   // 모바일 여부 감지
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   // 검색 input onChange 핸들러
@@ -36,7 +37,7 @@ function MiniClub() {
 
   // 🔄 소속학과 변경 시 검색어 초기화
   useEffect(() => {
-    setSearchTerm("");
+    setSearchTerm('');
   }, [selectedDepartment]);
 
   useEffect(() => {
@@ -59,7 +60,7 @@ function MiniClub() {
                 ...event,
                 image: event.logo_url || defaultImage,
                 description:
-                  event.club_description || "설명이 제공되지 않았습니다.",
+                  event.club_description || '설명이 제공되지 않았습니다.',
                 recruitment_scope: event.recruitment_scope,
                 recruitment_type: event.recruitment_type,
                 recruitment_end_date: event.recruitment_end_date,
@@ -80,15 +81,15 @@ function MiniClub() {
   // 모집 마감일 계산 함수
   const getRecruitmentLabel = (event) => {
     if (event.recruitment_type === null) {
-      return "상시";
-    } else if (event.recruitment_type === "수시모집") {
+      return '상시';
+    } else if (event.recruitment_type === '수시모집') {
       const today = new Date();
       const endDate = new Date(event.recruitment_end_date);
       const diffTime = endDate - today;
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-      return diffDays < 0 ? "마감" : `D-${diffDays}`;
+      return diffDays < 0 ? '마감' : `D-${diffDays}`;
     }
-    return "";
+    return '';
   };
 
   if (loading) return <S.PageContainer>Loading...</S.PageContainer>;
@@ -100,8 +101,8 @@ function MiniClub() {
   );
 
   // 브레드크럼 텍스트 설정
-  const breadcrumb = `소학회 > ${selectedCollege ? selectedCollege : "전체"}${
-    selectedDepartment ? " > " + selectedDepartment : ""
+  const breadcrumb = `소학회 > ${selectedCollege ? selectedCollege : '전체'}${
+    selectedDepartment ? ' > ' + selectedDepartment : ''
   }`;
 
   return (
@@ -137,9 +138,9 @@ function MiniClub() {
                     <S.SidebarItem
                       onClick={() => {
                         setSelectedCollege(
-                          selectedCollege === college.name ? "" : college.name
+                          selectedCollege === college.name ? '' : college.name
                         );
-                        setSelectedDepartment("");
+                        setSelectedDepartment('');
                       }}
                       isselected={selectedCollege === college.name}
                     >
@@ -172,9 +173,9 @@ function MiniClub() {
                   <S.SidebarItem
                     onClick={() => {
                       setSelectedCollege(
-                        selectedCollege === college.name ? "" : college.name
+                        selectedCollege === college.name ? '' : college.name
                       );
-                      setSelectedDepartment("");
+                      setSelectedDepartment('');
                     }}
                     isselected={selectedCollege === college.name}
                   >
@@ -227,15 +228,17 @@ function MiniClub() {
             >
               <S.ImageWrapper
                 data-label={getRecruitmentLabel(event)}
-                data-scope={event.recruitment_scope || "정보 없음"}
-                style={{ height: "180px", overflow: "hidden" }}
+                data-scope={event.recruitment_scope || '정보 없음'}
+                style={{ height: '180px', overflow: 'hidden' }}
               >
-                <img
+                <LazyLoadImage
                   src={event.image}
                   alt={event.club_name}
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  effect="blur"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
               </S.ImageWrapper>
+
               <S.Title>{event.club_name}</S.Title>
               <S.Description>
                 {event.description.length > 25

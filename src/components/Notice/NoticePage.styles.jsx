@@ -107,3 +107,10 @@ export const Error = styled.div`
   font-size: 18px;
   color: red;
 `;
+export const PreparingMessage = styled.div`
+  font-size: 1.2rem;
+  font-weight: 500;
+  text-align: center;
+  padding: 20px;
+  color: #555;
+`;
