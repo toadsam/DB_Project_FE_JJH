@@ -2,22 +2,37 @@ import React, { useState, useEffect } from 'react';
 import * as S from './MiniClub.styles';
 import axios from 'axios';
 import defaultImage from '../../asset/mainLogo.png';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import collegesData from '../../colleges.json';
-import { FaChevronDown, FaChevronUp, FaSearch } from 'react-icons/fa';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 function MiniClub() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const initialSearchTerm = searchParams.get('search') || '';
+  const initialFilter = searchParams.get('subFilter') || '전체';
+  const initialCollege = searchParams.get('college') || '';
+  // 여기서 additional 필터를 읽어 배열로 변환 (이전에 department로 처리했던 부분을 수정)
+  const initialAdditional = searchParams.get('additional')
+    ? searchParams.get('additional').split(',')
+    : [];
+
+  // 필터 관련 state
+  const searchTerm = initialSearchTerm;
+  const selectedFilter = initialFilter; // 모집 필터: 전체, 수시, 상시
+  const [selectedCollege, setSelectedCollege] = useState(initialCollege);
+  const [selectedDepartment, setSelectedDepartment] = useState('');
+  // 추가 필터 값 (복수 선택)
+  const [selectedAdditional, setSelectedAdditional] =
+    useState(initialAdditional);
+
   const [colleges, setColleges] = useState([]);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [selectedCollege, setSelectedCollege] = useState('');
-  const [selectedDepartment, setSelectedDepartment] = useState('');
-  const navigate = useNavigate();
-  const [searchTerm, setSearchTerm] = useState('');
 
   // 모바일 여부 감지
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -27,33 +42,31 @@ function MiniClub() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // 검색 input onChange 핸들러
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
-
   // 모바일 사이드바 확장 여부
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
-
-  // 🔄 소속학과 변경 시 검색어 초기화
-  useEffect(() => {
-    setSearchTerm('');
-  }, [selectedDepartment]);
-
   useEffect(() => {
     setColleges(collegesData);
   }, []);
-
+  // API 호출: 선택된 대학과 추가 필터를 기반으로 소학회 동아리 목록 조회
   useEffect(() => {
     const fetchEvents = async () => {
       setLoading(true);
       try {
-        let url = `${API_URL}/api/clubs/academic`;
-        let params = {};
+        const params = {};
+        if (searchTerm) params.search = searchTerm;
         if (selectedCollege) params.college = selectedCollege;
         if (selectedDepartment) params.department = selectedDepartment;
-
-        const response = await axios.get(url, { params });
+        const queryString = new URLSearchParams(params).toString();
+        const url = `${API_URL}/api/clubs/academic${
+          queryString ? '?' + queryString : ''
+        }`;
+        console.log('API 호출 URL:', url);
+        const response = await axios.get(url, {
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': '69420',
+          },
+        });
         setEvents(
           Array.isArray(response.data)
             ? response.data.map((event) => ({
@@ -76,7 +89,7 @@ function MiniClub() {
     };
 
     fetchEvents();
-  }, [selectedCollege, selectedDepartment]);
+  }, [selectedCollege, searchTerm, selectedDepartment]);
 
   // 모집 마감일 계산 함수
   const getRecruitmentLabel = (event) => {
@@ -95,33 +108,49 @@ function MiniClub() {
   if (loading) return <S.PageContainer>Loading...</S.PageContainer>;
   if (error) return <S.PageContainer>Error: {error}</S.PageContainer>;
 
-  // 🔍 검색어로 시작하는 동아리만 필터링
-  const filteredEvents = events.filter((event) =>
-    event.club_name.toLowerCase().startsWith(searchTerm.toLowerCase())
+  // 클라이언트 측 필터링: 검색어로 시작하는 club_name만 선택 (대소문자 무시, trim 적용)
+  let filteredEvents = events.filter((event) =>
+    (event.club_name?.trim().toLowerCase() || '').startsWith(
+      searchTerm.trim().toLowerCase()
+    )
   );
 
-  // 브레드크럼 텍스트 설정
-  const breadcrumb = `소학회 > ${selectedCollege ? selectedCollege : '전체'}${
-    selectedDepartment ? ' > ' + selectedDepartment : ''
+  // 모집 필터 적용 (전체는 필터링하지 않음)
+  if (selectedFilter === '수시') {
+    filteredEvents = filteredEvents.filter(
+      (event) => event.recruitment_type === '수시모집'
+    );
+  } else if (selectedFilter === '상시') {
+    filteredEvents = filteredEvents.filter(
+      (event) => !event.recruitment_type || event.recruitment_type === '상시'
+    );
+  }
+
+  // 추가 필터 적용: 복수 선택된 추가 필터가 있을 경우 recruitment_scope와 비교
+  if (selectedAdditional.length > 0) {
+    filteredEvents = filteredEvents.filter((event) => {
+      const scope = event.recruitment_scope;
+      if (!scope) return false;
+      const trimmedScope = scope.trim();
+      const isMatch = selectedAdditional.some((filter) => {
+        return trimmedScope === filter.trim();
+      });
+      return isMatch;
+    });
+  }
+
+  const breadcrumbSearch = `소학회 > ${selectedFilter || '전체'}${
+    selectedAdditional.length > 0 ? ' > ' + selectedAdditional.join(', ') : ''
   }`;
 
+  // 예시: 사이드바에서 선택한 경우
+  const breadcrumbSidebar = `소학회 > ${
+    selectedCollege ? selectedCollege : '전체'
+  }${selectedDepartment ? ' > ' + selectedDepartment : ''}`;
+
+  const breadcrumb = searchTerm ? breadcrumbSearch : breadcrumbSidebar;
   return (
     <S.PageContainer>
-      {/* 📌 모바일에서만 검색창 추가 */}
-      {isMobile && (
-        <S.MobileSearchContainer>
-          <S.MobileSearchInput
-            type="text"
-            placeholder="검색"
-            value={searchTerm}
-            onChange={handleSearchChange}
-          />
-          <S.MobileSearchIcon>
-            <FaSearch />
-          </S.MobileSearchIcon>
-        </S.MobileSearchContainer>
-      )}
-
       <S.Sidebar>
         {isMobile ? (
           <>
@@ -140,6 +169,7 @@ function MiniClub() {
                         setSelectedCollege(
                           selectedCollege === college.name ? '' : college.name
                         );
+                        setSelectedAdditional([]);
                         setSelectedDepartment('');
                       }}
                       isselected={selectedCollege === college.name}
@@ -175,6 +205,7 @@ function MiniClub() {
                       setSelectedCollege(
                         selectedCollege === college.name ? '' : college.name
                       );
+                      setSelectedAdditional([]);
                       setSelectedDepartment('');
                     }}
                     isselected={selectedCollege === college.name}
@@ -186,7 +217,7 @@ function MiniClub() {
                       <S.SidebarSubItem
                         key={idx}
                         onClick={() => setSelectedDepartment(dept)}
-                        isselected={selectedDepartment === dept}
+                        isselected={selectedAdditional.includes(dept)}
                       >
                         {dept}
                       </S.SidebarSubItem>
@@ -201,21 +232,6 @@ function MiniClub() {
       <S.Content>
         <S.TopBar>
           <S.Title1>{breadcrumb}</S.Title1>
-
-          {/* 📌 데스크탑 검색창 유지 */}
-          {!isMobile && (
-            <S.SearchContainer>
-              <S.SearchInput
-                type="text"
-                placeholder="검색"
-                value={searchTerm}
-                onChange={handleSearchChange}
-              />
-              <S.SearchIcon>
-                <FaSearch />
-              </S.SearchIcon>
-            </S.SearchContainer>
-          )}
         </S.TopBar>
 
         <S.TitleBar />
@@ -238,7 +254,6 @@ function MiniClub() {
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
               </S.ImageWrapper>
-
               <S.Title>{event.club_name}</S.Title>
               <S.Description>
                 {event.description.length > 25

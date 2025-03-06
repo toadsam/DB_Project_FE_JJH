@@ -1,6 +1,6 @@
 // ClubList.styles.js
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const PageContainer = styled.div`
   display: flex;
@@ -166,6 +166,7 @@ export const Sidebar = styled.div`
     margin-bottom: 10px;
     position: static;
     padding: 8px 0px; /* 모바일일 때는 8px 10px으로 변경 */
+    margin-top: 10px;
   }
 `;
 
@@ -191,7 +192,7 @@ export const SidebarList = styled.ul`
   list-style: none;
   padding: 0;
   margin: 0;
-  display: ${(props) => (props.expanded ? "block" : "none")};
+  display: ${(props) => (props.expanded ? 'block' : 'none')};
 
   @media (min-width: 768px) {
     display: block; /* 데스크탑에서는 항상 보이도록 */
@@ -200,14 +201,14 @@ export const SidebarList = styled.ul`
 
 export const SidebarItem = styled.li`
   font-size: 14px;
-  font-weight: ${(props) => (props.isSelected ? "700" : "400")};
-  color: ${(props) => (props.isSelected ? "#007aff" : "#333")};
+  font-weight: ${(props) => (props.isSelected ? '700' : '400')};
+  color: ${(props) => (props.isSelected ? '#007aff' : '#333')};
   margin-bottom: 10px;
   cursor: pointer;
   padding: 5px 10px;
   border-radius: 5px;
   background-color: ${(props) =>
-    props.isSelected ? "#e6f7ff" : "transparent"};
+    props.isSelected ? '#e6f7ff' : 'transparent'};
   transition: background-color 0.3s ease;
 
   &:hover {
@@ -286,8 +287,8 @@ export const FilterContainer = styled.div`
 `;
 
 export const FilterButton = styled.button`
-  background-color: ${(props) => (props.isSelected ? "#007aff" : "#f0f0f0")};
-  color: ${(props) => (props.isSelected ? "#fff" : "#333")};
+  background-color: ${(props) => (props.isSelected ? '#007aff' : '#f0f0f0')};
+  color: ${(props) => (props.isSelected ? '#fff' : '#333')};
   border: none;
   width: 60px;
   padding: 4px 16px;
@@ -298,7 +299,7 @@ export const FilterButton = styled.button`
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: ${(props) => (props.isSelected ? "#005bb5" : "#e0e0e0")};
+    background-color: ${(props) => (props.isSelected ? '#005bb5' : '#e0e0e0')};
   }
 `;
 export const MobileFilterContainer = styled.div`

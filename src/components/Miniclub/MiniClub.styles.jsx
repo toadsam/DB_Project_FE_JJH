@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 /* PageContainer: 데스크탑에서는 사이드바와 콘텐츠를 좌우 배치, 모바일에서는 세로 배치 */
 export const PageContainer = styled.div`
@@ -25,15 +25,15 @@ export const SidebarList = styled.ul`
 
 export const SidebarItem = styled.li`
   font-size: 14px;
-  font-weight: ${({ isselected }) => (isselected ? "700" : "400")};
-  color: ${({ isselected }) => (isselected ? "rgb(56, 56, 57)" : "#333")};
+  font-weight: ${({ isselected }) => (isselected ? '700' : '400')};
+  color: ${({ isselected }) => (isselected ? 'rgb(56, 56, 57)' : '#333')};
   margin-bottom: 10px;
   cursor: pointer;
   padding: 5px 10px;
   border-radius: 5px;
   transition: background-color 0.3s ease, color 0.3s ease;
   background-color: ${({ isselected }) =>
-    isselected ? "#f0f0f0" : "transparent"};
+    isselected ? '#f0f0f0' : 'transparent'};
 
   &:hover {
     background-color: #f0f0f0;
@@ -44,7 +44,7 @@ export const SidebarSubItem = styled.li`
   padding: 8px 15px;
   font-size: 13px;
   cursor: pointer;
-  color: ${({ isselected }) => (isselected ? "rgb(18, 103, 188)" : "#6c757d")};
+  color: ${({ isselected }) => (isselected ? 'rgb(18, 103, 188)' : '#6c757d')};
   transition: color 0.3s ease;
   margin-left: 20px;
   border-left: 2px solid #e0e0e0;
@@ -265,16 +265,6 @@ export const SearchInput = styled.input`
   }
 `;
 
-// 검색 아이콘: 오른쪽 끝에 위치하도록 절대배치
-export const SearchIcon = styled.div`
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #333;
-  font-size: 16px;
-`;
-
 export const MobileSearchContainer = styled.div`
   display: flex;
   align-items: center;
@@ -313,8 +303,8 @@ export const FilterContainer = styled.div`
 `;
 
 export const FilterButton = styled.button`
-  background-color: ${(props) => (props.isSelected ? "#007aff" : "#f0f0f0")};
-  color: ${(props) => (props.isSelected ? "#fff" : "#333")};
+  background-color: ${(props) => (props.isSelected ? '#007aff' : '#f0f0f0')};
+  color: ${(props) => (props.isSelected ? '#fff' : '#333')};
   border: none;
   width: 60px;
   padding: 4px 16px;
@@ -325,7 +315,7 @@ export const FilterButton = styled.button`
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: ${(props) => (props.isSelected ? "#005bb5" : "#e0e0e0")};
+    background-color: ${(props) => (props.isSelected ? '#005bb5' : '#e0e0e0')};
   }
 `;
 export const MobileFilterContainer = styled.div`
@@ -336,4 +326,12 @@ export const MobileFilterContainer = styled.div`
   @media (min-width: 768px) {
     display: none; /* 데스크탑에서는 숨기기 */
   }
+`;
+export const SearchIcon = styled.div`
+  color: #333;
+  font-size: 16px;
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
 `;
