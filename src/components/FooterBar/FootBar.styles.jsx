@@ -97,3 +97,10 @@ export const IconLink = styled.a`
     color: #ccc;
   }
 `;
+export const AdminEmailLink = styled.a`
+  color: inherit; /* 부모 요소의 텍스트 색상 상속 */
+  text-decoration: none; /* 밑줄 제거 */
+  &:hover {
+    text-decoration: underline; /* 호버 시 밑줄 표시 (선택 사항) */
+  }
+`;

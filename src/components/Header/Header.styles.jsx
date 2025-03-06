@@ -63,6 +63,7 @@ export const MobileActions = styled.div`
 `;
 
 export const LoginButton = styled.button`
+  color: inherit;
   background: none;
   border: none;
   font-size: 17px;

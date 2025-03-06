@@ -48,7 +48,7 @@ export const TitleRow = styled.div`
   width: 100%;
   padding: 20px 40px;
   box-sizing: border-box;
-  background-color: #f6f4f4;
+  background-color: rgb(255, 255, 255);
 
   @media (max-width: 768px) {
     padding: 10px 20px;
@@ -74,7 +74,7 @@ export const MoreButton = styled.button`
 
   font-size: 16px;
   color: black;
-  background-color: rgb(226, 226, 226);
+  background-color: rgb(207, 204, 204);
   border: 1px solid rgb(224, 224, 224);
   padding: 6px 20px; /* 좌우 패딩을 늘려 타원형 효과 */
   border-radius: 20px; /* 타원 모양 */
@@ -90,7 +90,7 @@ export const MoreButton = styled.button`
 export const Container = styled.div`
   padding: 0 40px;
   padding-top: 20px;
-  background-color: #f6f4f4;
+  background-color: rgb(255, 255, 255);
   padding-bottom: 40px;
   @media (max-width: 768px) {
     padding: 0 20px;
