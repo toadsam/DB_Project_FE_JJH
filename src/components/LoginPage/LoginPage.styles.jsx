@@ -1,6 +1,15 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+// 기존 스타일 유지 + ACMText 추가
+export const ACMText = styled.h1`
+  font-size: 4.5rem;
+  font-weight: bold;
+  color: #0056b3;
+  text-align: center;
+  margin-bottom: 20px;
+`;
+
 export const LoginContainer = styled.div`
   display: flex;
   align-items: center;
