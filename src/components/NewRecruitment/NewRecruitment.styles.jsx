@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 /* ✅ 모집공고 목록 페이지로 이동하는 제목 */
 export const TitleLink = styled.h1`
@@ -43,9 +43,8 @@ export const MoreBox = styled(EventBox)`
 
 export const TitleRow = styled.div`
   display: flex;
-  justify-content: flex-end; /* 기본적으로 오른쪽 정렬 */
+  justify-content: center; /* 중앙 정렬 */
   align-items: center;
-  position: relative;
   width: 100%;
   padding: 20px 40px;
   box-sizing: border-box;
@@ -56,23 +55,29 @@ export const TitleRow = styled.div`
   }
 `;
 
+/* 제목 텍스트 전체 */
 export const TitleText = styled.h1`
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 20px; /* 기본 폰트 크기 */
+  font-weight: bold;
   color: #1d1d1f;
   margin: 0;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
+  text-align: center;
+  line-height: 1.4;
+  @media (max-width: 768px) {
+    font-size: 16px;
+  }
 `;
 
 export const MoreButton = styled.button`
-  font-size: 14px;
+  display: block;
+  margin: 10px auto; /* 가운데 정렬 및 상하 간격 추가 */
+
+  font-size: 16px;
   color: black;
-  background-color: #f6f4f4;
-  border: 1px solid rgb(164, 164, 164);
-  padding: 6px 10px;
-  border-radius: 4px;
+  background-color: rgb(226, 226, 226);
+  border: 1px solid rgb(224, 224, 224);
+  padding: 6px 20px; /* 좌우 패딩을 늘려 타원형 효과 */
+  border-radius: 20px; /* 타원 모양 */
   cursor: pointer;
   transition: background-color 0.3s;
 
@@ -84,10 +89,13 @@ export const MoreButton = styled.button`
 /* 기존 스타일들 그대로 유지 */
 export const Container = styled.div`
   padding: 0 40px;
+  padding-top: 20px;
   background-color: #f6f4f4;
-
+  padding-bottom: 40px;
   @media (max-width: 768px) {
     padding: 0 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 `;
 

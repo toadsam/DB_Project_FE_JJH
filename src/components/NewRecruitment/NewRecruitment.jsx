@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import * as S from "./NewRecruitment.styles"; // 위에 수정한 스타일 파일
-import axios from "axios";
-import defaultImage from "../../asset/mainLogo.png";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Mousewheel } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import * as S from './NewRecruitment.styles'; // 위에 수정한 스타일 파일
+import axios from 'axios';
+import defaultImage from '../../asset/mainLogo.png';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Mousewheel } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -25,8 +25,8 @@ function FestivalList() {
           `${API_URL}/api/home/updatedrecruitment`,
           {
             headers: {
-              "Content-Type": "application/json",
-              "ngrok-skip-browser-warning": "69420",
+              'Content-Type': 'application/json',
+              'ngrok-skip-browser-warning': '69420',
             },
           }
         );
@@ -36,11 +36,11 @@ function FestivalList() {
             ? response.data.map((event) => ({
                 id: event.recruitment_id,
                 club_id: event.club_id,
-                title: event.recruitment_title || "제목 없음",
+                title: event.recruitment_title || '제목 없음',
                 endDate:
-                  event.recruitment_end_date === "0000-00-00" ||
+                  event.recruitment_end_date === '0000-00-00' ||
                   event.recruitment_end_date === null
-                    ? "상시모집"
+                    ? '상시모집'
                     : new Date(event.recruitment_end_date).toLocaleDateString(),
                 main_image: event.main_image || defaultImage,
               }))
@@ -64,10 +64,7 @@ function FestivalList() {
     <>
       {/* 상단 제목 및 더보기 버튼 */}
       <S.TitleRow>
-        <S.TitleText>모집 소식 확인하기</S.TitleText>
-        <S.MoreButton onClick={() => navigate("/recruitment-list")}>
-          더보기
-        </S.MoreButton>
+        <S.TitleText>모집 소식 확인하기</S.TitleText>{' '}
       </S.TitleRow>
 
       <S.Container>
@@ -80,26 +77,26 @@ function FestivalList() {
           pagination={{ clickable: true }}
           mousewheel={true}
           modules={[Navigation, Pagination, Mousewheel]}
-          style={{ justifyContent: "flex-start" }}
+          style={{ justifyContent: 'flex-start' }}
         >
           {events.map((event) => (
-            <SwiperSlide key={event.id} style={{ width: "180px" }}>
+            <SwiperSlide key={event.id} style={{ width: '180px' }}>
               <S.EventBox
                 onClick={() =>
                   navigate(`/clubinfo/${event.club_id}`, {
-                    state: { defaultTab: "모집 공고" },
+                    state: { defaultTab: '모집 공고' },
                   })
                 }
               >
-                <S.ImageWrapper style={{ height: "180px", overflow: "hidden" }}>
+                <S.ImageWrapper style={{ height: '180px', overflow: 'hidden' }}>
                   <img
                     src={event.main_image}
                     alt={event.title}
                     style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      borderRadius: "10px",
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      borderRadius: '10px',
                     }}
                   />
                 </S.ImageWrapper>
@@ -112,7 +109,10 @@ function FestivalList() {
               </S.EventBox>
             </SwiperSlide>
           ))}
-        </Swiper>
+        </Swiper>{' '}
+        <S.MoreButton onClick={() => navigate('/recruitment-list')}>
+          더보기
+        </S.MoreButton>
       </S.Container>
     </>
   );
