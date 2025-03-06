@@ -60,6 +60,7 @@ function ClubList() {
 
   useEffect(() => {
     if (selectedCategory !== '') {
+      // 사이드바 클릭 시 검색어 초기화
       setSearchTerm('');
     }
   }, [selectedCategory]);
@@ -144,6 +145,11 @@ function ClubList() {
     );
   }
 
+  // breadcrumb 생성: recruitment filter와 사이드바 상세 분과를 모두 반영
+  const breadcrumb = `중앙동아리 > ${selectedFilter}${
+    selectedCategory ? ' > ' + selectedCategory : ''
+  }`;
+
   return (
     <S.PageContainer>
       <S.Sidebar>
@@ -161,6 +167,7 @@ function ClubList() {
                   key={index}
                   onClick={() => {
                     setSelectedCategory(item);
+                    setSelectedFilter('전체'); // 모집 필터 리셋
                     setSidebarExpanded(false);
                   }}
                   isSelected={selectedCategory === item}
@@ -177,7 +184,10 @@ function ClubList() {
               {categories[0].items.map((item, index) => (
                 <S.SidebarItem
                   key={index}
-                  onClick={() => setSelectedCategory(item)}
+                  onClick={() => {
+                    setSelectedCategory(item);
+                    setSelectedFilter('전체'); // 모집 필터 리셋
+                  }}
                   isSelected={selectedCategory === item}
                 >
                   {item}
@@ -190,33 +200,25 @@ function ClubList() {
 
       <S.Content>
         <S.TopBar>
-          <S.Title1>
-            중앙동아리 {'>'} {selectedCategory || '전체'}
-          </S.Title1>
+          <S.Title1>{breadcrumb}</S.Title1>
 
           {/* 데스크탑용 필터 버튼 */}
           {!isMobile && (
             <S.FilterContainer>
               <S.FilterButton
-                onClick={() =>
-                  setSelectedFilter(selectedFilter === '전체' ? '' : '전체')
-                }
+                onClick={() => setSelectedFilter('전체')}
                 isSelected={selectedFilter === '전체'}
               >
                 전체
               </S.FilterButton>
               <S.FilterButton
-                onClick={() =>
-                  setSelectedFilter(selectedFilter === '수시' ? '' : '수시')
-                }
+                onClick={() => setSelectedFilter('수시')}
                 isSelected={selectedFilter === '수시'}
               >
                 수시
               </S.FilterButton>
               <S.FilterButton
-                onClick={() =>
-                  setSelectedFilter(selectedFilter === '상시' ? '' : '상시')
-                }
+                onClick={() => setSelectedFilter('상시')}
                 isSelected={selectedFilter === '상시'}
               >
                 상시
