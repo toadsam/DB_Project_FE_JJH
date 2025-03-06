@@ -15,14 +15,14 @@ function MiniClub() {
   const initialSearchTerm = searchParams.get('search') || '';
   const initialFilter = searchParams.get('subFilter') || '전체';
   const initialCollege = searchParams.get('college') || '';
-  // 여기서 additional 필터를 읽어 배열로 변환 (이전에 department로 처리했던 부분을 수정)
+  // additional 필터를 배열로 변환
   const initialAdditional = searchParams.get('additional')
     ? searchParams.get('additional').split(',')
     : [];
 
   // 필터 관련 state
-  const searchTerm = initialSearchTerm;
-  const selectedFilter = initialFilter; // 모집 필터: 전체, 수시, 상시
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+  const [selectedFilter, setSelectedFilter] = useState(initialFilter); // 모집 필터: 전체, 수시, 상시
   const [selectedCollege, setSelectedCollege] = useState(initialCollege);
   const [selectedDepartment, setSelectedDepartment] = useState('');
   // 추가 필터 값 (복수 선택)
@@ -47,6 +47,7 @@ function MiniClub() {
   useEffect(() => {
     setColleges(collegesData);
   }, []);
+
   // API 호출: 선택된 대학과 추가 필터를 기반으로 소학회 동아리 목록 조회
   useEffect(() => {
     const fetchEvents = async () => {
@@ -132,23 +133,24 @@ function MiniClub() {
       const scope = event.recruitment_scope;
       if (!scope) return false;
       const trimmedScope = scope.trim();
-      const isMatch = selectedAdditional.some((filter) => {
-        return trimmedScope === filter.trim();
-      });
-      return isMatch;
+      return selectedAdditional.some(
+        (filter) => trimmedScope === filter.trim()
+      );
     });
   }
 
+  // breadcrumb 설정
   const breadcrumbSearch = `소학회 > ${selectedFilter || '전체'}${
     selectedAdditional.length > 0 ? ' > ' + selectedAdditional.join(', ') : ''
   }`;
+  // 사이드바에서 선택한 경우: 소학회 > (단과대) > (학과)
+  const breadcrumbSidebar = `소학회 > ${selectedCollege || '전체'}${
+    selectedDepartment ? ' > ' + selectedDepartment : ''
+  }`;
 
-  // 예시: 사이드바에서 선택한 경우
-  const breadcrumbSidebar = `소학회 > ${
-    selectedCollege ? selectedCollege : '전체'
-  }${selectedDepartment ? ' > ' + selectedDepartment : ''}`;
+  // selectedCollege가 있을 경우는 사이드바로 필터링한 것으로 간주
+  const breadcrumb = selectedCollege ? breadcrumbSidebar : breadcrumbSearch;
 
-  const breadcrumb = searchTerm ? breadcrumbSearch : breadcrumbSidebar;
   return (
     <S.PageContainer>
       <S.Sidebar>
@@ -166,6 +168,9 @@ function MiniClub() {
                   <div key={index}>
                     <S.SidebarItem
                       onClick={() => {
+                        // 사이드바 선택 시 검색 필터와 모집 필터 모두 초기화 (기본: 소학회 / 전체)
+                        setSearchTerm('');
+                        setSelectedFilter('전체');
                         setSelectedCollege(
                           selectedCollege === college.name ? '' : college.name
                         );
@@ -181,6 +186,9 @@ function MiniClub() {
                         <S.SidebarSubItem
                           key={idx}
                           onClick={() => {
+                            // 학과 선택 시에도 검색 필터와 모집 필터 초기화
+                            setSearchTerm('');
+                            setSelectedFilter('전체');
                             setSelectedDepartment(dept);
                             setSidebarExpanded(false);
                           }}
@@ -202,6 +210,8 @@ function MiniClub() {
                 <div key={index}>
                   <S.SidebarItem
                     onClick={() => {
+                      setSearchTerm('');
+                      setSelectedFilter('전체');
                       setSelectedCollege(
                         selectedCollege === college.name ? '' : college.name
                       );
@@ -216,7 +226,11 @@ function MiniClub() {
                     college.departments.map((dept, idx) => (
                       <S.SidebarSubItem
                         key={idx}
-                        onClick={() => setSelectedDepartment(dept)}
+                        onClick={() => {
+                          setSearchTerm('');
+                          setSelectedFilter('전체');
+                          setSelectedDepartment(dept);
+                        }}
                         isselected={selectedAdditional.includes(dept)}
                       >
                         {dept}
