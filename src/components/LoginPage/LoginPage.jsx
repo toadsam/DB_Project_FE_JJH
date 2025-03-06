@@ -50,40 +50,59 @@ function LoginPage() {
         {},
         { withCredentials: true } // ✅ 서버에서 쿠키에 저장된 refreshToken 사용
       );
+
       const { accessToken } = response.data;
+      if (!accessToken) {
+        console.warn("🚨 Access Token 재발급 실패 → 로그인 필요");
+        handleLogout();
+        return;
+      }
+
       localStorage.setItem("accessToken", accessToken);
       axios.defaults.headers.common["Authorization"] = `Bearer ${accessToken}`;
       setToken(accessToken);
       console.log("✅ Access Token이 갱신되었습니다.");
     } catch (error) {
-      console.error("🚨 Access Token 갱신 실패:", error);
+      console.error("🚨 Refresh Token이 만료됨 → 재로그인 필요!", error);
       handleLogout();
     }
   }, [handleLogout]);
 
-  const checkTokenExpiration = useCallback(() => {
+  const checkTokenExpiration = useCallback(async () => {
     const storedToken = localStorage.getItem("accessToken");
-    if (!storedToken) return;
-    const decodedToken = decodeToken(storedToken);
-    if (!decodedToken) {
-      console.warn("🚨 유효하지 않은 토큰입니다. 로그아웃 처리!");
-      handleLogout();
+
+    // ✅ Access Token이 없는 경우 → Refresh Token이 있는지 확인
+    if (!storedToken) {
+      console.warn("🚨 Access Token 없음 → Refresh Token 확인");
+      await refreshAccessToken();
       return;
     }
+
+    // ✅ Access Token 디코딩 후 만료 여부 확인
+    const decodedToken = decodeToken(storedToken);
+    if (!decodedToken) {
+      console.warn("🚨 유효하지 않은 Access Token → Refresh Token 확인");
+      await refreshAccessToken();
+      return;
+    }
+
     const now = Date.now() / 1000;
     if (decodedToken.exp < now) {
-      console.warn("🔄 Access Token이 만료되었습니다. 갱신 시도 중...");
-      refreshAccessToken();
+      console.warn("🔄 Access Token 만료됨 → Refresh Token으로 재발급 시도");
+      await refreshAccessToken();
     }
-  }, [refreshAccessToken, handleLogout]);
+  }, [refreshAccessToken]);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("accessToken");
     const storedUser = localStorage.getItem("userInfo");
+
     if (storedToken && storedUser) {
       setToken(storedToken);
       setUser(JSON.parse(storedUser));
     }
+
+    // ✅ 주기적으로 Access Token 만료 확인
     const interval = setInterval(checkTokenExpiration, 60000);
     return () => clearInterval(interval);
   }, [checkTokenExpiration]);
@@ -108,10 +127,7 @@ function LoginPage() {
                   <GoogleLogin
                     onSuccess={async (credentialResponse) => {
                       try {
-                        console.log(
-                          "✅ Google OAuth 성공:",
-                          credentialResponse
-                        );
+                        console.log("✅ Google OAuth 성공:", credentialResponse);
                         const decodedGoogleToken = jwtDecode(
                           credentialResponse.credential
                         );
