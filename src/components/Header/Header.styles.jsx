@@ -17,6 +17,7 @@ export const TopBar = styled.div`
 
 export const LogoSection = styled.div`
   cursor: pointer;
+  margin-bottom: 5px;
 `;
 
 export const LogoText = styled.span`
