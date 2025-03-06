@@ -65,10 +65,11 @@ export const MobileActions = styled.div`
 export const LoginButton = styled.button`
   background: none;
   border: none;
-  font-size: 1rem;
+  font-size: 17px;
+  font-weight: 600;
   cursor: pointer;
   &:hover {
-    text-decoration: underline;
+    text-decoration: none;
   }
 `;
 
@@ -94,7 +95,7 @@ export const NavItem = styled.div`
   &:hover {
     text-decoration: none;
   }
-  font-size: 18px;
+  font-size: 16px;
 `;
 
 /* ── 검색 필터 UI ── */
