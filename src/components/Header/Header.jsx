@@ -33,7 +33,7 @@ function Header() {
         </S.SearchWrapper>
 
         {/* 로그인 버튼 */}
-        <S.LoginButton onClick={() => navigate('/login')}>로그인</S.LoginButton>
+        <S.LoginButton onClick={() => navigate('/login')}>내정보</S.LoginButton>
       </S.TopBar>
 
       {/* 네비게이션 바는 SearchPage에서는 보이지 않도록 함 */}

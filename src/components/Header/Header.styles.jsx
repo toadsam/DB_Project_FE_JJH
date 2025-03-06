@@ -1,7 +1,6 @@
 // 검색 아이콘: 오른쪽 끝에 위치하도록 절대배치
 import styled from 'styled-components';
 
-/* 기존 Header 스타일 */
 export const HeaderContainer = styled.header`
   width: 100%;
   border-bottom: 1px solid #ddd;
@@ -12,7 +11,7 @@ export const TopBar = styled.div`
   margin: 0 auto;
   padding: 8px 16px;
   display: flex;
-  align-items: center;
+  align-items: center; /* Vertically centers children */
   justify-content: space-between;
 `;
 
@@ -33,13 +32,29 @@ export const SearchWrapper = styled.div`
 `;
 
 export const SearchInput = styled.input`
-  width: 60%;
+  width: 70%;
   max-width: 400px;
   padding: 8px 40px 8px 16px;
   border-radius: 20px;
   border: 1px solid #ccc;
   font-size: 1rem;
   cursor: pointer;
+  @media (max-width: 768px) {
+    width: 60%;
+    margin-left: 10px;
+  }
+`;
+
+export const LoginButton = styled.button`
+  color: inherit;
+  background: none;
+  border: none;
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  &:hover {
+    text-decoration: none;
+  }
 `;
 
 export const SearchIcon = styled.div`
@@ -60,18 +75,6 @@ export const MobileActions = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-`;
-
-export const LoginButton = styled.button`
-  color: inherit;
-  background: none;
-  border: none;
-  font-size: 17px;
-  font-weight: 600;
-  cursor: pointer;
-  &:hover {
-    text-decoration: none;
-  }
 `;
 
 export const NavBar = styled.nav`
