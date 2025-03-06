@@ -40,7 +40,6 @@ export const MoreBox = styled(EventBox)`
   justify-content: center;
   align-items: center;
 `;
-
 export const TitleRow = styled.div`
   display: flex;
   justify-content: center; /* 중앙 정렬 */
@@ -48,7 +47,7 @@ export const TitleRow = styled.div`
   width: 100%;
   padding: 20px 40px;
   box-sizing: border-box;
-  background-color: rgb(255, 255, 255);
+  background-color: #f6f4f4;
 
   @media (max-width: 768px) {
     padding: 10px 20px;
@@ -57,27 +56,42 @@ export const TitleRow = styled.div`
 
 /* 제목 텍스트 전체 */
 export const TitleText = styled.h1`
-  font-size: 20px; /* 기본 폰트 크기 */
+  font-size: 24px; /* 기본 폰트 크기 */
   font-weight: bold;
   color: #1d1d1f;
   margin: 0;
   text-align: center;
   line-height: 1.4;
   @media (max-width: 768px) {
+    padding-top: 10px;
+  }
+`;
+
+/* 각 줄을 감싸는 컴포넌트 (선택사항, 혹은 <br/> 사용 가능) */
+export const TitleLine = styled.div`
+  font-size: 20px;
+  @media (max-width: 768px) {
     font-size: 16px;
   }
 `;
 
-export const MoreButton = styled.button`
-  display: block;
-  margin: 10px auto; /* 가운데 정렬 및 상하 간격 추가 */
+/* "마감일자" 강조 스타일 */
+export const Emphasized = styled.span`
+  color: #ff4d4f; /* 강조 색상 */
+  font-size: 24px; /* 더 크게 */
+  font-weight: bolder;
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+`;
 
-  font-size: 16px;
+export const MoreButton = styled.button`
+  font-size: 14px;
   color: black;
-  background-color: rgb(207, 204, 204);
-  border: 1px solid rgb(224, 224, 224);
-  padding: 6px 20px; /* 좌우 패딩을 늘려 타원형 효과 */
-  border-radius: 20px; /* 타원 모양 */
+  background-color: #f6f4f4;
+  border: 1px solid rgb(164, 164, 164);
+  padding: 6px 10px;
+  border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
 
@@ -90,8 +104,7 @@ export const MoreButton = styled.button`
 export const Container = styled.div`
   padding: 0 40px;
   padding-top: 20px;
-  background-color: rgb(255, 255, 255);
-  padding-bottom: 40px;
+  background-color: #f6f4f4;
   @media (max-width: 768px) {
     padding: 0 20px;
     padding-top: 10px;

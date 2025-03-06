@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import * as S from './ClubList.styles';
 import axios from 'axios';
 import defaultImage from '../../asset/mainLogo.png';
-import { useNavigate } from 'react-router-dom';
-import { FaChevronDown, FaChevronUp, FaSearch } from 'react-icons/fa';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -26,16 +26,23 @@ const categories = [
 ];
 
 function ClubList() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  // 헤더에서 전달한 쿼리 파라미터로 초기값 설정
+  const initialSearchTerm = searchParams.get('search') || '';
+  const initialSelectedFilter = searchParams.get('subFilter') || '전체';
+
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  // 좌측 사이드바에서 선택하는 상세 분과 (없으면 전체)
   const [selectedCategory, setSelectedCategory] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedFilter, setSelectedFilter] = useState('전체'); // 기본값을 "전체"로!
+  // 헤더 검색창에서 입력한 검색어 (쿼리값으로 초기화)
+  const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+  // 모집 필터 상태 (전체, 수시, 상시) – 헤더에서 전달한 값으로 초기화
+  const [selectedFilter, setSelectedFilter] = useState(initialSelectedFilter);
 
-  const navigate = useNavigate();
-
-  // 📌 모바일 여부 감지
+  // 모바일 여부 감지
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -43,7 +50,7 @@ function ClubList() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // 📌 모바일 사이드바 확장 여부
+  // 모바일일 경우 사이드바 확장 여부
   const [sidebarExpanded, setSidebarExpanded] = useState(false);
   useEffect(() => {
     if (isMobile) {
@@ -51,28 +58,32 @@ function ClubList() {
     }
   }, [selectedCategory, isMobile]);
 
-  // 🔄 카테고리 변경 시 검색어 리셋
   useEffect(() => {
-    setSearchTerm('');
+    if (selectedCategory !== '') {
+      // 사이드바 클릭 시 검색어 초기화
+      setSearchTerm('');
+    }
   }, [selectedCategory]);
 
+  // API 호출: 선택한 분과(selectedCategory)와 검색어(searchTerm)를 쿼리 파라미터로 전달
   useEffect(() => {
     const fetchEvents = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(
-          `${API_URL}/api/clubs/central${
-            selectedCategory
-              ? `?details=${encodeURIComponent(selectedCategory)}`
-              : ''
-          }`,
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              'ngrok-skip-browser-warning': '69420',
-            },
-          }
-        );
+        const params = {};
+        if (selectedCategory) params.details = selectedCategory;
+        if (searchTerm) params.search = searchTerm;
+        const queryString = new URLSearchParams(params).toString();
+        const url = `${API_URL}/api/clubs/central${
+          queryString ? '?' + queryString : ''
+        }`;
+        console.log('API 호출 URL:', url);
+        const response = await axios.get(url, {
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': '69420',
+          },
+        });
 
         setEvents(
           Array.isArray(response.data)
@@ -93,7 +104,7 @@ function ClubList() {
     };
 
     fetchEvents();
-  }, [selectedCategory]);
+  }, [selectedCategory, searchTerm]);
 
   if (loading) return <S.PageContainer>Loading...</S.PageContainer>;
   if (error) return <S.PageContainer>Error: {error}</S.PageContainer>;
@@ -102,12 +113,7 @@ function ClubList() {
     navigate(`/clubinfo/${id}`);
   };
 
-  // 🔍 검색 input onChange 핸들러
-  const handleSearchChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
-
-  // 📌 모집 마감일 계산 함수
+  // 모집 마감일 계산 함수 (수시모집의 경우 D-일수, 없으면 '상시')
   const getRecruitmentLabel = (event) => {
     if (!event.recruitment_type) {
       return '상시';
@@ -116,18 +122,19 @@ function ClubList() {
       const endDate = new Date(event.recruitment_end_date);
       const diffTime = endDate - today;
       const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
       return diffDays < 0 ? '마감' : `D-${diffDays}`;
     }
     return '';
   };
 
-  // 🔍 검색어로 시작하는 동아리만 필터링
+  // 클라이언트 측 필터링: 검색어로 시작하는 club_name만 선택 (대소문자 무시, trim 적용)
   let filteredEvents = events.filter((event) =>
-    event.club_name.toLowerCase().startsWith(searchTerm.toLowerCase())
+    (event.club_name?.trim().toLowerCase() || '').startsWith(
+      searchTerm.trim().toLowerCase()
+    )
   );
 
-  // 📌 모집 필터 적용 (수시 / 상시)
+  // 모집 필터 적용: '수시' 또는 '상시' 선택 시 해당 조건으로 필터링 (기본 '전체'는 필터링하지 않음)
   if (selectedFilter === '수시') {
     filteredEvents = filteredEvents.filter(
       (event) => event.recruitment_type === '수시모집'
@@ -138,23 +145,13 @@ function ClubList() {
     );
   }
 
+  // breadcrumb 생성: recruitment filter와 사이드바 상세 분과를 모두 반영
+  const breadcrumb = `중앙동아리 > ${selectedFilter}${
+    selectedCategory ? ' > ' + selectedCategory : ''
+  }`;
+
   return (
     <S.PageContainer>
-      {/* 📌 모바일에서만 검색창 추가 */}
-      {isMobile && (
-        <S.MobileSearchContainer>
-          <S.MobileSearchInput
-            type="text"
-            placeholder="검색"
-            value={searchTerm}
-            onChange={handleSearchChange}
-          />
-          <S.MobileSearchIcon>
-            <FaSearch />
-          </S.MobileSearchIcon>
-        </S.MobileSearchContainer>
-      )}
-
       <S.Sidebar>
         {isMobile ? (
           <>
@@ -170,6 +167,7 @@ function ClubList() {
                   key={index}
                   onClick={() => {
                     setSelectedCategory(item);
+                    setSelectedFilter('전체'); // 모집 필터 리셋
                     setSidebarExpanded(false);
                   }}
                   isSelected={selectedCategory === item}
@@ -186,7 +184,10 @@ function ClubList() {
               {categories[0].items.map((item, index) => (
                 <S.SidebarItem
                   key={index}
-                  onClick={() => setSelectedCategory(item)}
+                  onClick={() => {
+                    setSelectedCategory(item);
+                    setSelectedFilter('전체'); // 모집 필터 리셋
+                  }}
                   isSelected={selectedCategory === item}
                 >
                   {item}
@@ -199,54 +200,30 @@ function ClubList() {
 
       <S.Content>
         <S.TopBar>
-          <S.Title1>
-            중앙동아리 {'>'} {selectedCategory || '전체'}
-          </S.Title1>
+          <S.Title1>{breadcrumb}</S.Title1>
 
-          {/* 📌 필터 버튼 추가 */}
+          {/* 데스크탑용 필터 버튼 */}
           {!isMobile && (
             <S.FilterContainer>
-              {' '}
               <S.FilterButton
-                onClick={() =>
-                  setSelectedFilter(selectedFilter === '전체' ? '' : '전체')
-                }
+                onClick={() => setSelectedFilter('전체')}
                 isSelected={selectedFilter === '전체'}
               >
                 전체
               </S.FilterButton>
               <S.FilterButton
-                onClick={() =>
-                  setSelectedFilter(selectedFilter === '수시' ? '' : '수시')
-                }
+                onClick={() => setSelectedFilter('수시')}
                 isSelected={selectedFilter === '수시'}
               >
                 수시
               </S.FilterButton>
               <S.FilterButton
-                onClick={() =>
-                  setSelectedFilter(selectedFilter === '상시' ? '' : '상시')
-                }
+                onClick={() => setSelectedFilter('상시')}
                 isSelected={selectedFilter === '상시'}
               >
                 상시
-              </S.FilterButton>{' '}
+              </S.FilterButton>
             </S.FilterContainer>
-          )}
-
-          {/* 📌 데스크탑 검색창 */}
-          {!isMobile && (
-            <S.SearchContainer>
-              <S.SearchInput
-                type="text"
-                placeholder="검색"
-                value={searchTerm}
-                onChange={handleSearchChange}
-              />
-              <S.SearchIcon>
-                <FaSearch />
-              </S.SearchIcon>
-            </S.SearchContainer>
           )}
         </S.TopBar>
 
@@ -261,7 +238,7 @@ function ClubList() {
                 <LazyLoadImage
                   src={event.image}
                   alt={event.club_name}
-                  effect="blur" // 로딩 시 blur 효과 (옵션)
+                  effect="blur"
                   width="100%"
                   height="100%"
                 />

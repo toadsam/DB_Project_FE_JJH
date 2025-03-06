@@ -5,7 +5,6 @@ import * as S from './ClubCategory.styles'; // ClubList 스타일 적용
 import defaultImage from '../../asset/mainLogo.png';
 import { FaChevronDown, FaChevronUp, FaSearch } from 'react-icons/fa';
 
-import { LazyLoadImage } from 'react-lazy-load-image-component';
 const API_URL = process.env.REACT_APP_API_URL;
 
 const categories = [
@@ -194,12 +193,12 @@ function CategoryClubList() {
                   position: 'relative',
                 }}
               >
-                <LazyLoadImage
+                <img
                   src={club.image}
                   alt={club.club_name}
-                  effect="blur"
                   style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                 />
+
                 {club.recruitment_scope && (
                   <S.RecruitmentTag>{club.recruitment_scope}</S.RecruitmentTag>
                 )}

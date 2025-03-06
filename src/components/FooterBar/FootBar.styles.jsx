@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const FooterContainer = styled.footer`
   background-color: #1e1e1e;
@@ -12,9 +12,9 @@ export const FooterContainer = styled.footer`
 
 export const ContentWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-
+  text-align: center;
   @media (max-width: 768px) {
     flex-direction: column;
     align-items: center;
@@ -95,5 +95,12 @@ export const IconLink = styled.a`
 
   &:hover {
     color: #ccc;
+  }
+`;
+export const AdminEmailLink = styled.a`
+  color: inherit; /* 부모 요소의 텍스트 색상 상속 */
+  text-decoration: none; /* 밑줄 제거 */
+  &:hover {
+    text-decoration: underline; /* 호버 시 밑줄 표시 (선택 사항) */
   }
 `;
