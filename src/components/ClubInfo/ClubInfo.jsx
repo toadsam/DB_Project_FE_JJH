@@ -17,7 +17,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 const API_URL = process.env.REACT_APP_API_URL;
 
-axios.defaults.withCredentials = true;
+//axios.defaults.withCredentials = true;
 
 
 // 🔥 리프레시 토큰을 사용하여 새 accessToken을 요청하는 함수 추가
@@ -30,6 +30,7 @@ const refreshAccessToken = async () => {
 
     const data = await res.json();
     if (res.ok) {
+      console.log("✅ 새 Access Token 발급 성공:", data.accessToken);
       localStorage.setItem("accessToken", data.accessToken);
       localStorage.setItem("accessTokenExpiry", Date.now() + 15 * 60 * 1000);
       return data.accessToken;
@@ -158,28 +159,10 @@ function ClubInfo() {
         const res = await fetch(`${API_URL}/api/clubs/${club_id}`, {
           method: "GET",
           headers: { Authorization: `Bearer ${token}` },
-          credentials: "include"
+          credentials: "include"  // ✅ 특정 요청에서만 쿠키 포함
         });
-  
-        if (res.status === 401) {
-          console.warn("🔄 AccessToken 만료됨. RefreshToken으로 새 AccessToken 요청...");
-          token = await refreshAccessToken();
-          if (token) {
-            const retryRes = await fetch(`${API_URL}/api/clubs/${club_id}`, {
-              method: "GET",
-              headers: { Authorization: `Bearer ${token}` },
-              credentials: "include"
-            });
-  
-            if (retryRes.ok) {
-              setClubInfo(await retryRes.json());
-            } else {
-              setError("데이터를 불러오는 중 오류가 발생했습니다.");
-            }
-          } else {
-            setError("로그인이 필요합니다.");
-          }
-        } else if (res.ok) {
+    
+        if (res.ok) {
           setClubInfo(await res.json());
         } else {
           setError("데이터를 불러오는 중 오류가 발생했습니다.");
@@ -191,6 +174,7 @@ function ClubInfo() {
         setLoading(false);
       }
     };
+    
   
     fetchClubData();
   }, [club_id]);
