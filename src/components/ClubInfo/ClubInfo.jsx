@@ -17,9 +17,65 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 const API_URL = process.env.REACT_APP_API_URL;
 
-const getUserInfo = () => {
-  const token = localStorage.getItem("accessToken");
-  if (!token) return null;
+axios.defaults.withCredentials = true;
+
+
+// 🔥 리프레시 토큰을 사용하여 새 accessToken을 요청하는 함수 추가
+const refreshAccessToken = async () => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/api/auth/refresh`, 
+      {}, // 본문은 필요 없음 (쿠키에서 자동 전송됨)
+      {
+        withCredentials: true, // 🔥 쿠키 자동 포함
+      }
+    );
+
+    const newAccessToken = response.data.access_token;
+    localStorage.setItem("accessToken", newAccessToken); // 새 토큰 저장
+    return newAccessToken;
+  } catch (error) {
+    console.error("🚨 토큰 갱신 실패:", error);
+    alert("세션이 만료되었습니다. 다시 로그인해주세요.");
+    localStorage.removeItem("accessToken");
+    window.location.href = "/login";
+    return null;
+  }
+};
+
+
+// 🔥 axios 인터셉터 추가 (토큰 만료 시 자동 갱신 후 재요청)
+axios.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response && error.response.status === 401) {
+      console.warn("🔄 AccessToken 만료, 리프레시 토큰으로 갱신 중...");
+      const newAccessToken = await refreshAccessToken();
+
+      if (newAccessToken) {
+        // 기존 요청을 새 accessToken으로 재시도
+        error.config.headers.Authorization = `Bearer ${newAccessToken}`;
+        return axios(error.config);
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
+
+const getUserInfo = async () => {
+  let token = localStorage.getItem("accessToken");
+
+  if (!token) {
+    console.warn("🔄 AccessToken 없음, 리프레시 토큰으로 새 토큰 요청...");
+    const newAccessToken = await refreshAccessToken();
+    if (newAccessToken) {
+      token = newAccessToken;
+    } else {
+      return null; // 새 토큰 요청 실패 시 로그아웃 처리
+    }
+  }
+
   try {
     return jwtDecode(token);
   } catch (error) {
@@ -27,6 +83,8 @@ const getUserInfo = () => {
     return null;
   }
 };
+
+
 
 function ClubInfo() {
   const { club_id } = useParams();
@@ -49,28 +107,55 @@ function ClubInfo() {
   useEffect(() => {
     const fetchClubData = async () => {
       setLoading(true);
-      const token = localStorage.getItem("accessToken");
+      let token = localStorage.getItem("accessToken");
+    
       if (!token) {
-        setError("로그인이 필요합니다.");
-        setLoading(false);
-        return;
+        console.warn("🔄 AccessToken 없음, 리프레시 토큰으로 새 토큰 요청...");
+        const newAccessToken = await refreshAccessToken();
+        if (newAccessToken) {
+          token = newAccessToken;
+        } else {
+          setError("로그인이 필요합니다.");
+          setLoading(false);
+          return;
+        }
       }
+    
       try {
         const response = await axios.get(`${API_URL}/api/clubs/${club_id}`, {
           headers: {
-            "Content-Type": "application/json",
-            "ngrok-skip-browser-warning": "69420",
             Authorization: `Bearer ${token}`,
           },
         });
         setClubInfo(response.data);
       } catch (err) {
         console.error("🚨 API Error:", err.response || err.message);
-        setError("데이터를 불러오는 중 오류가 발생했습니다.");
+        
+        // ✅ 401 오류 발생 시 새 AccessToken 요청 후 재시도
+        if (err.response?.status === 401) {
+          console.warn("🔄 AccessToken 만료됨. 새로고침 중...");
+          const newAccessToken = await refreshAccessToken();
+          if (newAccessToken) {
+            try {
+              const retryResponse = await axios.get(`${API_URL}/api/clubs/${club_id}`, {
+                headers: { Authorization: `Bearer ${newAccessToken}` },
+              });
+              setClubInfo(retryResponse.data);
+            } catch (retryErr) {
+              console.error("🚨 재시도 실패:", retryErr);
+              setError("데이터를 불러오는 중 오류가 발생했습니다.");
+            }
+          } else {
+            setError("로그인이 필요합니다.");
+          }
+        } else {
+          setError("데이터를 불러오는 중 오류가 발생했습니다.");
+        }
       } finally {
         setLoading(false);
       }
     };
+    
 
     fetchClubData();
   }, [club_id]);
