@@ -48,24 +48,46 @@ function LoginPage() {
 
   const handleLogout = useCallback(async () => {
     try {
-      await axios.post(
+      console.log("🚀 로그아웃 시작...");
+  
+      // ✅ 1) 백엔드 로그아웃 요청
+      console.log("🔄 서버에 로그아웃 요청 중...");
+      const response = await axios.post(
         `${API_URL}/api/auth/logout`,
         {},
         { withCredentials: true }
       );
-      alert('✅ 로그아웃 되었습니다.');
+      console.log("✅ 서버 로그아웃 성공!", response.data);
+  
+      // ✅ 2) localStorage & sessionStorage 삭제
+      console.log("🗑️ 저장된 토큰 및 사용자 정보 삭제...");
       localStorage.clear();
       sessionStorage.clear();
+  
+      // ✅ 3) Google 로그인 자동 선택 해제
+      console.log("🔒 Google 로그인 자동 선택 해제...");
       window.google?.accounts.id.disableAutoSelect();
+  
+      // ✅ 4) axios 헤더에서 Authorization 제거
+      console.log("🔄 axios 요청 헤더에서 Authorization 삭제...");
       delete axios.defaults.headers.common['Authorization'];
+  
+      // ✅ 5) React 상태 초기화
+      console.log("🔄 React 상태 초기화...");
       setToken(null);
       setUser(null);
+  
+      // ✅ 6) 로그인 페이지로 이동
+      console.log("🔀 로그인 페이지로 이동...");
       navigate('/login');
+  
+      console.log("🎉 로그아웃 완료!");
     } catch (error) {
-      console.error('🚨 로그아웃 실패:', error);
-      alert('로그아웃 중 오류가 발생했습니다.');
+      console.error("🚨 로그아웃 실패:", error);
+      alert("로그아웃 중 오류가 발생했습니다.");
     }
   }, [navigate]);
+  
 
   const refreshAccessToken = useCallback(async () => {
     try {
