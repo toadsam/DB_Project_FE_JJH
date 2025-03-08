@@ -30,15 +30,17 @@ const refreshAccessToken = async () => {
 
     const data = await res.json();
     if (res.ok) {
-      console.log("✅ 새 Access Token 발급 성공:", data.accessToken);
+      
       localStorage.setItem("accessToken", data.accessToken);
       localStorage.setItem("accessTokenExpiry", Date.now() + 15 * 60 * 1000);
-      return data.accessToken;
+      console.log("왜에에에에에에");
+            return data.accessToken;
     } else {
       console.log("Refresh token 호출 실패:", data.message);
       alert("로그인하세요!");
       localStorage.removeItem("accessToken");
       window.location.href = "/login";
+      console.log("왜에에에에에에");
       return null;
     }
   } catch (err) {
@@ -46,6 +48,7 @@ const refreshAccessToken = async () => {
     alert("로그인하세요!");
     localStorage.removeItem("accessToken");
     window.location.href = "/login";
+    console.log("왜에에에에에에");
     return null;
   }
 };
@@ -56,11 +59,15 @@ axios.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response && error.response.status === 401) {
-      console.warn("🔄 AccessToken 만료, 리프레시 토큰으로 갱신 중...");
-      const newAccessToken = await refreshAccessToken();
+      console.warn("🔄 AccessToken 만료, 리프레시 토큰 확인 중...");
+      
+      if (!localStorage.getItem("accessToken")) {
+        console.warn("❌ AccessToken 없음 → 자동 리프레시 중단");
+        return Promise.reject(error);
+      }
 
+      const newAccessToken = await refreshAccessToken();
       if (newAccessToken) {
-        // 기존 요청을 새 accessToken으로 재시도
         error.config.headers.Authorization = `Bearer ${newAccessToken}`;
         return axios(error.config);
       }
@@ -68,6 +75,7 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
 
 
 const parseJwt = (token) => {

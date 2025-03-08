@@ -12,9 +12,14 @@ export const setupAxiosInterceptors = () => {
     (response) => response,
     async (error) => {
       if (error.response && error.response.status === 401) {
-        console.warn("🔄 AccessToken 만료, 리프레시 토큰으로 갱신 중...");
+        console.warn("🔄 AccessToken 만료됨. 리프레시 토큰 확인 중...");
+        
+        if (!localStorage.getItem("accessToken")) {
+          console.warn("🚨 AccessToken 없음 → 리프레시 토큰 요청 안함!");
+          return Promise.reject(error); // ✅ 로그인 상태가 아니면 refresh 요청 안 함
+        }
+  
         const newAccessToken = await refreshAccessToken();
-
         if (newAccessToken) {
           error.config.headers.Authorization = `Bearer ${newAccessToken}`;
           return axios(error.config);
@@ -23,4 +28,5 @@ export const setupAxiosInterceptors = () => {
       return Promise.reject(error);
     }
   );
-};
+  
+};  
