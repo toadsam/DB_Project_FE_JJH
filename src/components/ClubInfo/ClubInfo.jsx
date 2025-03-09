@@ -1,128 +1,32 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
-import * as S from "./ClubInfo.styles";
-import defaultImage from "../../asset/mainLogo.png";
-import ClubApply from "../ClubApply/ClubApply";
-import ClubEvent from "../ClubEvent/ClubEvent";
-//import { jwtDecode } from "jwt-decode";
-import { FaInstagram, FaYoutube, FaLink, FaGlobe } from "react-icons/fa";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper/modules";
-import RecruitmentPage from "../RecruitmentPage/RecruitmentPage"; // ✅ 추가
-import EditRecruitmentPage from "../EditRecruitmentPage/EditRecruitmentPage"; // ✅ 추가
+import React, { useState, useEffect, useMemo } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import * as S from './ClubInfo.styles';
+import defaultImage from '../../asset/mainLogo.png';
+import ClubApply from '../ClubApply/ClubApply';
+import ClubEvent from '../ClubEvent/ClubEvent';
+import { jwtDecode } from 'jwt-decode';
+import { FaInstagram, FaYoutube, FaLink, FaGlobe } from 'react-icons/fa';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination } from 'swiper/modules';
+import RecruitmentPage from '../RecruitmentPage/RecruitmentPage'; // ✅ 추가
+import EditRecruitmentPage from '../EditRecruitmentPage/EditRecruitmentPage'; // ✅ 추가
 
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 const API_URL = process.env.REACT_APP_API_URL;
 
-//axios.defaults.withCredentials = true;
-
-
-// 🔥 리프레시 토큰을 사용하여 새 accessToken을 요청하는 함수 추가
-const refreshAccessToken = async () => {
+const getUserInfo = () => {
+  const token = localStorage.getItem('accessToken');
+  if (!token) return null;
   try {
-    const res = await fetch(`${API_URL}/api/auth/refresh`, {
-      method: "POST",
-      credentials: "include" // Refresh Token을 쿠키에서 자동 포함
-    });
-
-    const data = await res.json();
-    if (res.ok) {
-      
-      localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("accessTokenExpiry", Date.now() + 15 * 60 * 1000);
-      console.log("왜에에에에에에");
-            return data.accessToken;
-    } else {
-      console.log("Refresh token 호출 실패:", data.message);
-      alert("로그인하세요!");
-      localStorage.removeItem("accessToken");
-      window.location.href = "/login";
-      console.log("왜에에에에에에");
-      return null;
-    }
-  } catch (err) {
-    console.error("Access token 재발급 오류:", err);
-    alert("로그인하세요!");
-    localStorage.removeItem("accessToken");
-    window.location.href = "/login";
-    console.log("왜에에에에에에");
+    return jwtDecode(token);
+  } catch (error) {
+    console.error('🚨 Invalid token:', error);
     return null;
   }
 };
-
-
-// 🔥 axios 인터셉터 추가 (토큰 만료 시 자동 갱신 후 재요청)
-axios.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    if (error.response && error.response.status === 401) {
-      console.warn("🔄 AccessToken 만료, 리프레시 토큰 확인 중...");
-      
-      if (!localStorage.getItem("accessToken")) {
-        console.warn("❌ AccessToken 없음 → 자동 리프레시 중단");
-        return Promise.reject(error);
-      }
-
-      const newAccessToken = await refreshAccessToken();
-      if (newAccessToken) {
-        error.config.headers.Authorization = `Bearer ${newAccessToken}`;
-        return axios(error.config);
-      }
-    }
-    return Promise.reject(error);
-  }
-);
-
-
-
-const parseJwt = (token) => {
-  try {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(
-      atob(base64)
-        .split('')
-        .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-        .join('')
-    );
-    return JSON.parse(jsonPayload);
-  } catch (e) {
-    console.error("JWT 파싱 오류:", e);
-    return null;
-  }
-};
-
-const getUserInfo = async () => {
-  let token = localStorage.getItem("accessToken");
-
-  if (!token) {
-    console.warn("🔄 AccessToken 없음, RefreshToken으로 새 AccessToken 요청...");
-    token = await refreshAccessToken(); // Refresh Token을 사용하여 새 Access Token 발급
-    if (!token) {
-      console.warn("🚨 RefreshToken도 만료됨. 로그인 필요");
-      return null;
-    }
-  }
-
-  const payload = parseJwt(token);
-  if (!payload) {
-    console.warn("🚨 AccessToken이 유효하지 않음, 새로고침 필요...");
-    token = await refreshAccessToken();
-    if (!token) {
-      console.warn("🚨 새 AccessToken도 발급 실패. 로그인 필요");
-      return null;
-    }
-  }
-
-  return payload;
-};
-
-
-
-
 
 function ClubInfo() {
   const { club_id } = useParams();
@@ -130,69 +34,52 @@ function ClubInfo() {
   const [clubInfo, setClubInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [selectedTab, setSelectedTab] = useState("동아리 소개");
+  const [selectedTab, setSelectedTab] = useState('동아리 소개');
   const [selectedImageIndex, setSelectedImageIndex] = useState(null);
 
   const userInfo = useMemo(() => getUserInfo(), []);
   const isClubAdmin = userInfo?.club_ids?.includes(Number(club_id));
   useEffect(() => {
-    const checkLoginStatus = async () => {
-      const user = await getUserInfo(); // ✅ AccessToken 확인 후 없으면 RefreshToken으로 자동 갱신
-      if (!user) {
-        alert("로그인이 필요합니다!");
-        navigate("/login");
-      }
-    };
-  
-    checkLoginStatus();
-  }, [navigate]);
-  
-  
+    if (!userInfo) {
+      alert('로그인이 필요합니다!');
+      navigate('/login');
+    }
+  }, [userInfo, navigate]);
+
   useEffect(() => {
     const fetchClubData = async () => {
       setLoading(true);
-      let token = localStorage.getItem("accessToken");
-    
+      const token = localStorage.getItem('accessToken');
       if (!token) {
-        console.warn("🔄 AccessToken 없음, RefreshToken으로 새 AccessToken 요청...");
-        token = await refreshAccessToken();
-        if (!token) {
-          setError("로그인이 필요합니다.");
-          setLoading(false);
-          return;
-        }
+        setError('로그인이 필요합니다.');
+        setLoading(false);
+        return;
       }
-    
       try {
-        const res = await fetch(`${API_URL}/api/clubs/${club_id}`, {
-          method: "GET",
-          headers: { Authorization: `Bearer ${token}` },
-          credentials: "include"  // ✅ 특정 요청에서만 쿠키 포함
+        const response = await axios.get(`${API_URL}/api/clubs/${club_id}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'ngrok-skip-browser-warning': '69420',
+            Authorization: `Bearer ${token}`,
+          },
         });
-    
-        if (res.ok) {
-          setClubInfo(await res.json());
-        } else {
-          setError("데이터를 불러오는 중 오류가 발생했습니다.");
-        }
+        setClubInfo(response.data);
       } catch (err) {
-        console.error("🚨 API Error:", err);
-        setError("데이터를 불러오는 중 오류가 발생했습니다.");
+        console.error('🚨 API Error:', err.response || err.message);
+        setError('데이터를 불러오는 중 오류가 발생했습니다.');
       } finally {
         setLoading(false);
       }
     };
-    
-  
+
     fetchClubData();
   }, [club_id]);
-  
 
   // 전화번호 포맷 함수 (예: 010-xxxx-xxxx)
   const formatPhoneNumber = (phoneNumber) => {
-    const cleaned = ("" + phoneNumber).replace(/\D/g, "");
-    if (cleaned.length === 11 && cleaned.startsWith("010")) {
-      return cleaned.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+    const cleaned = ('' + phoneNumber).replace(/\D/g, '');
+    if (cleaned.length === 11 && cleaned.startsWith('010')) {
+      return cleaned.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
     }
     return phoneNumber;
   };
@@ -201,31 +88,31 @@ function ClubInfo() {
   if (error) return <S.Error>{error}</S.Error>;
 
   const getFormattedClubTitle = () => {
-    if (!clubInfo) return "동아리 이름";
-    if (clubInfo.club_type === "중앙동아리") {
-      return `중앙동아리 > ${clubInfo.detail_category_1 || "분과 없음"} > ${
+    if (!clubInfo) return '동아리 이름';
+    if (clubInfo.club_type === '중앙동아리') {
+      return `중앙동아리 > ${clubInfo.detail_category_1 || '분과 없음'} > ${
         clubInfo.club_name
       }`;
-    } else if (clubInfo.club_type === "소학회") {
-      return `소학회 > ${clubInfo.college_name || "단과대"} > ${
-        clubInfo.department_name || "소속학과"
+    } else if (clubInfo.club_type === '소학회') {
+      return `소학회 > ${clubInfo.college_name || '단과대'} > ${
+        clubInfo.department_name || '소속학과'
       } > ${clubInfo.club_name}`;
     }
     return clubInfo.club_name;
   };
   const socialLinks = [
-    { url: clubInfo?.club_sns1, icon: <FaInstagram />, label: "Instagram" },
-    { url: clubInfo?.club_sns2, icon: <FaYoutube />, label: "YouTube" },
-    { url: clubInfo?.club_sns3, icon: <FaLink />, label: "Linktree" },
-    { url: clubInfo?.club_sns4, icon: <FaGlobe />, label: "Website" },
+    { url: clubInfo?.club_sns1, icon: <FaInstagram />, label: 'Instagram' },
+    { url: clubInfo?.club_sns2, icon: <FaYoutube />, label: 'YouTube' },
+    { url: clubInfo?.club_sns3, icon: <FaLink />, label: 'Linktree' },
+    { url: clubInfo?.club_sns4, icon: <FaGlobe />, label: 'Website' },
   ].filter((sns) => sns.url); // 링크가 존재하는 것만 필터링
 
   // 기본 메뉴에 관리자인 경우에만 추가 메뉴를 포함
   const sidebarItems = [
-    "동아리 소개",
-    "모집 공고",
-    "행사 공고",
-    ...(isClubAdmin ? ["모집공고 작성", "모집공고 수정"] : []),
+    '동아리 소개',
+    '모집 공고',
+    '행사 공고',
+    ...(isClubAdmin ? ['모집공고 작성', '모집공고 수정'] : []),
   ];
 
   const handleSidebarClick = (item) => {
@@ -256,15 +143,15 @@ function ClubInfo() {
         <S.CardContainer>
           <S.CardLogo
             src={clubInfo?.logo_url || defaultImage}
-            alt={clubInfo?.club_name || "Club Logo"}
+            alt={clubInfo?.club_name || 'Club Logo'}
           />
           <S.CardContent>
-            <S.ClubName>{clubInfo?.club_name || "동아리 이름"}</S.ClubName>
+            <S.ClubName>{clubInfo?.club_name || '동아리 이름'}</S.ClubName>
             <S.CardInfoBox>
               <S.CardInfoItem>
                 <S.ContactLabel>위치</S.ContactLabel>
                 <S.ContactValue>
-                  {clubInfo?.club_location || "위치 정보가 없습니다."}
+                  {clubInfo?.club_location || '위치 정보가 없습니다.'}
                 </S.ContactValue>
               </S.CardInfoItem>
               <S.CardInfoItem>
@@ -272,7 +159,7 @@ function ClubInfo() {
                 <S.ContactValue>
                   {clubInfo?.club_contact_phone_number
                     ? formatPhoneNumber(clubInfo.club_contact_phone_number)
-                    : "연락처 정보가 없습니다."}
+                    : '연락처 정보가 없습니다.'}
                 </S.ContactValue>
               </S.CardInfoItem>
               <S.CardInfoItem>
@@ -290,22 +177,22 @@ function ClubInfo() {
             </S.CardInfoBox>
           </S.CardContent>
         </S.CardContainer>
-        {selectedTab === "동아리 소개" && (
+        {selectedTab === '동아리 소개' && (
           <>
             <S.Section>
               <S.SectionTitle>동아리 설명</S.SectionTitle>
               <S.SectionContent>
                 {clubInfo?.club_description
                   ? clubInfo.club_description
-                      .replace(/\\n/g, "\n")
-                      .split("\n")
+                      .replace(/\\n/g, '\n')
+                      .split('\n')
                       .map((line, index) => (
                         <React.Fragment key={index}>
                           {line}
                           <br />
                         </React.Fragment>
                       ))
-                  : "동아리 설명이 없습니다."}
+                  : '동아리 설명이 없습니다.'}
               </S.SectionContent>
             </S.Section>
             <S.Section>
@@ -313,15 +200,15 @@ function ClubInfo() {
               <S.SectionContent>
                 {clubInfo?.club_main_activities
                   ? clubInfo.club_main_activities
-                      .replace(/\\n/g, "\n")
-                      .split("\n")
+                      .replace(/\\n/g, '\n')
+                      .split('\n')
                       .map((line, index) => (
                         <React.Fragment key={index}>
                           {line}
                           <br />
                         </React.Fragment>
                       ))
-                  : "주요 활동 설명이 없습니다."}
+                  : '주요 활동 설명이 없습니다.'}
               </S.SectionContent>
             </S.Section>
             {clubInfo?.club_activity_images &&
@@ -347,12 +234,12 @@ function ClubInfo() {
                       spaceBetween={10}
                       slidesPerView="auto"
                       freeMode={true}
-                      pagination={{ clickable: true, el: ".swiper-pagination" }}
+                      pagination={{ clickable: true, el: '.swiper-pagination' }}
                       modules={[Pagination]}
                       className="custom-swiper"
                     >
                       {clubInfo.club_activity_images.map((image, index) => (
-                        <SwiperSlide key={index} style={{ width: "150px" }}>
+                        <SwiperSlide key={index} style={{ width: '150px' }}>
                           <S.MobileGalleryImage
                             src={image}
                             alt={`활동 사진 ${index + 1}`}
@@ -361,7 +248,7 @@ function ClubInfo() {
                         </SwiperSlide>
                       ))}
                     </Swiper>
-                    <div className="swiper-pagination"></div>{" "}
+                    <div className="swiper-pagination"></div>{' '}
                     {/* 👇 페이지네이션 위치 조정 */}
                   </S.MobileSwiperContainer>
                 </S.Section>
@@ -377,11 +264,11 @@ function ClubInfo() {
             )}
           </>
         )}
-        {selectedTab === "모집 공고" && <ClubApply club_id={club_id} />}
-        {selectedTab === "행사 공고" && <ClubEvent club_id={club_id} />}
-        {selectedTab === "모집공고 작성" && <RecruitmentPage />}{" "}
+        {selectedTab === '모집 공고' && <ClubApply club_id={club_id} />}
+        {selectedTab === '행사 공고' && <ClubEvent club_id={club_id} />}
+        {selectedTab === '모집공고 작성' && <RecruitmentPage />}{' '}
         {/* ✅ 모집공고 작성 */}
-        {selectedTab === "모집공고 수정" && <EditRecruitmentPage />}{" "}
+        {selectedTab === '모집공고 수정' && <EditRecruitmentPage />}{' '}
         {/* ✅ 모집공고 수정 */}
       </S.InfoContainer>
     </S.PageContainer>
